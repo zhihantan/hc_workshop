@@ -1,0 +1,8 @@
+erDiagram
+    CUSTOMER ||--o{ LOAN_APPLICATION : submits
+    RETAIL_LOCATION o|--o{ LOAN_APPLICATION : originates
+    LOAN_PRODUCT ||--o{ LOAN_APPLICATION : requested_as
+    LOAN_APPLICATION ||--o| CREDIT_CONTRACT : creates
+    CREDIT_CONTRACT ||--o{ INSTALLMENT : schedules
+    INSTALLMENT o|--o{ PAYMENT : settles
+    INSTALLMENT ||--o{ COLLECTION_ACTION : triggers
