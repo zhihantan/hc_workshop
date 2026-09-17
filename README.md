@@ -1,5 +1,7 @@
 # Home Credit Databricks workshop
 
+Updated on 17 September 2026
+
 Participant and facilitator materials for the Home Credit Philippines enablement workshop on 22 September 2026.
 
 ## Start here
