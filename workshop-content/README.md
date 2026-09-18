@@ -9,9 +9,10 @@ The section content is being prepared and is **not yet ready for participant use
 ### Section readiness
 
 - **01 — Data Analysis in Databricks:** Draft. Content is authored; workspace validation, shared asset creation, access grants, dashboard/Genie URLs, and facilitator rehearsal remain.
-- **Remaining sections:** Not started.
+- **06 — Introduction to Machine Learning in Databricks:** Draft. The runnable lab passed an end-to-end workspace validation run (train → register → batch-score, retargeted to `sean_development_catalog`); facilitator rehearsal, access grants, and TBD confirmations remain.
+- **02–05, 07:** Not started.
 
-Open [01-data-analysis-in-databricks/README.md](01-data-analysis-in-databricks/README.md) for the current section prerequisites and definition of done.
+Open [01-data-analysis-in-databricks/README.md](01-data-analysis-in-databricks/README.md) or [06-machine-learning-in-databricks/README.md](06-machine-learning-in-databricks/README.md) for section prerequisites and definition of done.
 
 Status meanings:
 
