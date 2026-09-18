@@ -58,9 +58,9 @@ Small rounding differences are acceptable only when the underlying generator con
 
 Stop the lab. The administrator should rerun the dataset generator and confirm its final `SUCCESS` message. Do not create substitute participant tables.
 
-### The catalog or as-of-date validation fails
+### The as-of-date validation fails
 
-Do not bypass the guard. Confirm that the notebook was released for the configured workshop catalog and that `installment` carries the expected `workshop.as_of_date` table property. If the administrator intentionally generated a different as-of date or catalog, update the notebook and shared FPD5 view together, rerun their validation, and republish dependent assets before participants continue.
+Do not bypass the guard. Confirm that `installment` carries the expected `workshop.as_of_date` table property. If the administrator intentionally generated a different as-of date, update the notebook and shared FPD5 view together, rerun their validation, and republish dependent assets before participants continue.
 
 ### `USE_CATALOG`, `USE_SCHEMA`, or `SELECT` is denied
 
@@ -80,7 +80,7 @@ Use an approved Unity Catalog-compatible classic all-purpose resource. Record th
 
 ### The shared Metric View is missing
 
-Run `facilitator-setup.sql` on a compatible SQL warehouse, verify its final two queries, and confirm participant `SELECT` access. If Metric Views are unavailable in the target workspace, use the notebook's temporary-view fallback and omit the Genie optimization demonstration rather than inventing a result.
+Run `../../workshop-setup/section-01-facilitator-setup.sql` on a compatible SQL warehouse, verify its final two queries, and confirm participant `SELECT` access. If Metric Views are unavailable in the target workspace, use the notebook's temporary-view fallback and omit the Genie optimization demonstration rather than inventing a result.
 
 ### The dashboard shows different values
 

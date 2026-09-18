@@ -3,8 +3,9 @@
 # MAGIC # Unicorn Finance workshop dataset generator
 # MAGIC
 # MAGIC Run this notebook on Unity Catalog-enabled Databricks compute. It provisions
-# MAGIC `hc_workshop.core_lending` by default and deterministically generates the
-# MAGIC eight workshop tables. All records are synthetic.
+# MAGIC `hc_workshop.core_lending` by default and deterministically generates the eight
+# MAGIC workshop tables. Create the `hc_workshop` catalog manually with Default Storage
+# MAGIC before running the workshop setup. All records are synthetic.
 # MAGIC
 # MAGIC ## Configuration
 # MAGIC Edit the values in the next cell before selecting **Run all**. Configuration
@@ -214,9 +215,9 @@ catalog_exists = (
     > 0
 )
 if not catalog_exists:
-    spark.sql(
-        f"CREATE CATALOG {CATALOG_SQL} "
-        f"COMMENT 'Synthetic Unicorn Finance datasets for the Databricks workshop'"
+    raise RuntimeError(
+        f"Catalog {CATALOG!r} does not exist. Create it manually in Catalog Explorer "
+        "using 'Use default storage', then rerun the workshop setup."
     )
 spark.sql(
     f"CREATE SCHEMA IF NOT EXISTS {TARGET_NAMESPACE} "

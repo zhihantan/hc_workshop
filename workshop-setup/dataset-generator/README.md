@@ -6,14 +6,14 @@
 
 ## What this creates
 
-The generator creates or reuses the configured dataset namespace:
+The generator creates or reuses the configured dataset schema:
 
 ```text
 Catalog: hc_workshop
 Schema:  core_lending
 ```
 
-Run `../setup_workshop_schemas.py` first to create the complete three-schema workshop layout. This generator remains safe to run independently and will create its configured catalog and dataset schema when needed.
+Create the catalog manually in Catalog Explorer with **Use default storage**, then run `../setup_workshop_schemas.py` to create the complete three-schema workshop layout. The generator can create its configured dataset schema when needed, but it deliberately does not create the catalog.
 
 It builds, validates, and publishes these managed Delta tables:
 
@@ -48,7 +48,7 @@ Run on Databricks compute that:
 
 The run identity requires:
 
-- `CREATE CATALOG` on the metastore if the configured catalog does not exist.
+- Permission to create the catalog manually in Catalog Explorer before running setup.
 - `USE CATALOG` and `CREATE SCHEMA` on the configured catalog if the schema does not exist.
 - `USE SCHEMA` and `CREATE TABLE` on the configured dataset schema and permission to create a temporary run-scoped build schema.
 - `SELECT`, `MODIFY`, and ownership or equivalent management rights on existing generated tables when rerunning with `write_mode = overwrite`.
@@ -61,14 +61,15 @@ Workspace catalog bindings must allow the workspace to access `hc_workshop`.
 ### Option 1: Git folder
 
 1. In Databricks, create a Git folder and clone this repository.
-2. Open `workspace-setup/dataset-generator/generate_workshop_dataset.py`.
+2. Open `workshop-setup/dataset-generator/generate_workshop_dataset.py`.
 
 ### Option 2: Upload an archive
 
-1. Upload `workspace-setup/dataset-generator.zip`.
+1. Upload `workshop-setup/workshop-setup.zip`.
 2. Extract it into a Databricks workspace folder.
-3. Run `workspace-setup/setup_workshop_schemas.py`.
-4. Open `workspace-setup/dataset-generator/generate_workshop_dataset.py`.
+3. Follow `workshop-setup/README.md`, beginning with manual catalog creation.
+4. Run `workshop-setup/setup_workshop_schemas.py`.
+5. Open `workshop-setup/dataset-generator/generate_workshop_dataset.py`.
 
 The generator uses only built-in PySpark functions. No `%pip install`, wheel build, external storage path, workspace URL, cluster ID, or Databricks CLI profile is required.
 
@@ -169,9 +170,9 @@ Expected results:
 
 ## Troubleshooting
 
-### Cannot create catalog
+### Catalog does not exist
 
-The run identity lacks metastore-level `CREATE CATALOG`, or the metastore has no usable managed storage. Ask a metastore administrator to create the configured catalog, then rerun.
+Open Catalog Explorer, create the configured catalog with **Use default storage**, then rerun `setup_workshop_schemas.py`. Do not add a guessed managed-storage location to the generator.
 
 ### Catalog exists but is not visible
 

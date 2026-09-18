@@ -16,7 +16,7 @@ Create one section of the Home Credit Philippines Databricks workshop. Participa
 ## Inputs
 
 REPOSITORY_ROOT: [absolute path to this repository]
-WORKSPACE_ROOT: /Workspace/Shared/homecredit-workshop
+WORKSPACE_ROOT: /Workspace/Shared/hc_workshop
 WORKSHOP_CATALOG: hc_workshop
 WORKSHOP_RUNTIME: TBD
 SQL_WAREHOUSE: TBD
@@ -42,7 +42,7 @@ Paths are relative to `REPOSITORY_ROOT`:
 4. `workshop-authoring/dataset/dataset-guide.md` — relationships and analytical paths.
 5. `workshop-authoring/dataset/data-dictionary.md` — authoritative columns and values.
 6. `workshop-authoring/dataset/source-schema.md` — source-model decisions.
-7. `workspace-setup/dataset-generator/README.md` — environment and validation.
+7. `workshop-setup/dataset-generator/README.md` — environment and validation.
 
 Write generated material only under `workshop-content/`. Preserve all unselected sections.
 

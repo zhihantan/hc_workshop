@@ -122,6 +122,6 @@ If an engineering lab adds ingestion metadata, use fields such as `_source_syste
 
 ## Generator and release gate
 
-`../../workspace-setup/dataset-generator/generate_workshop_dataset.py` deterministically builds and validates the dataset in a run-unique `core_lending__build_<suffix>` schema. It publishes to the configured catalog’s `core_lending` schema only after primary-key, foreign-key, temporal, financial-reconciliation, servicing, and business-story gates pass. A failed multi-table publication triggers compensating rollback.
+`../../workshop-setup/dataset-generator/generate_workshop_dataset.py` deterministically builds and validates the dataset in a run-unique `core_lending__build_<suffix>` schema. It publishes to the configured catalog’s `core_lending` schema only after primary-key, foreign-key, temporal, financial-reconciliation, servicing, and business-story gates pass. A failed multi-table publication triggers compensating rollback.
 
 Every published table carries a shared `workshop.run_id`. The dataset is ready only when the notebook prints its final `SUCCESS` message.

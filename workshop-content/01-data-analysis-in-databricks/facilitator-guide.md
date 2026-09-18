@@ -17,10 +17,10 @@ The following Generative AI session should build on this governed Genie Agent an
 
 ## Before participants enter
 
-1. Run `facilitator-setup.sql` on the workshop SQL warehouse.
+1. Run `../../workshop-setup/section-01-facilitator-setup.sql` on the workshop SQL warehouse.
 2. Confirm the source-table check returns `8`.
 3. Confirm the Metric View returns approximately 42.26% FPD5 for the promotion and 21.03% for other eligible originations.
-4. Import `participant-lab.py` under `/Workspace/Shared/homecredit-workshop/01-data-analysis-in-databricks/`.
+4. Confirm `participant-lab.py` is available under `/Workspace/Shared/hc_workshop/workshop-content/01-data-analysis-in-databricks/`.
 5. Confirm the notebook runs on the assigned serverless notebook compute.
 6. Rehearse with a non-admin participant identity.
 7. Fill in the runtime, warehouse, group, dashboard URL, and Genie Agent URL marked `TBD` in the section README.
@@ -39,7 +39,7 @@ Create a draft named **Unicorn FPD5 Overview**:
 5. Add a store ranking fixed to the 0% smartphone promotion, with at least 10 eligible contracts per store. Use Store, Eligible Contracts, and FPD5 Rate. Keep high-cardinality sales-associate detail in a table rather than a color series.
 6. Add global filters for Promotion Cohort, Origination Month, and Region.
 7. Add a detail table with Store Code, Store, Sales Associate ID, Eligible Contracts, FPD5 Contracts, and FPD5 Rate.
-8. Verify the KPI, monthly, store, and store-associate grains against their matching validation queries in `facilitator-setup.sql`.
+8. Verify the KPI, monthly, store, and store-associate grains against their matching validation queries in `../../workshop-setup/section-01-facilitator-setup.sql`.
 9. Publish using **Individual data permissions** for the workshop because participants already have `SELECT` on the Metric View. Explain that **Share data permissions** runs through the publisher's permissions and must be reviewed carefully.
 
 Do not build the entire dashboard live. Open the prepared draft, add or change one widget, demonstrate a filter, and publish the revised draft.
@@ -127,10 +127,10 @@ Ask: "A scheduled Python notebook currently runs every hour on an analyst's all-
 
 ### Exact UI path
 
-1. **Workspace > Shared > homecredit-workshop > 01-data-analysis-in-databricks > participant-lab**
+1. **Workspace > Shared > hc_workshop > workshop-content > 01-data-analysis-in-databricks > participant-lab**
 2. Use the notebook compute selector and choose the assigned **Serverless** notebook compute.
-3. Enter the assigned `team_id`.
-4. Run sequentially through the store-associate hotspot cell. Stop before the Delta section for the participant exercise.
+3. Run sequentially through the store-associate hotspot cell. Stop before the Delta section for the participant exercise.
+4. When starting the Delta section, ask participants to enter their assigned `team_id`. Explain that it groups persistent workshop artifacts for cleanup; the notebook adds a runner suffix automatically to prevent teammates from overwriting each other.
 
 Pause at the following cells:
 

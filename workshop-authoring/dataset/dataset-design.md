@@ -75,6 +75,6 @@ The catalog name is configurable during workspace setup. The `core_lending` sche
 
 ## Generator
 
-The clone-and-run Databricks source notebook is available at `../../workspace-setup/dataset-generator/generate_workshop_dataset.py`. It builds the eight deterministic Delta tables in an isolated staging schema, validates structural and business-story gates, and only then publishes to the configured catalog’s `core_lending` schema.
+The clone-and-run Databricks source notebook is available at `../../workshop-setup/dataset-generator/generate_workshop_dataset.py`. It builds the eight deterministic Delta tables in an isolated staging schema, validates structural and business-story gates, and only then publishes to the configured catalog’s `core_lending` schema.
 
-An administrator still needs catalog-creation and table-write privileges in each destination workspace. See `../../workspace-setup/dataset-generator/README.md`.
+An administrator still needs catalog-creation and table-write privileges in each destination workspace. See `../../workshop-setup/dataset-generator/README.md`.

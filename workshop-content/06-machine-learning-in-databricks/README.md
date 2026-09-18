@@ -29,7 +29,7 @@ This split keeps the section inside 60 minutes. Batch scoring is the required in
 
 ## Prerequisites
 
-- The administrator has completed `../../workspace-setup/README.md` and the standard dataset passed its final generator `SUCCESS` gate.
+- The administrator has completed `../../workshop-setup/README.md` and the standard dataset passed its final generator `SUCCESS` gate.
 - The `workshop_labs` and `workshop_shared` schemas exist in the workshop catalog.
 - Participants have compute that can run MLflow and scikit-learn: **serverless notebook compute** (the notebook installs the two libraries in its first cell) or a **Databricks ML Runtime** all-purpose resource (libraries preinstalled).
 

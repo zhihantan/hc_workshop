@@ -27,9 +27,9 @@ This split keeps the seven requested topics inside 90 minutes. It does not attem
 
 ## Prerequisites
 
-- The administrator has completed `../../workspace-setup/README.md`.
+- The administrator has completed `../../workshop-setup/README.md`.
 - The standard dataset has passed its final generator `SUCCESS` gate.
-- `facilitator-setup.sql` has successfully created the shared analysis view and Metric View.
+- `../../workshop-setup/section-01-facilitator-setup.sql` has successfully created the shared analysis view and Metric View.
 - The facilitator has prepared the dashboard and Genie Agent described in `facilitator-guide.md`.
 - Participants can use serverless notebook compute or a Unity Catalog-compatible all-purpose compute resource.
 - A serverless SQL warehouse is available for the dashboard, Genie Agent, and warehouse-operations demonstration.
@@ -68,7 +68,7 @@ Participant entry point:
 Facilitator-only delivery files:
 
 - `facilitator-guide.md` — minute-by-minute delivery, UI paths, talking points, and fallbacks.
-- `facilitator-setup.sql` — idempotent shared view and Metric View setup.
+- `../../workshop-setup/section-01-facilitator-setup.sql` — creates the facilitator-owned `hc_workshop.workshop_shared.fpd_analysis` view and `hc_workshop.workshop_shared.fpd_metrics` Metric View.
 - `slide-outline.md` — recommended presentation slides and transitions to live demonstration.
 
 Each participant's lab creates only:
@@ -77,7 +77,9 @@ Each participant's lab creates only:
 hc_workshop.workshop_labs.unicorn_<team_id>_<runner_id>_delta_demo
 ```
 
-It never modifies `hc_workshop.core_lending`. Its analytical FPD5 dataset is a session-scoped temporary view.
+The facilitator assigns `team_id` so workshop artifacts can be identified and cleaned up by team. The notebook derives `runner_id` from the current user's name so teammates do not overwrite each other's Delta table. The team ID is an organizational prefix, not a permission boundary.
+
+The lab never modifies `hc_workshop.core_lending`. Its analytical FPD5 dataset is a session-scoped temporary view and therefore does not need a team prefix.
 
 ## Definition of done
 

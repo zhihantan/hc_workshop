@@ -17,7 +17,7 @@ Keep the modelling deliberately simple. The goal is an **interpretable, governed
 
 1. Confirm the dataset passed its generator `SUCCESS` gate and all eight `core_lending` tables exist.
 2. Confirm `workshop_labs` and `workshop_shared` exist in the workshop catalog and participants have `CREATE TABLE` + `CREATE MODEL` on `workshop_labs`.
-3. Import `participant-lab.py` under `/Workspace/Shared/homecredit-workshop/06-machine-learning-in-databricks/`.
+3. Confirm `participant-lab.py` is available under `/Workspace/Shared/hc_workshop/workshop-content/06-machine-learning-in-databricks/`.
 4. Confirm compute runs the notebook: serverless notebook compute (the first cell `%pip install`s MLflow and scikit-learn, then restarts Python) or a Databricks ML Runtime all-purpose resource.
 5. Run the notebook once end-to-end on the assigned compute to warm the environment and confirm a registered model version and scores table appear.
 6. Fill in the runtime, group, team ID, and any optional serving values marked `TBD` in the section README.
@@ -54,7 +54,7 @@ Use slides for the concepts before touching the notebook.
 
 ### Exact UI path
 
-1. **Workspace > Shared > homecredit-workshop > 06-machine-learning-in-databricks > participant-lab**
+1. **Workspace > Shared > hc_workshop > workshop-content > 06-machine-learning-in-databricks > participant-lab**
 2. Attach serverless notebook compute (or the assigned ML Runtime resource) and enter the assigned `team_id`.
 3. Run sequentially. Pause at:
    - **Setup:** explain that serverless installs MLflow/scikit-learn and restarts Python; on ML Runtime this is a no-op.

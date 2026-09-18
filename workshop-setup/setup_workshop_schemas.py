@@ -2,8 +2,9 @@
 # MAGIC %md
 # MAGIC # Set up workshop Unity Catalog schemas
 # MAGIC
-# MAGIC Run this administrator notebook before the dataset generator. It creates the
-# MAGIC catalog when needed and provisions the three schemas used throughout the workshop.
+# MAGIC Before running this notebook, create the `hc_workshop` catalog manually in
+# MAGIC Catalog Explorer and select **Use default storage**. This notebook then provisions
+# MAGIC the three schemas used throughout the workshop.
 # MAGIC
 # MAGIC ## Configuration
 # MAGIC Edit the values in the next cell before selecting **Run all**. The settings are
@@ -50,10 +51,18 @@ def quoted(identifier: str) -> str:
 
 
 catalog_sql = quoted(CATALOG)
-spark.sql(
-    f"CREATE CATALOG IF NOT EXISTS {catalog_sql} "
-    f"COMMENT 'Synthetic Unicorn Finance assets for the Databricks workshop'"
+catalog_exists = (
+    spark.sql("SHOW CATALOGS")
+    .filter(f"catalog = '{CATALOG}'")
+    .limit(1)
+    .count()
+    > 0
 )
+if not catalog_exists:
+    raise RuntimeError(
+        f"Catalog {CATALOG!r} does not exist. Create it manually in Catalog Explorer "
+        "using 'Use default storage', then rerun this notebook."
+    )
 
 for schema_name, description in SCHEMAS.items():
     namespace = f"{catalog_sql}.{quoted(schema_name)}"

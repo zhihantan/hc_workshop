@@ -22,11 +22,11 @@ The runnable section content is still being prepared. The repository will be rea
 ```text
 participant-materials/   PDFs distributed to workshop participants
 workshop-content/        Runnable labs and section instructions
-workspace-setup/         Administrator-only dataset provisioning
+workshop-setup/          Administrator and facilitator environment setup
 workshop-authoring/      Facilitator design sources, diagrams, and prompts
 ```
 
-Participants do not need `workspace-setup/` or `workshop-authoring/`.
+Participants do not need `workshop-setup/` or `workshop-authoring/`.
 
 ## Workshop scenario
 
@@ -34,9 +34,9 @@ The hands-on exercises follow **Unicorn Finance Philippines**, a fictional consu
 
 Home Credit Philippines is the real workshop audience. Unicorn Finance is the company represented by the synthetic data.
 
-## Workspace administrator setup
+## Workshop environment setup
 
-Before the workshop, follow `workspace-setup/README.md`. The setup creates:
+Before the workshop, follow `workshop-setup/README.md`. The administrator first creates `hc_workshop` manually in Catalog Explorer using **Default Storage**, then runs the setup notebooks to create:
 
 ```text
 hc_workshop.core_lending
@@ -46,11 +46,13 @@ hc_workshop.workshop_labs
 
 The catalog name is configurable. The default standard-scale dataset run deterministically produces 700,150 records across eight managed Delta tables in `core_lending`. The generator builds in a run-isolated schema, validates structural and business-story gates, then publishes with a serialized release lock and compensating rollback.
 
-Use `workspace-setup/dataset-generator.zip` only when Git folder access is unavailable.
+Use `workshop-setup/workshop-setup.zip` only when Git folder access is unavailable.
 
 ## Facilitator authoring
 
 Editable Markdown, the dataset design, ER sources, and the reusable content-generation prompt live under `workshop-authoring/`. Generated participant labs belong under `workshop-content/`, not in the authoring directory.
+
+The development and workspace-validation approach is documented in [TESTING.md](TESTING.md).
 
 ## Disclaimer
 
