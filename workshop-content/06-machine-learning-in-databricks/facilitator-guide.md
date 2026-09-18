@@ -17,7 +17,7 @@ Keep the modelling deliberately simple. The goal is an **interpretable, governed
 
 1. Confirm the dataset passed its generator `SUCCESS` gate and all eight `core_lending` tables exist.
 2. Confirm `workshop_labs` and `workshop_shared` exist in the workshop catalog and participants have `CREATE TABLE` + `CREATE MODEL` on `workshop_labs`.
-3. Confirm `participant-lab.py` is available under `/Workspace/Shared/hc_workshop/workshop-content/06-machine-learning-in-databricks/`.
+3. Import `participant-lab.py` under `/Workspace/Shared/homecredit-workshop/06-machine-learning-in-databricks/`.
 4. Confirm compute runs the notebook: serverless notebook compute (the first cell `%pip install`s MLflow and scikit-learn, then restarts Python) or a Databricks ML Runtime all-purpose resource.
 5. Run the notebook once end-to-end on the assigned compute to warm the environment and confirm a registered model version and scores table appear.
 6. Fill in the runtime, group, team ID, and any optional serving values marked `TBD` in the section README.
@@ -54,7 +54,7 @@ Use slides for the concepts before touching the notebook.
 
 ### Exact UI path
 
-1. **Workspace > Shared > hc_workshop > workshop-content > 06-machine-learning-in-databricks > participant-lab**
+1. **Workspace > Shared > homecredit-workshop > 06-machine-learning-in-databricks > participant-lab**
 2. Attach serverless notebook compute (or the assigned ML Runtime resource) and enter the assigned `team_id`.
 3. Run sequentially. Pause at:
    - **Setup:** explain that serverless installs MLflow/scikit-learn and restarts Python; on ML Runtime this is a no-op.
@@ -105,6 +105,20 @@ Ask each team to state, for the model asset: one owner, one retraining trigger o
 - **Unity Catalog model registry unavailable:** stop and escalate; do not fall back to the workspace model registry for a governed handover. Explain that UC registration is the point of the exercise.
 - **Model Serving not enabled:** keep to batch scoring; describe serving on a slide. Do not claim an endpoint was created.
 - **Insufficient `workshop_labs` permission:** the administrator grants `CREATE TABLE` and `CREATE MODEL`; do not redirect output to `core_lending` or a personal catalog.
+
+## Facilitator note — the model's performance ceiling
+
+Expect "can't we make it more accurate?" The honest, evidence-backed answer is: not meaningfully, without crossing a governance line. This lab's ~0.63 validation ROC-AUC is close to the ceiling for legitimate origination-time features on this dataset. Three leakage-safe levers were tested on the same time split:
+
+1. **Richer origination-time features** — added the booked contract terms (interest rate, principal, fees, subsidy, credit limit, actual tenor), derived burdens (payment-to-income, subsidy ratios), and application/store context (promotion sponsor, item brand, geography, decision/disbursement latency, store age). Validation ROC-AUC moved **0.627 → 0.631 — noise**.
+2. **Nonlinear models** — gradient boosting (HistGradientBoosting, LightGBM) on the enriched set hit the same ~0.63 ceiling; LightGBM generalized *worse* on the newest vintage (overfitting + vintage drift).
+3. **Store / sales-associate identity** (cross-fitted target encoding) — the only lever that moved anything: **PR-AUC 0.41 → 0.46** and the **top risk decile 49% → 61%**. But the entire gain sits inside the promotion cohort (promo AUC 0.55 → 0.64; non-promo unchanged at ~0.55), because specific stores/associates pushed the 0% promo to riskier borrowers — the Sections 01–05 story — and that pattern persists over time.
+
+Three points to make with it:
+
+- A modest, **well-calibrated** score is the honest result; a sudden 0.9 AUC would signal leakage. The interpretable logistic model is near-optimal for the legitimate feature space.
+- The signal is the **promotion cohort**, not individual borrower attributes; beyond it, origination-time FPD5 is largely irreducible in this synthetic data.
+- The store/associate signal is real but **governance-sensitive** — scoring a borrower by which associate booked the loan penalizes them for the channel's behavior. It belongs in a **channel-risk monitor**, not the borrower score: precisely "investigation signal, not proof."
 
 ## Facilitator references
 
