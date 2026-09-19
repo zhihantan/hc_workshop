@@ -1,6 +1,6 @@
 # Facilitator guide — Governance and Access Control in Databricks
 
-**Facilitator-only:** Participants receive `access-diagnostic-checklist.md`. The notebook is a prepared demonstration, not a participant lab.
+**Facilitator-only:** Participants receive `access-diagnostic-checklist.md` and the team checkpoint. The facilitator runs `facilitator-demo.py` under the dedicated restricted identity; participants do not run or clone it. There is intentionally no participant lab notebook for this section.
 
 ## Delivery intent
 

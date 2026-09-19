@@ -32,7 +32,7 @@ No participant-specific or model-only schema is required for this workshop.
 12. With a non-admin participant identity, rehearse `../workshop-content/01-data-analysis-in-databricks/participant-lab.py` and create one private Genie Agent in that user's folder using only `workshop_shared.fpd_metrics`.
 13. Create the dedicated restricted group and non-admin user described in `../workshop-content/05-governance-and-access-control/facilitator-guide.md`.
 14. Configure `section-05-governance-demo-setup.sql` with that group and run only its preparation statements; do not select **Run all**.
-15. Prepare the Consumer Lending Discover domain, verify the lineage path, and rehearse the Section 05 notebook from the restricted identity.
+15. Prepare the Consumer Lending Discover domain, verify the lineage path, and rehearse `../workshop-content/05-governance-and-access-control/facilitator-demo.py` from the restricted identity. This is a facilitator demonstration notebook; participants do not run or clone it.
 
 Both Python notebooks keep their configuration visibly at the top of the source. They do not require a first run to initialize widgets.
 

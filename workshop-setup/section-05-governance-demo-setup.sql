@@ -1,6 +1,6 @@
 -- Databricks notebook source
 -- MAGIC %md
--- MAGIC # Section 05 facilitator setup — restricted access scenario
+-- MAGIC # Governance facilitator setup — restricted access scenario
 -- MAGIC
 -- MAGIC This notebook prepares a dedicated group for the Governance and Access Control demonstration.
 -- MAGIC

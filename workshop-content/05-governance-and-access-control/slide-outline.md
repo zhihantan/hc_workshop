@@ -1,6 +1,8 @@
-# Recommended slide outline — Section 05
+# Recommended slide outline — Governance and Access Control in Databricks
 
 Use six concise slides. Slides establish the mental model; the workspace supplies the evidence.
+
+Use the topic title and scheduled time with participants, not the internal `05` content-directory identifier. The workspace evidence comes from the facilitator-run `facilitator-demo.py`; participants do not run or clone that notebook.
 
 ## Slide 1 — One request, several authorization layers
 

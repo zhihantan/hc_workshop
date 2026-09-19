@@ -1,11 +1,13 @@
-# Section 05 — Governance and Access Control in Databricks
+# Governance and Access Control in Databricks
 
 **Status:** Draft — workspace preparation and facilitator rehearsal required
 **Time:** 3:20 PM–3:50 PM (30 minutes)
+**Content directory:** `05-governance-and-access-control` — internal repository identifier; use the title and scheduled time with participants
+**Delivery mode:** Facilitator demonstration with participant checklist and team checkpoint
 
 Participants learn how Databricks authorization is evaluated across identity, workspace resources, runtime identity, and Unity Catalog. The section uses one controlled access failure to teach diagnosis, then closes with lineage and a business-oriented Discover domain.
 
-This is a facilitator-led section. Participants do not build governance objects or complete a coding lab.
+This section includes a prepared notebook, `facilitator-demo.py`, but it is not a participant lab. The facilitator runs it under a dedicated restricted identity so the intended `USE SCHEMA` failure is reproducible. Participants do not run or clone the notebook, do not build governance objects, and do not apply the temporary grant. They follow `access-diagnostic-checklist.md` and complete the team scenarios in `exercises.md`.
 
 ## Outcomes
 
@@ -79,6 +81,8 @@ Participant takeaway:
 - `access-diagnostic-checklist.md` — reusable sequence for diagnosing access problems.
 - `exercises.md` — short scenario-based team checkpoint.
 - `expected-results.md` — expected demo evidence and checkpoint answers.
+
+There is intentionally no `participant-lab.py` for this facilitator-led section.
 
 ## Definition of done
 

@@ -1,6 +1,8 @@
-# Slide-generation brief — Section 05: Governance and Access Control in Databricks
+# Slide-generation brief — Governance and Access Control in Databricks
 
 Use this document either as a complete prompt for an LLM that can generate presentation slides or as a curation guide for selecting and adapting existing Databricks slides.
+
+The `05` in the content directory name is an internal repository identifier. Do not show “Section 05” to participants; use the topic title and its scheduled time, 3:20 PM–3:50 PM.
 
 ## Instructions for the slide-generating LLM
 
@@ -22,7 +24,7 @@ Treat the implemented section assets and timed facilitator guide as more authori
 
 ## Authoritative scope decision
 
-This is a facilitator-led diagnostic session, not a participant coding lab or a broad security-feature tour.
+This is a facilitator-led diagnostic session, not a participant coding lab or a broad security-feature tour. The facilitator runs `facilitator-demo.py` under a dedicated restricted identity. Participants watch the controlled failure, use the diagnostic checklist, and complete the team checkpoint; they do not run or clone the demonstration notebook.
 
 The high-level agenda mentions fine-grained policies broadly. The implemented section:
 
