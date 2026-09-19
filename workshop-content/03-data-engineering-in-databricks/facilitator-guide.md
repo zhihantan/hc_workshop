@@ -93,6 +93,10 @@ Ask each participant to name, for the pipeline: one **owner**, one **schedule/SL
 - **Job serverless notebook blocked:** attach an approved compute to the `quality_gate` task; the logic is unchanged.
 - **Dirty-batch demo runs long:** show the WARN/DROP batch only; describe the FAIL batch on a slide. Always run the reset before the next group.
 
+## Optional extension — Lakeflow Designer (no-code)
+
+If time allows or the audience includes analysts, show the **Lakeflow Designer** walkthrough in `designer-demo.md` — the same FPD5 cohort metrics built on a visual, no-code canvas with the **Genie Code** assistant, and the WARN/DROP/FAIL tiers reappearing as the **Guardrails** operator (warn-and-continue / warn-and-block / fail workflow) plus the **Filter** Excluded output. It reinforces *governed self-service* on the same Unity Catalog data. Confirm Designer is enabled in the workspace first.
+
 ## Facilitator references
 
 - [Lakeflow Declarative Pipelines](https://docs.databricks.com/delta-live-tables/)

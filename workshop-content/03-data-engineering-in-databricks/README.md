@@ -24,7 +24,7 @@ By the end of the section, participants can:
 - **Live and hands-on:** build and run the medallion pipeline; land a dirty batch and watch Expectations quarantine (`DROP`) and halt (`FAIL`) bad data; wrap it in a Job with a quality gate; inspect observability.
 - **Focused exercise:** extend the pipeline or the Job and diagnose a seeded failure.
 
-Batch/scheduled pipelines are the required path here. Lakeflow **Connect** (managed ingestion) and **Designer** (low-code) are named as optional extensions, not built.
+Batch/scheduled pipelines are the required path here. Lakeflow **Connect** (managed ingestion) is named as an optional extension; **Designer** (no-code) has an optional facilitator walkthrough — see `designer-demo.md`.
 
 ## Prerequisites
 
@@ -64,6 +64,7 @@ Facilitator-only:
 - `facilitator-setup.sql` — creates the shared raw landing and the WARN/DROP/FAIL dirty-batch cells.
 - `facilitator-guide.md` — minute-by-minute delivery, UI paths, talking points, and fallbacks.
 - `slide-outline.md` — recommended slide outline (decision frameworks on slides).
+- `designer-demo.md` — **optional** no-code **Lakeflow Designer** walkthrough (analyst self-service building the same FPD5 cohort metrics on the governed data; Guardrails ↔ Expectations).
 
 Each participant's pipeline creates, in their `de_<user_id>` schema:
 
