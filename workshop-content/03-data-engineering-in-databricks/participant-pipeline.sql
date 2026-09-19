@@ -5,7 +5,7 @@
 -- MAGIC This notebook is the **source for a Lakeflow pipeline**, not a notebook you run cell by cell.
 -- MAGIC Create a **serverless** pipeline with this file as its source and:
 -- MAGIC
--- MAGIC - **Target catalog:** `sean_development_catalog` (canonical design value is `hc_workshop`)
+-- MAGIC - **Target catalog:** `hc_workshop` (canonical; a delivery may retarget, e.g. `sean_development_catalog`)
 -- MAGIC - **Target schema:** `de_<your_user_id>` (e.g. `de_zhihan_tan`) — each participant targets their own schema
 -- MAGIC
 -- MAGIC It reads the shared **raw landing** (`workshop_shared.lending_raw_*`) and the clean
@@ -25,17 +25,17 @@
 -- COMMAND ----------
 CREATE OR REFRESH STREAMING TABLE fpd_bronze_installment
   COMMENT 'Raw installment feed, ingested incrementally from the landing zone.'
-AS SELECT * FROM STREAM(sean_development_catalog.workshop_shared.lending_raw_installment);
+AS SELECT * FROM STREAM(hc_workshop.workshop_shared.lending_raw_installment);
 
 -- COMMAND ----------
 CREATE OR REFRESH STREAMING TABLE fpd_bronze_contract
   COMMENT 'Raw credit-contract feed, ingested incrementally from the landing zone.'
-AS SELECT * FROM STREAM(sean_development_catalog.workshop_shared.lending_raw_credit_contract);
+AS SELECT * FROM STREAM(hc_workshop.workshop_shared.lending_raw_credit_contract);
 
 -- COMMAND ----------
 CREATE OR REFRESH STREAMING TABLE fpd_bronze_application
   COMMENT 'Raw loan-application feed, ingested incrementally from the landing zone.'
-AS SELECT * FROM STREAM(sean_development_catalog.workshop_shared.lending_raw_loan_application);
+AS SELECT * FROM STREAM(hc_workshop.workshop_shared.lending_raw_loan_application);
 
 -- COMMAND ----------
 -- MAGIC %md
@@ -118,9 +118,9 @@ SELECT
   COALESCE(l.region_code, 'NO_STORE')        AS store_region_code
 FROM fpd_silver_contract AS c
 JOIN fpd_silver_application AS a ON c.application_id = a.application_id
-JOIN sean_development_catalog.core_lending.loan_product AS p ON a.product_id = p.product_id
-JOIN sean_development_catalog.core_lending.customer AS cust ON a.customer_id = cust.customer_id
-LEFT JOIN sean_development_catalog.core_lending.retail_location AS l ON a.store_id = l.store_id
+JOIN hc_workshop.core_lending.loan_product AS p ON a.product_id = p.product_id
+JOIN hc_workshop.core_lending.customer AS cust ON a.customer_id = cust.customer_id
+LEFT JOIN hc_workshop.core_lending.retail_location AS l ON a.store_id = l.store_id
 JOIN first_inst AS f ON c.contract_id = f.contract_id
 WHERE p.product_type_code IN ('POS_INSTALLMENT', 'CASH_LOAN');
 

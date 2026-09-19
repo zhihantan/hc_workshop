@@ -22,7 +22,7 @@ Keep the modelling out of scope — gold reuses the exact FPD5 definition from e
 5. Fill in the runtime/serverless, group, and alert-email values marked `TBD` in the README.
 6. Rehearse the dirty-batch demo and the reset.
 
-The released assets passed an end-to-end validation run (pipeline → Job → quality gate) against `sean_development_catalog`. Confirm the same on the final workshop compute before the session.
+The released assets passed an end-to-end validation run (pipeline → Job → quality gate). Confirm the same on the final workshop compute before the session.
 
 ## Minute-by-minute run of show
 
@@ -48,7 +48,7 @@ The released assets passed an end-to-end validation run (pipeline → Job → qu
 
 ### Exact UI path
 1. **Workflows → Delta Live Tables / Lakeflow Pipelines → Create pipeline** (serverless).
-2. Source: the `participant-pipeline` notebook. **Target:** catalog `sean_development_catalog`, schema `de_<user_id>`.
+2. Source: the `participant-pipeline` notebook. **Target:** catalog `hc_workshop` (or your delivery's catalog), schema `de_<user_id>`.
 3. **Start**. Watch the graph: three bronze → three silver → `fpd_origination` + `fpd_daily_metrics`.
 
 Pause at: the DAG graph (lineage is automatic), the silver Expectations panel (0 violations on clean data), and the gold row count (25,440). Reconcile the cohort rates aloud with Section 01 (promotion ≈42%, other ≈21%).

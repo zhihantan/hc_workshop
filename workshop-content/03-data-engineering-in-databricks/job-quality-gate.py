@@ -14,7 +14,7 @@ dbutils.widgets.text("schema", "de_zhihan_tan", "Pipeline target schema")
 dbutils.widgets.text("as_of_date", "2026-09-01", "As-of date")
 dbutils.widgets.text("max_drop_pct", "5.0", "Max allowed installment drop %")
 
-CATALOG = "sean_development_catalog"
+CATALOG = "hc_workshop"
 SCHEMA = dbutils.widgets.get("schema").strip()
 AS_OF = dbutils.widgets.get("as_of_date").strip()
 MAX_DROP = float(dbutils.widgets.get("max_drop_pct"))

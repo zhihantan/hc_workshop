@@ -2,7 +2,7 @@
 
 **Participant note:** Complete the focused exercise before opening this file.
 
-These values assume the default standard-scale dataset (master seed `20260922`, as-of date `2026-09-01`) and the released `participant-pipeline.sql`. They were captured from an end-to-end validation run against `sean_development_catalog`. Small differences are acceptable when the environment differs; large differences usually mean the landing, Expectations, or FPD5 boundary changed.
+These values assume the default standard-scale dataset (master seed `20260922`, as-of date `2026-09-01`) and the released `participant-pipeline.sql`. They were captured from an end-to-end validation run of the released pipeline. Small differences are acceptable when the environment differs; large differences usually mean the landing, Expectations, or FPD5 boundary changed.
 
 ## Raw landing (facilitator setup)
 
@@ -62,7 +62,7 @@ A `FAIL UPDATE` expectation (e.g. `valid_contract`) was violated — usually the
 A silver Expectation is dropping legitimate rows. The classic mistake is gating on settlement timing — early/on-time settlement is the FPD5 *outcome*, not a defect. Confirm the silver expectations match the released file (broken key → FAIL; missing due date / negative amount → DROP; timing is never gated).
 
 ### `Table or view not found` for `fpd_bronze_*`
-The pipeline target catalog/schema is wrong, or the pipeline has not run yet. Confirm the pipeline's target is `sean_development_catalog.de_<your_user_id>` and that the update completed.
+The pipeline target catalog/schema is wrong, or the pipeline has not run yet. Confirm the pipeline's target is `hc_workshop.de_<your_user_id>` (or your delivery catalog) and that the update completed.
 
 ### Streaming source error after a landing DELETE
 Streaming Tables reject deletes/updates in their source. After resetting the landing, run the pipeline with **full refresh** (it reprocesses from scratch and ignores the streaming checkpoint).
