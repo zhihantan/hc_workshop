@@ -61,9 +61,15 @@ Participant entry point:
 - `exercises.md` — the focused model-handover exercise.
 - `expected-results.md` — open after the exercise for observable results and recovery paths.
 
-Facilitator-only delivery file:
+Genie companion (alternative path):
+
+- `participant-genie-code-lab.py` — the runnable notebook rebuilt via the Databricks Assistant (Genie), targeting the canonical `hc_workshop` catalog.
+- `genie-code-runbook.md` — step-by-step Assistant prompts plus the exact code, mirroring the lab.
+
+Facilitator-only delivery files:
 
 - `facilitator-guide.md` — minute-by-minute delivery, UI paths, talking points, and fallbacks.
+- `slide-outline.md` — recommended seven-slide outline; decision frameworks on slides, code and metrics in the notebook.
 
 Each participant's lab creates only, in `workshop_labs` (`<user_id>` is the participant's login-email local-part — e.g. `zhihan.tan@databricks.com` → `zhihan_tan`):
 
