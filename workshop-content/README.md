@@ -18,11 +18,12 @@ The section content is being prepared and is **not yet ready for participant use
 
 - **01 — Data Analysis in Databricks:** Draft. Content is authored; workspace validation, shared data asset creation, access grants, dashboard setup, participant private-Agent creation, and facilitator rehearsal remain.
 - **02 — Generative AI in Databricks:** Draft. Genie Code SQL and PySpark notebooks are authored; dashboard showcase setup, optional private participant-Agent editing, workspace validation, and facilitator rehearsal remain.
+- **03 — Data Engineering in Databricks:** Draft. The Lakeflow medallion pipeline (bronze → silver + Expectations → gold), the orchestrating Job with a data-quality gate and failure alert, and the WARN/DROP/FAIL demo passed an end-to-end serverless validation run against `sean_development_catalog` (gold = 25,440, matching Sections 01 and 06); facilitator rehearsal, access grants, and TBD confirmations remain.
 - **05 — Governance and Access Control in Databricks:** Draft. Slides, a facilitator-run controlled diagnostic notebook, UI walkthrough, Domain design, and participant checklist are authored; restricted-identity setup, workspace validation, Domain curation, and facilitator rehearsal remain.
 - **06 — Introduction to Machine Learning in Databricks:** Draft. The runnable lab passed an end-to-end workspace validation run (train → register → batch-score, retargeted to `sean_development_catalog`); facilitator rehearsal, access grants, and TBD confirmations remain.
-- **03–04, 07:** No content directories have been authored. This status does not define the number of Data Engineering sessions in the agenda.
+- **04, 07:** No content directories have been authored. This status does not define the number of Data Engineering sessions in the agenda.
 
-Open [01-data-analysis-in-databricks/README.md](01-data-analysis-in-databricks/README.md), [02-generative-ai-in-databricks/README.md](02-generative-ai-in-databricks/README.md), [05-governance-and-access-control/README.md](05-governance-and-access-control/README.md), or [06-machine-learning-in-databricks/README.md](06-machine-learning-in-databricks/README.md) for section prerequisites and definition of done.
+Open [01-data-analysis-in-databricks/README.md](01-data-analysis-in-databricks/README.md), [02-generative-ai-in-databricks/README.md](02-generative-ai-in-databricks/README.md), [03-data-engineering-in-databricks/README.md](03-data-engineering-in-databricks/README.md), [05-governance-and-access-control/README.md](05-governance-and-access-control/README.md), or [06-machine-learning-in-databricks/README.md](06-machine-learning-in-databricks/README.md) for section prerequisites and definition of done.
 
 Status meanings:
 

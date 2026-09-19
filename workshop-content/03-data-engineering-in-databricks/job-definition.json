@@ -1,0 +1,38 @@
+{
+  "_comment": "Section 03 orchestration template. Create with: databricks jobs create --json @job-definition.json (or the Workflows UI > Create Job > JSON). Replace <PIPELINE_ID> with your Lakeflow pipeline id, <WORKSPACE_DIR> with the folder holding job-quality-gate, de_<user_id> with your target schema, and the alert email. The schedule is PAUSED so it does not fire during the workshop.",
+  "name": "fpd5-medallion-job-<user_id>",
+  "tags": { "workshop": "section-03-data-engineering" },
+  "parameters": [
+    { "name": "as_of_date", "default": "2026-09-01" }
+  ],
+  "tasks": [
+    {
+      "task_key": "run_pipeline",
+      "description": "Refresh the FPD5 medallion (bronze -> silver + Expectations -> gold).",
+      "pipeline_task": { "pipeline_id": "<PIPELINE_ID>", "full_refresh": false }
+    },
+    {
+      "task_key": "quality_gate",
+      "description": "Fail (and alert) if the installment drop rate breaches the threshold; else publish a run summary.",
+      "depends_on": [ { "task_key": "run_pipeline" } ],
+      "notebook_task": {
+        "notebook_path": "<WORKSPACE_DIR>/job-quality-gate",
+        "base_parameters": {
+          "schema": "de_<user_id>",
+          "as_of_date": "{{job.parameters.as_of_date}}",
+          "max_drop_pct": "5.0"
+        }
+      }
+    }
+  ],
+  "schedule": {
+    "quartz_cron_expression": "0 0 6 * * ?",
+    "timezone_id": "Asia/Manila",
+    "pause_status": "PAUSED"
+  },
+  "email_notifications": {
+    "on_failure": [ "<facilitator-email>" ]
+  },
+  "queue": { "enabled": true },
+  "max_concurrent_runs": 1
+}
