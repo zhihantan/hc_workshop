@@ -30,7 +30,7 @@ IDENTIFIER_PATTERN = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 SCHEMAS = {
     CORE_SCHEMA: "Synthetic core lending source data; read-only for workshop participants",
     SHARED_SCHEMA: "Facilitator-managed trusted views and metrics for dashboards and Genie",
-    LABS_SCHEMA: "Team-prefixed workshop tables, views, and registered models",
+    LABS_SCHEMA: "Participant-owned workshop tables, views, and registered models with per-user prefixes",
 }
 
 for object_type, identifier in [

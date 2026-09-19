@@ -24,19 +24,22 @@ These values assume the default standard-scale dataset, master seed `20260922`, 
 - The default standard-scale cohort rates are approximately:
   - 0% smartphone promotion: **42.26%**
   - Other eligible originations: **21.03%**
-- The top 20% of stores account for approximately **81.13%** of in-store applications.
+- The top 20% of stores account for approximately **81.13%** of in-store applications. This is origination-volume context, not a measure of FPD5 concentration.
 - The store-associate ranking returns repeated pairs with at least 10 eligible promotion contracts.
+- After changing `ANALYSIS_DIMENSION`, the participant breakdown contains one row per selected segment and retains the eligible-contract denominator.
+- The selected dimension and segment can change the apparent concentration, but do not change the FPD5 definition.
 
 Small rounding differences are acceptable only when the underlying generator configuration differs. Large differences usually mean that the as-of date, eligibility filter, installment number, or settlement boundary is wrong.
 
-### Delta Lake demonstration
+### Participant investigation table
 
-- The baseline snapshot contains 10 rows and the columns `application_id` and `decision_code`.
-- The evolved snapshot contains 20 rows and adds `review_note`.
+- The table is named `unicorn_<runner_id>_fpd_investigation`.
+- The baseline snapshot contains one row per value of the participant's selected dimension and the columns `analysis_dimension`, `segment`, `eligible_contracts`, `fpd5_contracts`, and `fpd5_rate_pct`.
+- The evolved snapshot has the same analytical rows and adds a populated `review_note`.
 - The post-evolution version is greater than the captured baseline version.
-- `DESCRIBE HISTORY` shows the create-or-replace operation and the append operation.
+- `DESCRIBE HISTORY` shows the table write, column addition, and update.
 - Rerunning the notebook is safe, but version numbers continue from the table's existing transaction history. Do not expect version `0`.
-- The table name contains both the assigned team ID and a sanitized runner ID, so teammates do not race on the same Delta table.
+- The table name contains a sanitized runner ID plus a short hash derived from the participant's workspace identity, preventing collisions between participants.
 
 ### Metric View
 
@@ -44,13 +47,23 @@ Small rounding differences are acceptable only when the underlying generator con
 - The rate is returned as a ratio, approximately `0.4226` and `0.2103`; the Metric View display format can render these as percentages in AI/BI.
 - If the Metric View was deliberately omitted as a documented workspace fallback, the notebook reports that it is not installed and shows the equivalent session result. If the Metric View exists but its query fails, the notebook stops so the facilitator can diagnose the actual setup, permission, or compatibility error.
 
-### Dashboard and Genie
+### Dashboard and participant-created Genie Agent
 
 - Dashboard KPIs reconcile to the Metric View result.
 - Changing the promotion filter updates every intended widget.
 - The published dashboard remains unchanged until the facilitator republishes a changed draft.
+- Each participant has one **Unicorn FPD5 Investigator — `<workspace_username>`** Agent in their own user folder.
+- The Agent is not shared with all account users, the workshop group, or another participant.
+- `hc_workshop.workshop_shared.fpd_metrics` is the Agent's only data source.
 - The Genie Agent's generated SQL uses `MEASURE()` against `fpd_metrics`.
 - The Genie answer identifies the observation date and does not claim confirmed fraud.
+
+### SQL warehouse workload inspection
+
+- Query History contains a dashboard, Metric View, or Genie-generated statement from the session.
+- Participants can distinguish time spent waiting from time spent executing.
+- A queue indicates concurrency or capacity pressure; spill indicates that an individual query exceeded available memory.
+- If the live warehouse has neither symptom, the facilitator uses a saved read-only profile and does not manufacture a pathological query.
 
 ## Shortest recovery paths
 
@@ -66,9 +79,9 @@ Do not bypass the guard. Confirm that `installment` carries the expected `worksh
 
 Ask the administrator to grant access to the workshop catalog and source schema. Do not redirect participants to `main`, `hive_metastore`, or a personal catalog.
 
-### The team Delta table cannot be created or replaced
+### The participant Delta table cannot be created or replaced
 
-Confirm that the participant has `USE SCHEMA` and `CREATE TABLE` on `workshop_labs`, and owns or can modify only their `unicorn_<team_id>_<runner_id>_delta_demo` table. If that runner-specific name is unexpectedly owned by another identity, stop and investigate rather than taking ownership.
+Confirm that the participant has `USE SCHEMA` and `CREATE TABLE` on `workshop_labs`, and owns or can modify only their `unicorn_<runner_id>_fpd_investigation` table. If that participant-specific name is unexpectedly owned by another identity, stop and investigate rather than taking ownership.
 
 ### Python cells fail on a SQL warehouse
 
@@ -80,7 +93,7 @@ Use an approved Unity Catalog-compatible classic all-purpose resource. Record th
 
 ### The shared Metric View is missing
 
-Run `../../workshop-setup/section-01-facilitator-setup.sql` on a compatible SQL warehouse, verify its final two queries, and confirm participant `SELECT` access. If Metric Views are unavailable in the target workspace, use the notebook's temporary-view fallback and omit the Genie optimization demonstration rather than inventing a result.
+Run `../../workshop-setup/section-01-facilitator-setup.sql` on a compatible SQL warehouse, verify its final two queries, and confirm participant `SELECT` access. If Metric Views are unavailable in the target workspace, use the notebook's temporary-view fallback and omit participant Agent creation rather than duplicating the FPD5 formula or inventing a result. Record this as a blocker for Section 02.
 
 ### The dashboard shows different values
 
@@ -102,5 +115,9 @@ Open Query History, select the statement, and inspect Query Profile or the `DATA
 
 ### Genie gives a plausible but wrong answer
 
-Inspect the generated SQL and compare it with the trusted Metric View query. Fix the smallest governed surface—Metric View metadata, source description, synonym, categorical value mapping, or a verified example query—then rerun the affected question and a previously correct regression question.
+Inspect the generated SQL and compare it with the trusted Metric View query. Confirm that the participant attached only `fpd_metrics` and did not accept a suggestion that duplicated the FPD5 formula. Keep the Agent private. Section 02 uses Genie Code to fix the smallest governed surface—metadata, a concise instruction, categorical value mapping, or verified example SQL—then reruns the affected question and a previously correct regression question.
+
+### Another participant can open the Agent
+
+Open the Agent's **Share** dialog and remove direct grants to other participants, the workshop group, or **All account users**. Confirm that the Agent is stored in the creator's user folder rather than **Shared**. Inherited workspace-administrator access is expected.
 

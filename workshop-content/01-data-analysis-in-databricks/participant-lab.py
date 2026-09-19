@@ -9,6 +9,7 @@
 # MAGIC All records are synthetic. An elevated rate is an investigation signal, not proof of fraud.
 
 # COMMAND ----------
+import hashlib
 import re
 from datetime import date
 from pyspark.sql import functions as F
@@ -178,6 +179,8 @@ print(f"Eligible contracts: {fpd_contracts.count():,}")
 # MAGIC ## 5. Compare cohorts and concentration
 # MAGIC
 # MAGIC The denominator is **eligible contracts**, not all applications and not all approved contracts.
+# MAGIC
+# MAGIC The top-20% store result is origination-volume context. It does not measure FPD5 concentration.
 
 # COMMAND ----------
 # MAGIC %sql
@@ -235,88 +238,112 @@ print(f"Eligible contracts: {fpd_contracts.count():,}")
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### Try it
+# MAGIC ### Try it: change the analytical grain
 # MAGIC
-# MAGIC Use the three results above to complete `exercises.md`. Your conclusion must include the eligible-contract denominator and must not call the pattern confirmed fraud.
+# MAGIC Change `ANALYSIS_DIMENSION` to one of the other allowed dimensions, rerun the cell, and compare which segment appears highest. This changes the grain of the analysis without changing the governed FPD5 definition.
 
 # COMMAND ----------
-# MAGIC %md
-# MAGIC ## 6. Delta Lake: schema evolution and time travel
-# MAGIC
-# MAGIC This demonstration creates one table in `workshop_labs`. Your assigned team ID groups workshop assets for handover and cleanup. The notebook adds your username automatically so teammates do not overwrite each other's table.
-# MAGIC
-# MAGIC 1. Create or replace a ten-row Delta table with two columns.
-# MAGIC 2. Append ten rows containing a new `review_note` column with per-write schema evolution enabled.
-# MAGIC 3. Read the captured baseline version and current version.
-# MAGIC
-# MAGIC In production, time travel works only while the transaction log and referenced data files are retained. Do not shorten `VACUUM` retention casually.
+ANALYSIS_DIMENSION = "region_code"
+ALLOWED_DIMENSIONS = {
+    "region_code",
+    "store_province",
+    "merchant_name",
+}
 
-# COMMAND ----------
-dbutils.widgets.text("team_id", "team01", "Assigned team ID")
-TEAM_ID = dbutils.widgets.get("team_id").strip().lower()
-
-if not TEAM_ID or not TEAM_ID.replace("_", "").isalnum():
+if ANALYSIS_DIMENSION not in ALLOWED_DIMENSIONS:
     raise ValueError(
-        "Enter the assigned team ID using only letters, numbers, or underscores "
-        "(for example, team01)."
+        f"Choose one of these dimensions: {sorted(ALLOWED_DIMENSIONS)}"
     )
 
-current_user = spark.sql("SELECT current_user()").first()[0]
-RUNNER_ID = re.sub(r"[^a-z0-9]+", "_", current_user.split("@")[0].lower()).strip("_")
-
-DELTA_DEMO_TABLE = f"unicorn_{TEAM_ID}_{RUNNER_ID}_delta_demo"
-DELTA_DEMO_FQ = f"{LABS_SCHEMA}.{DELTA_DEMO_TABLE}"
-
-print(f"Delta demo table: {DELTA_DEMO_FQ}")
-
-# COMMAND ----------
-spark.sql(
+participant_breakdown = spark.sql(
     f"""
-    CREATE OR REPLACE TABLE {DELTA_DEMO_FQ}
-    USING DELTA
-    COMMENT 'Participant-owned table for the workshop schema-evolution and time-travel demonstration'
-    AS
-    SELECT application_id, decision_code
-    FROM {CORE_SCHEMA}.loan_application
-    WHERE application_id BETWEEN 1 AND 10
+    SELECT
+      '{ANALYSIS_DIMENSION}' AS analysis_dimension,
+      {ANALYSIS_DIMENSION} AS segment,
+      COUNT(*) AS eligible_contracts,
+      SUM(fpd5_flag) AS fpd5_contracts,
+      ROUND(AVG(fpd5_flag) * 100, 2) AS fpd5_rate_pct
+    FROM {FPD_VIEW}
+    WHERE promotion_code = 'ZERO_SMARTPHONE_2026'
+    GROUP BY {ANALYSIS_DIMENSION}
+    ORDER BY fpd5_rate_pct DESC, eligible_contracts DESC, segment
     """
 )
 
+display(participant_breakdown)
+
+# COMMAND ----------
+# MAGIC %md
+# MAGIC Complete the first task in `exercises.md`. Record the dimension you selected, the highest-rate segment, its denominator, and why the result is an investigation signal rather than a conclusion.
+
+# COMMAND ----------
+# MAGIC %md
+# MAGIC ## 6. Persist and inspect your investigation with Delta Lake
+# MAGIC
+# MAGIC Persist the breakdown you just produced, then add an operational review column. Delta history lets the next owner inspect both versions of the real investigation result.
+# MAGIC
+# MAGIC 1. Create or replace your participant-specific investigation table.
+# MAGIC 2. Capture its baseline version.
+# MAGIC 3. Add and populate `review_note`.
+# MAGIC 4. Compare the baseline and current versions.
+# MAGIC
+# MAGIC Time travel works only while the transaction log and referenced data files are retained. It is not a substitute for a backup or recovery strategy.
+
+# COMMAND ----------
+current_user = spark.sql("SELECT current_user()").first()[0]
+runner_base = (
+    re.sub(r"[^a-z0-9_]", "_", current_user.split("@")[0].lower()).strip("_")
+    or "user"
+)
+if not runner_base[0].isalpha():
+    runner_base = f"u_{runner_base}"
+RUNNER_ID = (
+    f"{runner_base[:12]}_"
+    f"{hashlib.sha256(current_user.encode()).hexdigest()[:6]}"
+)
+
+INVESTIGATION_TABLE = f"unicorn_{RUNNER_ID}_fpd_investigation"
+INVESTIGATION_FQ = f"{LABS_SCHEMA}.{INVESTIGATION_TABLE}"
+
+print(f"Participant investigation table: {INVESTIGATION_FQ}")
+
+# COMMAND ----------
+(
+    participant_breakdown.write.format("delta")
+    .mode("overwrite")
+    .option("overwriteSchema", "true")
+    .saveAsTable(INVESTIGATION_FQ)
+)
+
 baseline_version = int(
-    spark.sql(f"DESCRIBE HISTORY {DELTA_DEMO_FQ}")
+    spark.sql(f"DESCRIBE HISTORY {INVESTIGATION_FQ}")
     .agg(F.max("version"))
     .first()[0]
 )
 
-evolved_rows = (
-    spark.table(f"{CORE_SCHEMA}.loan_application")
-    .filter(F.col("application_id").between(11, 20))
-    .select(
-        "application_id",
-        "decision_code",
-        F.lit("Added through explicit per-write schema evolution").alias("review_note"),
+if "review_note" not in spark.table(INVESTIGATION_FQ).columns:
+    spark.sql(
+        f"""
+        ALTER TABLE {INVESTIGATION_FQ}
+        ADD COLUMNS (review_note STRING COMMENT 'Operational follow-up for this segment')
+        """
     )
-)
 
 spark.sql(
-    f"DELETE FROM {DELTA_DEMO_FQ} WHERE application_id BETWEEN 11 AND 20"
-)
-
-(
-    evolved_rows.write.format("delta")
-    .mode("append")
-    .option("mergeSchema", "true")
-    .saveAsTable(DELTA_DEMO_FQ)
+    f"""
+    UPDATE {INVESTIGATION_FQ}
+    SET review_note = 'Validate customer mix, campaign design, and origination controls'
+    """
 )
 
 current_version = int(
-    spark.sql(f"DESCRIBE HISTORY {DELTA_DEMO_FQ}")
+    spark.sql(f"DESCRIBE HISTORY {INVESTIGATION_FQ}")
     .agg(F.max("version"))
     .first()[0]
 )
 
-before = spark.read.option("versionAsOf", baseline_version).table(DELTA_DEMO_FQ)
-after = spark.read.option("versionAsOf", current_version).table(DELTA_DEMO_FQ)
+before = spark.read.option("versionAsOf", baseline_version).table(INVESTIGATION_FQ)
+after = spark.read.option("versionAsOf", current_version).table(INVESTIGATION_FQ)
 
 display(
     spark.createDataFrame(
@@ -339,7 +366,7 @@ display(
 )
 
 display(
-    spark.sql(f"DESCRIBE HISTORY {DELTA_DEMO_FQ}")
+    spark.sql(f"DESCRIBE HISTORY {INVESTIGATION_FQ}")
     .select("version", "timestamp", "operation", "operationParameters")
     .orderBy(F.desc("version"))
     .limit(5)
@@ -408,5 +435,5 @@ else:
 # MAGIC - What does the Delta transaction history let an operator inspect or recover?
 # MAGIC - Which evidence would be needed before treating the hotspot as more than an investigation signal?
 # MAGIC
-# MAGIC Leave `hc_workshop.workshop_labs.unicorn_<team_id>_<runner_id>_delta_demo` in place for the handover review. The facilitator can remove team-prefixed lab assets after the workshop.
+# MAGIC Leave `hc_workshop.workshop_labs.unicorn_<runner_id>_fpd_investigation` in place for the handover review. The facilitator can remove participant-prefixed lab assets after the workshop.
 

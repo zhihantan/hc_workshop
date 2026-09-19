@@ -35,7 +35,7 @@ The catalog name can be changed during workspace setup. The workshop uses three 
 
 - `core_lending` — protected source data shared by all participants.
 - `workshop_shared` — facilitator-managed trusted views and metrics for dashboards and Genie.
-- `workshop_labs` — team-prefixed participant tables, views, and registered models.
+- `workshop_labs` — participant-owned tables, views, and registered models with per-user prefixes.
 
 Notebooks, Lakeflow Jobs and pipelines, dashboards, MLflow experiments, and Genie Agents are workspace assets rather than objects inside these schemas.
 

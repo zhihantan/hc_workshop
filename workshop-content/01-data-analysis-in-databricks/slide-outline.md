@@ -44,7 +44,7 @@ Call out:
 | Good default for this section | Notebook, jobs, and SQL warehouse workloads | Only a justified unsupported requirement |
 | Operator still owns | Code, permissions, cost, quality, dependencies, and monitoring | The same, plus infrastructure choices |
 
-Footnote: Pro SQL warehouses sit between serverless and classic for some networking and availability requirements.
+Call out: **Pro is a SQL warehouse type, not a universal compute layer.** Compare Serverless, Pro, and Classic only after identifying the workload as SQL, dashboard, BI, or Genie.
 
 Transition to live notebook.
 
@@ -59,6 +59,8 @@ Unity Catalog tables
         ↓
 PySpark profile → SQL transformation → temporary FPD5 view
         ↓
+participant changes analytical grain
+        ↓
 counts + rates + concentration evidence
 ```
 
@@ -67,28 +69,30 @@ Key message:
 - Python and SQL use the same governed source.
 - Choose the language for the task, not a separate data copy.
 - Declare grain and denominator before calculating a rate.
+- Confidence comes from changing and validating the inherited analysis, not only running prepared cells.
 
 Use the notebook—not the slide—to show code and results.
 
-## Slide 5 — Open table formats make data changes operable
+## Slide 5 — Make the investigation operable with Delta
 
 **Best as a slide plus one live Delta demonstration.**
 
-| Capability | Delta Lake | Apache Iceberg |
-|---|---|---|
-| Open table format over object storage | Yes | Yes |
-| ACID transactions and versioned metadata | Yes | Yes |
-| Schema evolution and time travel | Yes | Yes |
-| Databricks default format | Yes | No |
-| Strong fit in this story | Native Databricks workloads and operational history | Cross-engine Iceberg interoperability |
+```text
+participant breakdown
+        ↓
+participant-specific Delta table
+        ↓
+add review_note → inspect history → read the earlier version
+```
 
-Add three cautions:
+Key messages:
 
-- Schema evolution should be enabled deliberately per write.
+- Persist a result only when another person or process needs to use or operate it.
+- Schema evolution should be explicit and reviewed.
+- Every change creates transaction history that supports audit and diagnosis.
 - Time travel depends on retained logs and data files; it is not a backup guarantee.
-- Choose a format from interoperability and feature requirements, not from a generic winner/loser comparison.
 
-Transition to the team Delta table's before/after history.
+Transition to the participant's real investigation table and its before/after schemas.
 
 ## Slide 6 — A governed dashboard is more than charts
 
@@ -113,29 +117,9 @@ Operator checklist:
 - Dashboard ACL and published snapshot
 - Reconciliation query
 
-Use the workspace to add one widget, filter, verify, and publish.
+Use the workspace to filter, verify, and publish. Change one widget only if the section is ahead of schedule.
 
-## Slide 7 — Tune a SQL warehouse from symptoms
-
-**Best as a slide:** prevent the common "make it bigger" response.
-
-| Evidence | Likely issue | First actions |
-|---|---|---|
-| Sustained queued queries | Concurrency or capacity bound | Review maximum clusters, arrival patterns, and workload isolation |
-| Bytes spilled or `DATA_SPILL` | One query exceeds available memory | Reduce scanned/wide data, inspect joins and aggregations, then consider a larger size |
-| Long fetching state | Client is slow or left a session open | Inspect and stop result fetching; fix client behavior |
-| Long idle periods | Auto-stop does not match usage | Review auto-stop against interactive and scheduled demand |
-| Poor pruning or very high read volume | Query or table-layout issue | Filter earlier, select fewer columns, inspect statistics and clustering |
-
-Call out:
-
-- Cluster **size** primarily helps individual-query resources.
-- Maximum **clusters** primarily helps concurrency.
-- Intelligent Workload Management automates serverless admission and scaling within configured bounds; operators still monitor service levels and spend.
-
-Transition to SQL Warehouse Monitoring and Query Profile.
-
-## Slide 8 — Semantics first, then Genie
+## Slide 7 — Semantics first, then Genie
 
 **Best as a slide plus live question/SQL verification.**
 
@@ -153,14 +137,33 @@ question → generated SQL → result → verified answer
 Quality loop:
 
 1. Start with a focused governed source.
-2. Ask a real question.
-3. Inspect generated SQL and results.
-4. Classify the failure.
-5. Change the smallest structured surface.
-6. Rerun the affected and regression questions.
-7. Keep, revise, or roll back.
+2. Create the Agent in the owner's private user folder.
+3. Ask a real question.
+4. Inspect generated SQL and results.
+5. Save the baseline response and generated SQL for the Genie Code improvement loop in Section 02.
 
-Do not put a long Genie instruction prompt on the slide. Emphasize that Metric View definitions, descriptions, synonyms, categorical matching, and verified example query shapes are preferred to a broad rulebook.
+Do not put a long Genie instruction prompt on the slide. Emphasize that each participant creates the same focused Agent in their own user folder, leaves it unshared, and verifies its baseline before Section 02 changes it.
+
+## Slide 8 — Inspect what the SQL workload did
+
+**Best as a closing slide:** connect the opening compute decisions to real dashboard and Genie activity.
+
+| Evidence | Likely issue | First actions |
+|---|---|---|
+| Sustained queued queries | Concurrency or capacity bound | Review maximum clusters, arrival patterns, and workload isolation |
+| Bytes spilled or `DATA_SPILL` | One query exceeds available memory | Reduce scanned/wide data, inspect joins and aggregations, then consider a larger warehouse size |
+| Long fetching state | Client is slow or left a session open | Inspect and stop result fetching; fix client behavior |
+| Long idle periods | Auto-stop does not match usage | Review auto-stop against interactive and scheduled demand |
+| Poor pruning or high read volume | Query or table-layout issue | Filter earlier, select fewer columns, inspect statistics and clustering |
+
+Call out:
+
+- Describe this as **workload utilization**, not host-level CPU utilization.
+- Warehouse **size** primarily helps individual-query resources.
+- Maximum **clusters** primarily helps concurrency.
+- Intelligent Workload Management manages serverless admission and scaling; operators still monitor service levels and spend.
+
+Transition to Warehouse Monitoring, a section-generated statement in Query History, and its Query Profile.
 
 ## Keep off the slides
 

@@ -11,7 +11,7 @@ Set the shared environment inputs, describe the section you want to create, and 
 ## Prompt
 
 ````text
-Create one section of the Home Credit Philippines Databricks workshop. Participants will first follow a live screen-share, then run the provided notebook themselves. The goal is operational takeover of assets built by Tiger Analytics, not a broad product tour.
+Create one section of the Home Credit Philippines Databricks workshop. Participants will first follow a live screen-share, then run and extend the provided notebook themselves. The goal is to build confidence using Databricks through one coherent, end-to-end developer workflow. Operational takeover of assets built by Tiger Analytics provides the scenario and ownership lens; it must not turn the section into a broad product tour.
 
 ## Inputs
 
@@ -21,7 +21,6 @@ WORKSHOP_CATALOG: hc_workshop
 WORKSHOP_RUNTIME: TBD
 SQL_WAREHOUSE: TBD
 FACILITATOR_GROUP: TBD
-TEAM_ID: [assigned lowercase team ID]
 
 SECTION_NUMBER: [01-06]
 SECTION_NAME: [section name]
@@ -50,7 +49,7 @@ Write generated material only under `workshop-content/`. Preserve all unselected
 
 **Unicorn Finance Philippines — Credit with a little magic**
 
-Unicorn Finance is a fictional consumer lender offering POS installment loans, cash loans, Unicorn Flex revolving credit, and Unicorn Visa. Its implementation partner, Atlas Ridge Consulting, has delivered a Databricks lakehouse and is handing operations to the internal team. Atlas Ridge is the fictional stand-in for Tiger Analytics.
+Unicorn Finance is a fictional consumer lender offering POS installment loans, cash loans, Unicorn Flex revolving credit, and Unicorn Visa. Its implementation partner, Atlas Ridge Consulting, has delivered a Databricks lakehouse and is handing operations to internal developers. Atlas Ridge is the fictional stand-in for Tiger Analytics.
 
 A brand-subsidised 0% smartphone promotion increased originations. First-payment default then became concentrated in a few stores and sales associates. Participants must investigate whether the pattern reflects campaign design, weak controls, customer mix, or potential fraud; never label it as confirmed fraud.
 
@@ -73,13 +72,13 @@ Use three schemas in `WORKSHOP_CATALOG`:
 - `<WORKSHOP_CATALOG>.workshop_shared` — facilitator-owned views or metric views used by dashboards and Genie.
 - `<WORKSHOP_CATALOG>.workshop_labs` — shared participant tables, views, and registered models.
 
-Do not create a schema per participant. Use an assigned team ID and name participant-created objects:
+Do not create a schema per participant. Name persistent participant-created objects with an identifier derived automatically from `current_user()`:
 
 ```text
-unicorn_<team_id>_<asset>
+unicorn_<runner_id>_<asset>
 ```
 
-Validate `TEAM_ID` against `^[a-z][a-z0-9_]{0,19}$`. Prefer temporary views when persistence is unnecessary. Cleanup may affect only objects with the assigned prefix. Prefixes prevent workshop collisions but are not a security boundary; use separate team schemas only if participants are untrusted or need long-lived isolation.
+Construct `runner_id` from a sanitized username prefix plus a short deterministic hash of the full workspace identity. It must begin with a letter and contain only lowercase letters, numbers, and underscores. Never ask participants to enter an identifier manually. Prefer temporary views when persistence is unnecessary. Cleanup may affect only objects with that participant's prefix. Prefixes prevent workshop collisions but are not a security boundary; use separate schemas only if participants are untrusted or need long-lived isolation.
 
 Never modify `<WORKSHOP_CATALOG>.core_lending` or use `main`, `hive_metastore`, or personal catalogs. Use fully qualified names in notebook SQL and Unity Catalog DDL.
 
@@ -99,11 +98,13 @@ Every section must fit its agenda duration and follow:
 
 1. **Watch me** — exact UI path and short facilitator demonstration.
 2. **Run with me** — complete, short notebook cells run in sequence.
-3. **Try it** — one focused participant exercise.
+3. **Try it** — one focused participant exercise that changes or extends a meaningful part of the workflow and validates the result.
 4. **Operate it** — inspect ownership, parameters, dependencies, permissions, lineage, run history, or recovery.
 5. **Checkpoint** — confirm an observable result.
 
 Include a minute-by-minute run of show, expected results, likely errors, the shortest recovery path, and a fallback for unavailable optional features. Clearly separate facilitator-only and admin-only steps.
+
+Prefer one connected workflow over maximum feature coverage. Move disconnected comparisons, advanced operations, and optional products to facilitator reference material unless they directly support the section outcome.
 
 ## Section input
 
@@ -141,4 +142,4 @@ In the final response, list files created, tests run, unresolved setup, and deli
 
 ## Recommended generation order
 
-Generate section 01 first, then section 02. The trusted analytical outputs from section 02 should feed the dashboard and Genie exercises.
+Generate section 01 first, then section 02. The trusted analytical outputs from section 01 should feed the dashboard and private Genie Agent that Section 02 improves.

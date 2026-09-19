@@ -70,7 +70,7 @@ Tests should create all required temporary state explicitly. They must not pass 
 
 - Treat `hc_workshop.core_lending` as read-only.
 - Write development artifacts only to the intended workshop lab or test location.
-- Use a clearly isolated test `team_id` when notebook parameters create team-owned objects.
+- Use a clearly isolated runner identity or test prefix when notebook parameters create participant-owned objects.
 - Make cleanup explicit for persistent test tables.
 - Never place workspace credentials, tokens, or user-specific authentication material in this repository.
 
