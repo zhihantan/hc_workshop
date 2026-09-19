@@ -19,7 +19,7 @@ local-part, sanitized (e.g. `zhihan.tan@databricks.com` → `zhihan_tan`). There
 
 | Asset | Value |
 |---|---|
-| Registered model | `sean_development_catalog.workshop_labs.unicorn_<user_id>_fpd` (alias `@champion`) |
+| Registered model | `hc_workshop.workshop_labs.unicorn_<user_id>_fpd` (alias `@champion`) |
 | MLflow run | `val_roc_auc ≈ 0.627`, `val_pr_auc ≈ 0.412`, calibration + decile metrics |
 | Scores table | `unicorn_<user_id>_fpd_scores` — 25,440 rows, one per eligible contract |
 | Cohort reconciliation | promo ≈ 41.3% predicted / 42.26% actual; other ≈ 20.4% / 21.03% |
@@ -38,7 +38,7 @@ The model is a plain `LogisticRegression` on a deterministic time split, so trai
 
 - **Compute:** serverless notebook compute (Step 1 installs the libraries) **or** a Databricks
   ML Runtime cluster (libraries preinstalled — Step 1 becomes a no-op).
-- **Data:** `sean_development_catalog` must contain the read-only `core_lending` schema (8 tables,
+- **Data:** `hc_workshop` must contain the read-only `core_lending` schema (8 tables,
   as-of date `2026-09-01`) and a `workshop_labs` schema you can write to (`CREATE TABLE`,
   `CREATE MODEL`).
 - Create a new Python notebook, attach compute, and work through the steps. No team id or widget
@@ -64,7 +64,7 @@ dbutils.library.restartPython()
 
 ## Step 2 — Configure the run and derive the object names
 
-**Prompt:** *"Set catalog to sean_development_catalog and validate it. Confirm the source as-of date
+**Prompt:** *"Set catalog to hc_workshop and validate it. Confirm the source as-of date
 is 2026-09-01. Derive a user_id from the current user's email local-part (lowercased, non-alphanumerics
 to underscores), and build the feature-view, UC model, and scores-table names as unicorn_<user_id>_fpd*.
 Register models in Unity Catalog."*
@@ -76,9 +76,9 @@ import mlflow
 from mlflow.tracking import MlflowClient
 from pyspark.sql import functions as F
 
-CATALOG = "sean_development_catalog"
+CATALOG = "hc_workshop"
 
-WORKSHOP_CATALOG = "sean_development_catalog"   # released target catalog
+WORKSHOP_CATALOG = "hc_workshop"   # released target catalog
 AS_OF_DATE = date.fromisoformat("2026-09-01")
 FPD5_GRACE_DAYS = 5
 
@@ -117,7 +117,7 @@ mlflow.set_registry_uri("databricks-uc")   # register models in Unity Catalog
 print("model:", MODEL_NAME)
 ```
 
-**Expected:** prints `model: sean_development_catalog.workshop_labs.unicorn_<user_id>_fpd`.
+**Expected:** prints `model: hc_workshop.workshop_labs.unicorn_<user_id>_fpd`.
 
 ---
 
@@ -411,4 +411,4 @@ concentrated in the promotion cohort. These match the released `expected-results
 
 > Everything above is deterministic except the model *name*, which follows the runner's login email.
 > Run as `zhihan.tan@databricks.com` (or set `user_id = "zhihan_tan"`) to land on the exact name
-> `sean_development_catalog.workshop_labs.unicorn_zhihan_tan_fpd`.
+> `hc_workshop.workshop_labs.unicorn_zhihan_tan_fpd`.
