@@ -20,7 +20,7 @@ Keep the modelling deliberately simple. The goal is an **interpretable, governed
 3. Import `participant-lab.py` under `/Workspace/Shared/homecredit-workshop/06-machine-learning-in-databricks/`.
 4. Confirm compute runs the notebook: serverless notebook compute (the first cell `%pip install`s MLflow and scikit-learn, then restarts Python) or a Databricks ML Runtime all-purpose resource.
 5. Run the notebook once end-to-end on the assigned compute to warm the environment and confirm a registered model version and scores table appear.
-6. Fill in the runtime, group, team ID, and any optional serving values marked `TBD` in the section README.
+6. Fill in the runtime, group, and any optional serving values marked `TBD` in the section README.
 7. Rehearse with a non-admin participant identity.
 
 The released lab passed an end-to-end workspace validation run (train → register → batch score) against `sean_development_catalog`. Confirm the same on the final workshop compute before the session.
@@ -31,7 +31,7 @@ The released lab passed an end-to-end workspace validation run (train → regist
 |---|---:|---|---|---|
 | 4:00–4:04 | 4 | Slide | Reconnect the FPD5 story; state the prediction question and leakage rule | Participants can state the target and the fiction boundary |
 | 4:04–4:10 | 6 | Slides | Legitimate vs leakage features; time vs random split; batch vs serving | Participants justify origination-time features and a time split |
-| 4:10–4:14 | 4 | Watch me | Open notebook, run the `%pip` setup, enter `team_id`, show source inventory | Libraries install, session restarts, eight tables confirmed |
+| 4:10–4:14 | 4 | Watch me | Open notebook, run the `%pip` setup, confirm the auto-derived user id, show source inventory | Libraries install, session restarts, eight tables confirmed |
 | 4:14–4:28 | 14 | Run with me | Build the leakage-safe feature set, train with MLflow, check out-of-sample calibration and decile lift, read coefficients, register to UC + `champion` | Holdout calibration/decile shown; a registered version with signature, alias, and metrics |
 | 4:28–4:36 | 8 | Run with me | Batch score the full book; reconcile predicted risk to the promotion cohort; note the review-queue size and precision | Predicted risk higher for the promotion cohort; ~5,485 flagged at 0.35 |
 | 4:36–4:44 | 8 | Try it | Complete the model handover note | Owner, retrain trigger, threshold, and caveat recorded |
@@ -55,7 +55,7 @@ Use slides for the concepts before touching the notebook.
 ### Exact UI path
 
 1. **Workspace > Shared > homecredit-workshop > 06-machine-learning-in-databricks > participant-lab**
-2. Attach serverless notebook compute (or the assigned ML Runtime resource) and enter the assigned `team_id`.
+2. Attach serverless notebook compute (or the assigned ML Runtime resource); the per-user id is derived automatically from the login email.
 3. Run sequentially. Pause at:
    - **Setup:** explain that serverless installs MLflow/scikit-learn and restarts Python; on ML Runtime this is a no-op.
    - **Feature set:** stress the leakage rule and the one-row-per-contract grain; the cohort rates must match the analysis sections.
@@ -75,12 +75,12 @@ A registered model version exists with the `champion` alias and a signature; the
 
 ### Exact UI paths
 
-1. **Catalog > `<catalog>` > workshop_labs > Models > `unicorn_<team_id>_<runner_id>_fpd`**
+1. **Catalog > `<catalog>` > workshop_labs > Models > `unicorn_<user_id>_fpd`**
    - Show versions, the `champion` alias, tags, and the model signature.
    - Open **Lineage** and trace the version to its MLflow run and the `core_lending` tables.
 2. **Experiments > (the notebook's experiment)**
    - Show the run's parameters, metrics, and artifacts; compare two runs if time allows.
-3. **Catalog > workshop_labs > `unicorn_<team_id>_<runner_id>_fpd_scores`**
+3. **Catalog > workshop_labs > `unicorn_<user_id>_fpd_scores`**
    - Show `model_name`/`model_version` columns and `DESCRIBE HISTORY`.
 
 ### Talking points
@@ -91,7 +91,7 @@ A registered model version exists with the `champion` alias and a signature; the
 
 ## 4:56–5:00 — Handover checkpoint
 
-Ask each team to state, for the model asset: one owner, one retraining trigger or cadence, and one rollback step. Build the checklist aloud through the section:
+Ask each participant to state, for their model asset: one owner, one retraining trigger or cadence, and one rollback step. Build the checklist aloud through the section:
 
 - Model: owner, training data and leakage boundary, signature, champion alias, promotion/rollback path.
 - Experiment: run history, metrics, comparison, reproducibility.

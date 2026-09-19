@@ -25,12 +25,12 @@ These values assume the default standard-scale dataset, master seed `20260922`, 
 
 ### Registration
 
-- A model version is registered as `<catalog>.workshop_labs.unicorn_<team_id>_<runner_id>_fpd` with the `champion` alias, a model signature, and a `val_roc_auc` tag.
+- A model version is registered as `<catalog>.workshop_labs.unicorn_<user_id>_fpd` with the `champion` alias, a model signature, and a `val_roc_auc` tag.
 - Catalog Explorer shows lineage from the version to its MLflow run and the `core_lending` source tables.
 
 ### Batch scoring (full eligible book)
 
-- The scores table `unicorn_<team_id>_<runner_id>_fpd_scores` has one row per eligible contract and carries `model_name` and `model_version`.
+- The scores table `unicorn_<user_id>_fpd_scores` has one row per eligible contract and carries `model_name` and `model_version`.
 - Scored across the whole book, predicted risk reproduces the known cohort gap: promotion ≈**41.3%** predicted (vs **42.26%** actual), other ≈**20.4%** predicted (vs **21.03%** actual).
 - At the review threshold **0.35**, about **5,485** contracts are flagged (≈**21.6%** of the book) — effectively the entire promotion cohort plus a few hundred higher-risk other originations — with precision ≈**41.5%** (about 1.65× the base rate).
 

@@ -29,7 +29,7 @@ This split keeps the section inside 60 minutes. Batch scoring is the required in
 
 ## Prerequisites
 
-- The administrator has completed `../../workshop-setup/README.md` and the standard dataset passed its final generator `SUCCESS` gate.
+- The administrator has completed `../../workspace-setup/README.md` and the standard dataset passed its final generator `SUCCESS` gate.
 - The `workshop_labs` and `workshop_shared` schemas exist in the workshop catalog.
 - Participants have compute that can run MLflow and scikit-learn: **serverless notebook compute** (the notebook installs the two libraries in its first cell) or a **Databricks ML Runtime** all-purpose resource (libraries preinstalled).
 
@@ -38,7 +38,6 @@ Environment values that must be confirmed before release:
 - `WORKSHOP_CATALOG`: **`sean_development_catalog`** for this instance (canonical design value is `hc_workshop`)
 - `WORKSHOP_RUNTIME`: **TBD — facilitator confirmation required**
 - `FACILITATOR_GROUP`: **TBD — facilitator confirmation required**
-- `TEAM_ID`: **TBD — assigned lowercase team ID per team**
 - MLflow experiment location: **TBD — defaults to the participant notebook's own experiment**
 - Optional Model Serving endpoint: **TBD — only if the serving extension is demonstrated**
 
@@ -48,7 +47,7 @@ Participants need:
 
 - `USE CATALOG` on the workshop catalog.
 - `USE SCHEMA` and `SELECT` on `core_lending`.
-- `USE SCHEMA`, `CREATE TABLE`, and `CREATE MODEL` in `workshop_labs`, plus permission to modify their own team- and runner-prefixed model and table.
+- `USE SCHEMA`, `CREATE TABLE`, and `CREATE MODEL` in `workshop_labs`, plus permission to modify their own per-user model and table.
 - Permission to run the imported notebook and use its assigned compute.
 - Permission to create MLflow experiment runs.
 
@@ -66,14 +65,14 @@ Facilitator-only delivery file:
 
 - `facilitator-guide.md` — minute-by-minute delivery, UI paths, talking points, and fallbacks.
 
-Each participant's lab creates only, in `workshop_labs`:
+Each participant's lab creates only, in `workshop_labs` (`<user_id>` is the participant's login-email local-part — e.g. `zhihan.tan@databricks.com` → `zhihan_tan`):
 
 ```text
-unicorn_<team_id>_<runner_id>_fpd            (registered model, alias @champion)
-unicorn_<team_id>_<runner_id>_fpd_scores     (Delta table of batch predictions)
+unicorn_<user_id>_fpd            (registered model, alias @champion)
+unicorn_<user_id>_fpd_scores     (Delta table of batch predictions)
 ```
 
-plus the session-scoped temporary view `unicorn_<team_id>_fpd_features`. It never modifies `core_lending`.
+plus the session-scoped temporary view `unicorn_<user_id>_fpd_features`. It never modifies `core_lending`.
 
 ## Definition of done
 

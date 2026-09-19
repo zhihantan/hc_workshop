@@ -23,7 +23,6 @@
 dbutils.library.restartPython()
 
 # COMMAND ----------
-import hashlib
 import re
 from datetime import date
 
@@ -31,10 +30,8 @@ import mlflow
 from mlflow.tracking import MlflowClient
 from pyspark.sql import functions as F
 
-dbutils.widgets.text("team_id", "team01", "Assigned team ID")
 dbutils.widgets.text("catalog", "sean_development_catalog", "Workshop catalog")
 
-TEAM_ID = dbutils.widgets.get("team_id").strip().lower()
 CATALOG = dbutils.widgets.get("catalog").strip()
 
 # Canonical design catalog is `hc_workshop`. This deployment is retargeted to
@@ -44,8 +41,6 @@ WORKSHOP_CATALOG = "sean_development_catalog"
 AS_OF_DATE = date.fromisoformat("2026-09-01")
 FPD5_GRACE_DAYS = 5
 
-if not re.fullmatch(r"[a-z][a-z0-9_]{0,19}", TEAM_ID):
-    raise ValueError("team_id must match ^[a-z][a-z0-9_]{0,19}$")
 if CATALOG != WORKSHOP_CATALOG:
     raise ValueError(
         f"This released notebook can write only to {WORKSHOP_CATALOG}. "
@@ -68,16 +63,16 @@ if source_as_of_date != AS_OF_DATE.isoformat():
         f"the source table property {source_as_of_date!r}."
     )
 
-# Per-runner suffix so teammates never race on the same model or table.
+# Per-user id derived from the login email, so each participant owns a uniquely named model and table.
 current_user = spark.sql("SELECT current_user() AS user_name").first().user_name
-runner_base = re.sub(r"[^a-z0-9_]", "_", current_user.split("@")[0].lower()).strip("_") or "user"
-if not runner_base[0].isalpha():
-    runner_base = f"u_{runner_base}"
-runner_id = f"{runner_base[:9]}_{hashlib.sha256(current_user.encode()).hexdigest()[:6]}"
+user_id = re.sub(r"[^a-z0-9_]", "_", current_user.split("@")[0].lower()).strip("_") or "user"
+if not user_id[0].isalpha():
+    user_id = f"u_{user_id}"
+user_id = user_id[:40]  # keep object names to a sane length
 
-FEATURE_VIEW = f"unicorn_{TEAM_ID}_fpd_features"
-MODEL_NAME = f"{CATALOG}.workshop_labs.unicorn_{TEAM_ID}_{runner_id}_fpd"
-SCORES_TABLE = f"unicorn_{TEAM_ID}_{runner_id}_fpd_scores"
+FEATURE_VIEW = f"unicorn_{user_id}_fpd_features"
+MODEL_NAME = f"{CATALOG}.workshop_labs.unicorn_{user_id}_fpd"
+SCORES_TABLE = f"unicorn_{user_id}_fpd_scores"
 SCORES_FQ = f"{CATALOG}.workshop_labs.{SCORES_TABLE}"
 
 mlflow.set_registry_uri("databricks-uc")  # register models in Unity Catalog
@@ -85,8 +80,7 @@ mlflow.set_registry_uri("databricks-uc")  # register models in Unity Catalog
 display(
     spark.createDataFrame(
         [
-            ("team_id", TEAM_ID),
-            ("runner_id", runner_id),
+            ("user_id", user_id),
             ("catalog", CATALOG),
             ("as_of_date", AS_OF_DATE.isoformat()),
             ("feature_view", FEATURE_VIEW),
@@ -118,7 +112,7 @@ print(f"All {len(expected_tables)} source tables present in {CATALOG}.core_lendi
 # MAGIC %md
 # MAGIC ## 2. Build the leakage-safe FPD5 feature set (Run with me)
 # MAGIC
-# MAGIC One row per eligible fixed-term contract. The label is the canonical FPD5 flag; every feature is known at origination. We keep this as a session-scoped, team-prefixed temporary view — the model, not another shared table, is the asset we hand over.
+# MAGIC One row per eligible fixed-term contract. The label is the canonical FPD5 flag; every feature is known at origination. We keep this as a session-scoped, user-prefixed temporary view — the model, not another shared table, is the asset we hand over.
 
 # COMMAND ----------
 features = spark.sql(
@@ -246,7 +240,7 @@ pre = ColumnTransformer(
 pipe = Pipeline([("prep", pre), ("clf", LogisticRegression(max_iter=1000))])
 
 mlflow.sklearn.autolog(log_models=False, silent=True)
-with mlflow.start_run(run_name=f"fpd5_{TEAM_ID}_{runner_id}") as run:
+with mlflow.start_run(run_name=f"fpd5_{user_id}") as run:
     pipe.fit(X_train, y_train)
     valid_proba = pipe.predict_proba(X_valid)[:, 1]
     val_auc = roc_auc_score(y_valid, valid_proba)
@@ -347,7 +341,7 @@ display(
 # MAGIC %md
 # MAGIC ## 5. Batch score the eligible population (Run with me — required path)
 # MAGIC
-# MAGIC Batch scoring is the required productionisation path for this workshop. Model quality was measured on the held-out validation vintages above; here we load the `@champion` model by alias and score **every** eligible contract to build the operational review queue, writing to a team- and runner-prefixed Delta table in `workshop_labs`. The output is overwritten on rerun.
+# MAGIC Batch scoring is the required productionisation path for this workshop. Model quality was measured on the held-out validation vintages above; here we load the `@champion` model by alias and score **every** eligible contract to build the operational review queue, writing to a per-user Delta table in `workshop_labs`. The output is overwritten on rerun.
 
 # COMMAND ----------
 RISK_THRESHOLD = 0.35  # tunable review operating point; ~1.65x the base rate in precision
@@ -409,7 +403,7 @@ print(
 # MAGIC
 # MAGIC - the `champion` alias points at the version you registered;
 # MAGIC - **Lineage** links the version to its MLflow run and the `core_lending` source tables;
-# MAGIC - the scores table `unicorn_<team_id>_<runner_id>_fpd_scores` carries `model_name` and `model_version` for traceability.
+# MAGIC - the scores table `unicorn_<user_id>_fpd_scores` carries `model_name` and `model_version` for traceability.
 # MAGIC
 # MAGIC Rerunning trains a new version; promoting it is a one-line alias move, and rollback is the same move back. Model Serving (a REST endpoint) is **optional** for this workshop; batch scoring above is the required path.
 
@@ -435,4 +429,4 @@ display(
 # MAGIC - Which is the required inference path here, and when would serving be justified?
 # MAGIC - Why is a high predicted-risk store or associate still only an investigation signal?
 # MAGIC
-# MAGIC Leave `{catalog}.workshop_labs.unicorn_<team_id>_<runner_id>_fpd` and its scores table in place for the handover review. The facilitator can remove team-prefixed lab assets after the workshop.
+# MAGIC Leave `{catalog}.workshop_labs.unicorn_<user_id>_fpd` and its scores table in place for the handover review. The facilitator can remove the per-user lab assets after the workshop.
