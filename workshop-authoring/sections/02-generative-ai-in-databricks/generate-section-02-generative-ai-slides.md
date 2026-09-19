@@ -36,7 +36,7 @@ Core message:
 
 Repeatable working pattern:
 
-> Context → concrete outcome → review → execution → independent validation
+> Context → concrete outcome → review → execution → governed reconciliation
 
 The user remains responsible for source selection, permissions, semantic correctness, validation, and approval.
 
@@ -45,6 +45,8 @@ The user remains responsible for source selection, permissions, semantic correct
 - Unicorn Finance Philippines is a fictional consumer lender.
 - Atlas Ridge Consulting has handed over an inherited Databricks lakehouse.
 - The section continues the 0% smartphone promotion and FPD5 investigation from Section 01.
+- Participants act as developers supporting Unicorn Finance's risk analytics team.
+- Their deliverable is one validated personal notebook with regional evidence, a repaired validation helper, executable checks, and handover documentation.
 - Participants reuse `hc_workshop.workshop_shared.fpd_metrics`.
 - The PySpark validation exercise uses `hc_workshop.workshop_shared.fpd_analysis`.
 - All workshop data is synthetic.
@@ -73,7 +75,7 @@ By the end of the section, participants should be able to:
 
 1. use notebook, cell, and data context to understand inherited work;
 2. generate and refine governed SQL analysis with a structured prompt;
-3. validate generated work against independent invariants;
+3. validate generated work against a pre-authored governed regional checkpoint;
 4. diagnose and repair a realistic PySpark denominator bug;
 5. use `/optimize` and `/doc` with review discipline;
 6. explain how Genie Code can author an AI/BI Dashboard while publication remains a human decision;
@@ -85,41 +87,39 @@ Optional outcome:
 
 ### Timing and instructional arc
 
-- 11:15–11:20 — frame the working loop and explain inherited SQL
-- 11:20–11:32 — guided regional FPD5 analysis
-- 11:32–11:44 — participant diagnoses and repairs PySpark denominator bug
-- 11:44–11:49 — `/optimize` and `/doc`
-- 11:49–12:01 — facilitator-only AI/BI Dashboard showcase
-- 12:01–12:07 — approvals, permissions, diffs, rerun safety, and recovery
-- 12:07–12:12 — optional private-Agent improvement or buffer
-- 12:12–12:15 — next-week use case and validation checkpoint
+- 11:15–11:20 — assign the risk-analytics handover and refresh FPD5 eligibility
+- 11:20–11:27 — establish what the inherited governed query proves
+- 11:27–11:39 — guided regional FPD5 investigation
+- 11:39–11:44 — reconcile the generated result with the governed checkpoint
+- 11:44–11:54 — participant diagnoses and repairs the PySpark denominator bug
+- 11:54–11:59 — `/optimize` and `/doc`
+- 11:59–12:08 — facilitator-only AI/BI Dashboard showcase
+- 12:08–12:12 — optional private-Agent improvement or buffer
+- 12:12–12:15 — owner, risk, recovery, and next-week use
 
 Use ten concise core slides interleaved with live work. The optional Agent slide is used only if all required checkpoints are complete.
 
 ## Slide specifications
 
-### Slide 1 — From manual investigation to Genie Code
+### Slide 1 — Your risk-analytics handover
 
 **Priority:** Essential  
 **Strategy:** Create new
 
 **Visible content**
 
-- Section 01 established the governed FPD5 definition and baseline.
-- This hour accelerates understanding, generation, repair, documentation, and delivery.
-- Governed sources and human validation remain mandatory.
+- Role: developer supporting Unicorn Finance Risk.
+- Question: which promotion regions warrant investigation?
+- Repair: make the inherited validation utility trustworthy.
+- Deliverable: validated notebook evidence for handover.
 
 **Recommended visual**
 
-A before-and-after workflow:
-
-`Manual inherited analysis → Genie Code-assisted workflow`
-
-Keep `fpd_metrics` visible as the unchanged governed foundation.
+A handover card showing regional evidence, repaired helper, executable checks, and documentation. Keep `fpd_metrics` visible as the unchanged governed foundation.
 
 **Presenter notes**
 
-Do not reintroduce Genie Agents. Participants created one in Section 01. This section primarily uses Genie Code in notebooks and dashboard authoring.
+Refresh FPD5 eligibility, the `2026-09-01` observation date, and the eligible-contract denominator before opening Genie Code. Do not reintroduce Genie Agents; participants created one in Section 01.
 
 **Live transition**
 
@@ -222,7 +222,7 @@ Participants submit the regional-extension prompt, review the proposed plan, app
 
 ---
 
-### Slide 5 — Validate generated analysis with invariants
+### Slide 5 — Reconcile generated evidence before using it
 
 **Priority:** Essential  
 **Strategy:** Create new
@@ -235,6 +235,7 @@ Participants submit the regional-extension prompt, review the proposed plan, app
 - No writes.
 - Region threshold is applied at region grain.
 - Comparison uses the overall promotion rate.
+- All six qualifying regions match the governed checkpoint.
 - Interpretation avoids fraud or causality claims.
 
 **Recommended visual**
@@ -245,11 +246,11 @@ A compact validation checklist. Add a small “generated layout may vary; invari
 
 Generated wording, cell layout, and chart styling are nondeterministic. Correctness is determined by governed source, measures, filters, safety constraints, and reference outputs.
 
-After generation, the cohort result should reconcile to approximately 42.26% and 21.03%.
+After generation, the regional rows should reconcile with the pre-authored checkpoint and the promotion baseline should remain approximately 42.26%.
 
 **Live transition**
 
-Run the independent checkpoint query and compare it with the generated regional result.
+Run the pre-authored governed regional checkpoint and compare every row with the generated result.
 
 ---
 
@@ -418,7 +419,7 @@ A balanced two-column “Faster / Still mine” close.
 
 **Presenter notes**
 
-Ask each participant to name one workflow they will use next week and one validation check they will apply.
+Ask each participant to record one notebook owner, one operating risk, one recovery action, and one next-week workflow with its retained validation.
 
 ---
 

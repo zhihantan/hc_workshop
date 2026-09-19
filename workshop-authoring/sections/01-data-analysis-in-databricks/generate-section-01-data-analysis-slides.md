@@ -53,27 +53,27 @@ The audience has basic SQL and Python familiarity. Participants are taking over 
 
 By the end of the section, they should be able to:
 
-1. choose notebook, Jobs, or SQL warehouse compute based on workload;
-2. explain the serverless-versus-classic operating model and the role of Serverless, Pro, and Classic SQL warehouses;
-3. explore governed data with PySpark and SQL;
-4. change the analytical grain of the inherited FPD5 investigation;
-5. persist the result as a participant-specific Delta table;
-6. inspect schema evolution and table history;
+1. explain First Payment Default at five days past due, its observation window, and its eligible-contract denominator;
+2. choose notebook, Jobs, or SQL warehouse compute based on workload;
+3. explain the serverless-versus-classic operating model and the role of Serverless, Pro, and Classic SQL warehouses;
+4. use PySpark and SQL to answer distinct questions in one connected investigation;
+5. change the analytical grain of the FPD5 investigation;
+6. persist the result as a participant-specific Delta table and inspect its history;
 7. trace one governed FPD5 definition through a Metric View, AI/BI dashboard, and private Genie Agent;
 8. inspect SQL workload evidence and distinguish queueing from spill.
 
 ### Timing and instructional arc
 
-- 9:45–9:55 — business hook and compute decision slides
-- 9:55–10:00 — facilitator navigates to notebook, schema, and compute
-- 10:00–10:18 — guided notebook analysis
-- 10:18–10:30 — participant changes analytical grain and writes a handover note
-- 10:30–10:40 — Delta persistence, schema evolution, and history
-- 10:40–10:50 — prepared Metric View and AI/BI dashboard
-- 10:50–11:00 — participant creates and verifies a private Genie Agent
-- 11:00–11:06 — warehouse monitoring, Query History, and Query Profile
-- 11:06–11:10 — recovery buffer
-- 11:10–11:15 — operational-ownership checkpoint
+- 9:45–9:50 — assignment, FPD5 definition, eligibility, and caveat
+- 9:50–9:57 — compute decision framing
+- 9:57–10:15 — source verification, application profile, and promotion timing
+- 10:15–10:27 — eligible FPD5 population and concentration analysis
+- 10:27–10:39 — participant changes analytical grain and writes a handover note
+- 10:39–10:49 — Delta persistence and history
+- 10:49–10:56 — Metric View and dashboard reconciliation
+- 10:56–11:06 — private Genie Agent creation and verification
+- 11:06–11:11 — Query History and Query Profile
+- 11:11–11:15 — investigation checkpoint
 
 Use eight core slides. An optional title slide and optional ownership close may be added only if they do not reduce hands-on time.
 
@@ -118,6 +118,7 @@ Establish the business question, analytical denominator, and fiction boundary.
 - Atlas Ridge handed over the platform.
 - Promotion volume increased.
 - FPD5 appears concentrated by store and sales associate.
+- FPD5 means First Payment Default at five days past due.
 - Count only first installments observed through day five as of 2026-09-01.
 - Elevated FPD5 is an investigation signal, not confirmed fraud.
 
@@ -210,29 +211,30 @@ Open the participant notebook, show the eight inherited tables, and select the a
 
 ---
 
-### Slide 4 — One governed dataset, two notebook languages
+### Slide 4 — From promotion volume to a fair FPD5 comparison
 
 **Priority:** Essential  
 **Strategy:** Create new
 
 **Visible content**
 
-`Unity Catalog tables → PySpark profile → SQL transformation → temporary FPD5 view → participant changes grain → counts, rates, and concentration evidence`
+`Unity Catalog tables → PySpark application profile → SQL monthly trend → eligible first installments → one row per eligible contract → cohort and hotspot comparison`
 
 Key messages:
 
-- Python and SQL use the same governed source.
-- Choose the language for the task, not a second data copy.
+- Profile how applications entered before claiming anything about repayment.
+- Test when promotion volume appeared before analyzing its outcomes.
+- Exclude contracts that have not completed the five-day observation window.
 - Declare grain and denominator before calculating a rate.
-- Confidence comes from changing and validating inherited analysis, not only running it.
+- Use counts and rates together when prioritizing segments for review.
 
 **Recommended visual**
 
-A vertical data flow with PySpark and SQL converging on the same temporary FPD5 view.
+A vertical investigation flow in which every transformation is labeled with the business question it answers.
 
 **Presenter notes**
 
-Use this slide briefly while transitioning from source discovery into the notebook. In the workspace, pause at source inventory, PySpark profile, SQL trend, eligible FPD5 population, cohort result, and hotspot analysis. The participant exercise changes `ANALYSIS_DIMENSION` and requires a written interpretation with evidence, denominator, caveat, and owner question.
+Use this slide briefly while transitioning from source discovery into the notebook. Do not organize the explanation around language features. In the workspace, pause at source inventory, application context, promotion timing, eligibility, cohort comparison, volume concentration, and hotspot prioritization. The participant exercise changes `ANALYSIS_DIMENSION` and requires a written interpretation with evidence, denominator, caveat, and owner question.
 
 Approximately 81% concentration in the source material refers to origination volume at top stores, not automatically to FPD5 concentration.
 

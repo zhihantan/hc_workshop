@@ -9,11 +9,12 @@ Participant and facilitator materials for the Home Credit Philippines enablement
 Participants should use only:
 
 1. `participant-materials/`
+   - [Opening workshop scenario](participant-materials/unicorn-finance-workshop-scenario.md)
    - [Workshop agenda](participant-materials/workshop-agenda.pdf)
    - [Unicorn Finance story](participant-materials/unicorn-finance-story.pdf)
    - [Unicorn Finance dataset guide](participant-materials/dataset-guide.pdf)
    - [Unicorn Finance data dictionary](participant-materials/data-dictionary.pdf)
-2. `workshop-content/` — section-by-section labs, facilitator-led participant materials, exercises, and instructions.
+2. `workshop-content/` — one participant entry point for each workshop topic.
 
 The runnable section content is still being prepared. The repository will be ready for participant use when `workshop-content/README.md` marks every required section as **Ready**.
 
@@ -28,7 +29,7 @@ workshop-authoring/      Facilitator design sources, diagrams, and prompts
 
 Participants do not need `workshop-setup/` or `workshop-authoring/`.
 
-Not every workshop topic has a participant-run notebook. Governance and Access Control is a facilitator-led demonstration: participants use its diagnostic checklist and team exercise while the facilitator runs the prepared restricted-identity notebook.
+Not every workshop topic has a participant-run notebook. Governance and Access Control is a facilitator-led demonstration: participants complete one incident handover in its participant guide while the facilitator runs the restricted-identity notebook from a private facilitator folder.
 
 ## Workshop scenario
 
@@ -52,7 +53,7 @@ Use `workshop-setup/workshop-setup.zip` only when Git folder access is unavailab
 
 ## Facilitator authoring
 
-Editable Markdown, the dataset design, ER sources, and the reusable content-generation prompt live under `workshop-authoring/`. Generated participant labs belong under `workshop-content/`, not in the authoring directory.
+Editable Markdown, the dataset design, ER sources, and the reusable content-generation prompt live under `workshop-authoring/`. Participant notebooks and integrated guides belong under `workshop-content/`; facilitator-only sources do not.
 
 The development and workspace-validation approach is documented in [TESTING.md](TESTING.md).
 

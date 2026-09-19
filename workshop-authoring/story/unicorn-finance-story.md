@@ -4,6 +4,8 @@
 
 *Canonical fictional narrative for the Home Credit Databricks workshop. It defines the company, business event, inherited platform, dataset, and investigation that every workshop section should use.*
 
+The concise participant-facing opening narrative and section-delivery map is published at [`../../participant-materials/unicorn-finance-workshop-scenario.md`](../../participant-materials/unicorn-finance-workshop-scenario.md).
+
 <style>
 @page { size: A4 portrait; margin: 1.5cm; }
 table { font-size: 8.5pt; }

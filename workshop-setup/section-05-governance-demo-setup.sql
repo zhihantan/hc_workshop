@@ -19,9 +19,9 @@
 -- MAGIC
 -- MAGIC The intentional state is:
 -- MAGIC
--- MAGIC - the group can discover and traverse the catalog;
--- MAGIC - the group has `SELECT` on the target table;
--- MAGIC - the group does **not** have `USE SCHEMA` on `core_lending`.
+-- MAGIC - the group can discover the trusted FPD5 view and pass the catalog gate;
+-- MAGIC - the group has `SELECT` on `workshop_shared.fpd_analysis`;
+-- MAGIC - the group does **not** have `USE SCHEMA` on `workshop_shared`.
 -- MAGIC
 -- MAGIC This isolates one missing prerequisite without changing participant access.
 
@@ -37,12 +37,12 @@ TO `<governance-demo-group>`;
 
 -- COMMAND ----------
 GRANT SELECT
-ON TABLE hc_workshop.core_lending.customer
+ON VIEW hc_workshop.workshop_shared.fpd_analysis
 TO `<governance-demo-group>`;
 
 -- COMMAND ----------
 REVOKE USE SCHEMA
-ON SCHEMA hc_workshop.core_lending
+ON SCHEMA hc_workshop.workshop_shared
 FROM `<governance-demo-group>`;
 
 -- COMMAND ----------
@@ -55,11 +55,11 @@ ON CATALOG hc_workshop;
 
 -- COMMAND ----------
 SHOW GRANTS `<governance-demo-group>`
-ON SCHEMA hc_workshop.core_lending;
+ON SCHEMA hc_workshop.workshop_shared;
 
 -- COMMAND ----------
 SHOW GRANTS `<governance-demo-group>`
-ON TABLE hc_workshop.core_lending.customer;
+ON VIEW hc_workshop.workshop_shared.fpd_analysis;
 
 -- COMMAND ----------
 -- MAGIC %md
@@ -69,7 +69,7 @@ ON TABLE hc_workshop.core_lending.customer;
 
 -- COMMAND ----------
 -- GRANT USE SCHEMA
--- ON SCHEMA hc_workshop.core_lending
+-- ON SCHEMA hc_workshop.workshop_shared
 -- TO `<governance-demo-group>`;
 
 -- COMMAND ----------
@@ -80,5 +80,5 @@ ON TABLE hc_workshop.core_lending.customer;
 
 -- COMMAND ----------
 -- REVOKE USE SCHEMA
--- ON SCHEMA hc_workshop.core_lending
+-- ON SCHEMA hc_workshop.workshop_shared
 -- FROM `<governance-demo-group>`;

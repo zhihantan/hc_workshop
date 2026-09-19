@@ -78,6 +78,6 @@ Tests should create all required temporary state explicitly. They must not pass 
 
 - Spark and SQL logic has been exercised against the development workspace.
 - The actual notebook has passed the participant-style cell-by-cell flow from a clean session.
-- Expected outputs match the section's `expected-results.md`.
+- Expected outputs match the section's documented checkpoints, whether they are embedded in the participant notebook or kept in facilitator-only authoring material.
 - Persistent writes are limited to documented assets and reruns behave as documented.
 - Notebook-specific features and error-recovery paths have been checked in the Databricks UI.

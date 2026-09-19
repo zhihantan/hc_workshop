@@ -11,7 +11,7 @@ Set the shared environment inputs, describe the section you want to create, and 
 ## Prompt
 
 ````text
-Create one section of the Home Credit Philippines Databricks workshop. Participants will first follow a live screen-share, then run and extend the provided notebook themselves. The goal is to build confidence using Databricks through one coherent, end-to-end developer workflow. Operational takeover of assets built by Tiger Analytics provides the scenario and ownership lens; it must not turn the section into a broad product tour.
+Create one section of the Home Credit Philippines Databricks workshop. Give participants one primary entry point and one coherent business or operational assignment. In notebook-led sections, participants run and extend the notebook after a live screen-share. In facilitator-led sections, participants complete one integrated guide or worksheet while the facilitator operates restricted, administrative, or preview-only surfaces. The goal is to build confidence using Databricks through one coherent, end-to-end developer workflow. Operational takeover of assets built by Tiger Analytics provides the scenario and ownership lens; it must not turn the section into a broad product tour.
 
 ## Inputs
 
@@ -43,7 +43,7 @@ Paths are relative to `REPOSITORY_ROOT`:
 6. `workshop-authoring/dataset/source-schema.md` — source-model decisions.
 7. `workshop-setup/dataset-generator/README.md` — environment and validation.
 
-Write generated material only under `workshop-content/`. Preserve all unselected sections.
+Write runnable participant material under `workshop-content/` and maintainer, facilitator, expected-output, troubleshooting, and slide-authoring material under `workshop-authoring/sections/`. Preserve all unselected sections.
 
 ## Story
 
@@ -96,11 +96,11 @@ Useful standard-scale checks: top-20% store share ≈ 81.13%; promotion FPD ≈ 
 
 Every section must fit its agenda duration and follow:
 
-1. **Watch me** — exact UI path and short facilitator demonstration.
-2. **Run with me** — complete, short notebook cells run in sequence.
-3. **Try it** — one focused participant exercise that changes or extends a meaningful part of the workflow and validates the result.
-4. **Operate it** — inspect ownership, parameters, dependencies, permissions, lineage, run history, or recovery.
-5. **Checkpoint** — confirm an observable result.
+1. **Assignment** — state the participant role, business or operational problem, questions to answer, and final deliverable.
+2. **Investigate with me** — use the minimum slides and live evidence required to advance that assignment.
+3. **Participant action** — run short cells in a notebook-led section or record and interpret evidence in a facilitator-led section.
+4. **Operate it** — inspect ownership, parameters, dependencies, permissions, lineage, run history, or recovery because the assignment requires it.
+5. **Reflection** — confirm an observable result and have participants explain the evidence, owner, risk, and recovery action.
 
 Include a minute-by-minute run of show, expected results, likely errors, the shortest recovery path, and a fallback for unavailable optional features. Clearly separate facilitator-only and admin-only steps.
 
@@ -112,15 +112,14 @@ Create only the section described by `SECTION_NUMBER`, `SECTION_NAME`, `SECTION_
 
 ## Required outputs
 
-Create `workshop-content/<section-number>-<section-name>/` with only the files needed:
+Create `workshop-content/<section-number>-<section-name>/` with the smallest participant-facing surface possible:
 
-- `README.md` — duration, outcomes, prerequisites, permissions, assets, and definition of done.
-- `facilitator-guide.md` — screen path, talking points, timing, errors, and handover lens.
-- `participant-lab.py` or `.sql` — runnable Databricks source notebook.
-- `exercises.md` — participant task and validation.
-- `expected-results.md` — expected outputs and troubleshooting.
+- `participant-lab.py` or `.sql` for a notebook-led section, or `participant-guide.md` for a facilitator-led section.
+- Embed participant instructions, exercises, validation criteria, and reflection prompts in that notebook when the section is notebook-led.
+- Consolidate the assignment, evidence capture, exercise, validation criteria, and reflection in the participant guide when the section is facilitator-led.
+- Create a separate checklist or exercise file only when participants genuinely use it independently of the primary entry point.
 
-Add section-specific setup files only when needed. Update `workshop-content/README.md` status. Put shared setup under `workshop-content/shared/` and operational handover material under `workshop-content/07-handover-and-operations/`.
+Keep the maintainer README, facilitator guide, expected outputs, troubleshooting, and temporary slide-authoring material under `workshop-authoring/sections/<section-number>-<section-name>/`. Add section-specific setup files only when needed. Update `workshop-content/README.md` status. Put shared setup under `workshop-content/shared/` and operational handover material under `workshop-content/07-handover-and-operations/`.
 
 ## Rules
 
