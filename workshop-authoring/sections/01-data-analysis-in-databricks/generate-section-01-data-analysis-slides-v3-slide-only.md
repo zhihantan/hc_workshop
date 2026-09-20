@@ -10,7 +10,7 @@ Resolve conflicts in this order:
 
 1. `facilitator-guide.md`
 2. `../../../workshop-content/01-data-analysis-in-databricks/01-lab.py`
-3. `generate-section-01-data-analysis-slides-v2-content-first.md`
+3. `drafts/generate-section-01-data-analysis-slides-v2-content-first.md`
 4. `README.md`
 5. `../../../participant-materials/unicorn-finance-workshop-scenario.md`
 6. `../../agenda/workshop-agenda.md`

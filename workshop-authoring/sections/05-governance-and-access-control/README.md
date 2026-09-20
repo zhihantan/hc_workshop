@@ -6,33 +6,19 @@
 
 The internal `05` identifier preserves repository paths. Use the topic title and scheduled time with participants.
 
-## Assignment and delivery
+## Delivery authority
 
-Participants act as the new owners of Unicorn Finance's inherited Databricks platform. A risk analyst can discover the trusted `hc_workshop.workshop_shared.fpd_analysis` view under **Consumer Lending > Origination Risk**, but cannot query it.
+- Participant evidence and handover: [`05-participant-guide.md`](../../../workshop-content/05-governance-and-access-control/05-participant-guide.md)
+- Timing, delivery surfaces, and facilitator talking points: [`facilitator-guide.md`](facilitator-guide.md)
+- Restricted-identity demonstration: [`facilitator-demo.py`](facilitator-demo.py)
+- Final visible-slide generation: [`generate-section-05-governance-slides-v3-slide-only.md`](generate-section-05-governance-slides-v3-slide-only.md)
 
-The section follows that same asset from discovery through diagnosis, repair, verification, lineage, and handover. Participants record evidence in:
+This README tracks release prerequisites, permissions, file ownership, and definition of done rather than repeating the delivery narrative.
 
-`../../../workshop-content/05-governance-and-access-control/05-participant-guide.md`
+## Authoring boundaries
 
-They do not run or clone the demonstration notebook, change permissions, or build governance objects.
-
-## Outcomes
-
-By the end of the section, participants can:
-
-1. identify the runtime principal before changing access;
-2. separate notebook, SQL warehouse, and Unity Catalog permissions;
-3. diagnose `USE CATALOG → USE SCHEMA → SELECT`;
-4. distinguish direct grants, parent-securable inheritance, and group-derived access;
-5. apply and verify the narrowest repair;
-6. use lineage to identify downstream assets that require retesting;
-7. explain why Discover Domain placement does not grant access;
-8. complete an operational handover with an owner, risk, and recovery action.
-
-## Scope boundaries
-
-- The demonstration uses one missing `USE SCHEMA` privilege on `workshop_shared`.
-- The same `fpd_analysis` view is used for the query, lineage, and Domain walkthrough.
+- This is a facilitator-led demonstration; participants do not run code or change permissions.
+- The same `fpd_analysis` view is used for the access request, lineage, and Domain walkthrough.
 - The query is an access smoke test, not a recalculation or validation of FPD5.
 - Row filters, column masks, ABAC, Data Classification, storage credentials, external locations, Delta Sharing, and full privilege inventories are not configured live.
 - Jobs and dashboard credential modes are optional transfer examples, not separate demonstrations.
@@ -49,8 +35,7 @@ Facilitator-only:
 - `facilitator-guide.md` — timed delivery map plus concise participant-facing talking points for the live incident.
 - `facilitator-demo.py` — screen-shared read-only notebook run by the restricted identity.
 - `generate-section-05-governance-slides-v3-slide-only.md` — final generation prompt limited to the facilitator guide's visible slide windows.
-- `generate-section-05-governance-slides-v2-content-first.md` — broader content inventory for editorial reference.
-- `generate-section-05-governance-slides.md` — prescriptive four-slide editorial reference.
+- `drafts/` — archived content-first and prescriptive slide sources.
 
 Administrator-only:
 
@@ -78,7 +63,7 @@ Environment values still requiring confirmation:
 
 ## Definition of done
 
-- Final slides preserve the assignment and incident flow in the content-first brief and use titles rather than section numbers.
+- Final slides follow the v3 slide-only prompt and the facilitator guide's visible slide windows.
 - The participant-facing folder contains only `05-participant-guide.md`.
 - The restricted identity fails on `fpd_analysis` because `USE SCHEMA` is missing.
 - After the single grant, the unchanged query returns ten synthetic rows.

@@ -5,35 +5,14 @@
 
 This directory contains maintainer and facilitator material. Participants use only [`02-lab.py`](../../../workshop-content/02-generative-ai-in-databricks/02-lab.py), which contains the complete assignment, exercises, UI activities, validation criteria, dashboard observation checklist, optional Agent extension, and final reflection.
 
-## Delivery
+## Delivery authority
 
-Participants act as developers supporting Unicorn Finance's risk analytics team after the Atlas Ridge handover. They extend the governed FPD5 investigation to regional grain, repair an inherited PySpark denominator bug, and prepare a validated notebook for its next owner.
+- Participant flow and outcomes: [`02-lab.py`](../../../workshop-content/02-generative-ai-in-databricks/02-lab.py)
+- Timing, delivery surfaces, and facilitator talking points: [`facilitator-guide.md`](facilitator-guide.md)
+- Facilitator dashboard sequence: [`facilitator-demo.py`](facilitator-demo.py)
+- Final visible-slide generation: [`generate-section-02-generative-ai-slides-v3-slide-only.md`](generate-section-02-generative-ai-slides-v3-slide-only.md)
 
-The investigation continues Nova Mobile's brand-subsidized offer for selected smartphones: approved customers repay principal over 6, 9, or 12 months at 0% monthly interest. “0%” describes interest only; it does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
-
-The section delivers:
-
-- a governed promotion-region analysis with counts, rates, and a minimum denominator;
-- reconciliation against a pre-authored Metric View checkpoint;
-- a repaired read-only PySpark validation helper with executable checks;
-- concise handover documentation;
-- a facilitator-built, reconciled, unpublished AI/BI dashboard draft; and
-- optionally, a focused and regression-tested change to the participant's existing private Genie Agent.
-
-The central message is:
-
-> Genie Code makes technical work faster, but governed definitions, permissions, and human validation still make it trustworthy.
-
-## Outcomes
-
-By the end of the section, participants can:
-
-1. Use notebook, cell, and data context to understand inherited analysis.
-2. Extend a governed investigation with a structured prompt and targeted correction.
-3. Interpret counts, rates, denominators, and uncertainty at regional grain.
-4. Diagnose a semantic PySpark denominator bug and protect the repair with checks.
-5. Distinguish notebook compute from the SQL warehouse used by dashboards and Genie Agents.
-6. Explain which generated actions remain subject to human review, validation, and publication decisions.
+This README tracks release prerequisites, permissions, file ownership, and definition of done rather than repeating the delivery narrative.
 
 ## Prerequisites
 
@@ -77,8 +56,7 @@ Participants do not need a separate exercise sheet or expected-results file.
 - [`facilitator-demo.py`](facilitator-demo.py) — resettable demonstration notebook and dashboard prompt.
 - [`expected-results.md`](expected-results.md) — governed reference outputs and troubleshooting.
 - [`generate-section-02-generative-ai-slides-v3-slide-only.md`](generate-section-02-generative-ai-slides-v3-slide-only.md) — final generation prompt limited to the facilitator guide's visible slide window.
-- [`generate-section-02-generative-ai-slides-v2-content-first.md`](generate-section-02-generative-ai-slides-v2-content-first.md) — broader content inventory for editorial reference.
-- [`generate-section-02-generative-ai-slides.md`](generate-section-02-generative-ai-slides.md) — prescriptive editorial reference.
+- [`drafts/`](drafts/README.md) — archived content-first and prescriptive slide sources.
 
 ## Definition of done
 

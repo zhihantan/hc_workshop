@@ -12,7 +12,7 @@ Resolve conflicts in this order:
 2. `../../../workshop-content/05-governance-and-access-control/05-participant-guide.md`
 3. `facilitator-demo.py`
 4. `../../../workshop-setup/section-05-governance-demo-setup.sql`
-5. `generate-section-05-governance-slides-v2-content-first.md`
+5. `drafts/generate-section-05-governance-slides-v2-content-first.md`
 6. `README.md`
 7. `../../../participant-materials/unicorn-finance-workshop-scenario.md`
 8. `../../agenda/workshop-agenda.md`

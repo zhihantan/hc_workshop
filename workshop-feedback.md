@@ -17,3 +17,14 @@
 
 - You need to understand the differences in the Spark code here, and the Spark code inside Cloudera. Basically, here a lot of things are managed for you. E.g there is no SparkContext? no SparkSession? Why is that?
 - When the cell is %sql - is this running warehouse compute or is this running your all purpose compute?
+
+**Section 01 Review 2**
+
+The workshop doesn't have good details around what is a 0% smartphone promotion. You mean that there was a PNPL offer on the smartphone with 0% interest? POS loan?
+
+If I'm being honest, the explanations are still very confusing. Especially if English is not my first language, all the details are very hard to read. Let's take this example: "Before examining repayment outcomes, establish the origination context. We want to know which channels carried the promotion, how decisions were distributed, and whether the promotion represents a materially different application population. PySpark is useful here because an analyst can interactively derive a cohort label and profile several fields in one DataFrame workflow." Can you see how this is confusing? "Repayment outcomes, establish origination context". While technically, and logically sound, contains jargon and is not simple enough for someone, especially if it is their first time looking at this dataset. We need this level of simplicity in the entire section.
+
+Review of Facilitator Guides
+
+- It is telling me things that I don't need to know. For example, "use plain language". I mean, this is obvious.  Before participants enter, okay, but not really needed in this case. Keep these messages consistent, I mean obviously.
+- The goal of the guide is not to remind myself of the obvious things in a good presentation. But have a quick reference document highlighting the main ideas that I want to tell participants during this workshop. For example, I have main categories, then within notebook exploration I should remind participants of the differences between notebook compute and SQL warehouse compute.

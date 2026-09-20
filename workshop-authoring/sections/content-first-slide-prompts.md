@@ -43,20 +43,20 @@ They deliberately leave these decisions to the downstream LLM:
 
 ## Broader content-first prompts
 
-- [Data Analysis in Databricks](01-data-analysis-in-databricks/generate-section-01-data-analysis-slides-v2-content-first.md)
-- [Generative AI in Databricks](02-generative-ai-in-databricks/generate-section-02-generative-ai-slides-v2-content-first.md)
+- [Data Analysis in Databricks](01-data-analysis-in-databricks/drafts/generate-section-01-data-analysis-slides-v2-content-first.md)
+- [Generative AI in Databricks](02-generative-ai-in-databricks/drafts/generate-section-02-generative-ai-slides-v2-content-first.md)
 - [Data Engineering in Databricks](03-data-engineering-in-databricks/generate-section-03-data-engineering-slides-v2-content-first.md)
-- [Governance and Access Control in Databricks](05-governance-and-access-control/generate-section-05-governance-slides-v2-content-first.md)
+- [Governance and Access Control in Databricks](05-governance-and-access-control/drafts/generate-section-05-governance-slides-v2-content-first.md)
 - [Introduction to Machine Learning in Databricks](06-machine-learning-in-databricks/generate-section-06-machine-learning-slides-v2-content-first.md)
 
 ## Original prescriptive prompts
 
 These are preserved for comparison and detailed editorial reference:
 
-- [Data Analysis — original](01-data-analysis-in-databricks/generate-section-01-data-analysis-slides.md)
-- [Generative AI — original](02-generative-ai-in-databricks/generate-section-02-generative-ai-slides.md)
+- [Data Analysis — original](01-data-analysis-in-databricks/drafts/generate-section-01-data-analysis-slides.md)
+- [Generative AI — original](02-generative-ai-in-databricks/drafts/generate-section-02-generative-ai-slides.md)
 - [Data Engineering — slide outline](../../workshop-content/03-data-engineering-in-databricks/slide-outline.md)
-- [Governance — original](05-governance-and-access-control/generate-section-05-governance-slides.md)
+- [Governance — original](05-governance-and-access-control/drafts/generate-section-05-governance-slides.md)
 - [Machine Learning — slide outline](../../workshop-content/06-machine-learning-in-databricks/slide-outline.md)
 
 ## Recommended workflow

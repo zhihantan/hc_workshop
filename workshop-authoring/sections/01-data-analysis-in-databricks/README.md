@@ -5,37 +5,20 @@
 
 This directory contains maintainer and facilitator material. Participants use only [`01-lab.py`](../../../workshop-content/01-data-analysis-in-databricks/01-lab.py), which contains the complete investigation, exercises, UI instructions, validation guidance, and final reflection.
 
-## Delivery
+## Delivery authority
 
-Participants investigate whether Nova Mobile's brand-subsidized smartphone financing campaign has elevated first-payment default, identify where the signal is concentrated, and hand over an operable set of analytical assets. Approved customers repay the financed principal over 6, 9, or 12 months at 0% monthly interest; “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
+- Participant flow and outcomes: [`01-lab.py`](../../../workshop-content/01-data-analysis-in-databricks/01-lab.py)
+- Timing, delivery surfaces, and facilitator talking points: [`facilitator-guide.md`](facilitator-guide.md)
+- Final visible-slide generation: [`generate-section-01-data-analysis-slides-v3-slide-only.md`](generate-section-01-data-analysis-slides-v3-slide-only.md)
 
-The section delivers:
-
-- a reproducible eligible-contract and FPD5 analysis;
-- a participant-selected cohort breakdown;
-- a participant-specific Delta investigation table with history;
-- reconciliation with the governed `fpd_metrics` Metric View;
-- a dashboard verification;
-- a private participant-created Genie Agent baseline; and
-- SQL workload evidence from Query History and Query Profile.
-
-## Outcomes
-
-By the end of the section, participants can:
-
-1. Explain FPD5, its five-day observation window, and its eligible-contract denominator.
-2. Use PySpark and SQL to answer distinct questions in one connected investigation.
-3. Change analytical grain and distinguish a broad signal from a localized hotspot.
-4. Persist a participant-specific Delta result and inspect its history.
-5. Trace one governed definition through a Metric View, dashboard, and private Genie Agent.
-6. Distinguish warehouse queueing from query spill.
+This README tracks release prerequisites, permissions, file ownership, and definition of done rather than repeating the delivery narrative.
 
 ## Prerequisites
 
 - The administrator completed [`workshop-setup/README.md`](../../../workshop-setup/README.md).
 - The standard dataset passed its final generator `SUCCESS` gate.
 - [`section-01-facilitator-setup.sql`](../../../workshop-setup/section-01-facilitator-setup.sql) created `workshop_shared.fpd_analysis` and `workshop_shared.fpd_metrics`.
-- The facilitator prepared the dashboard described in [`facilitator-guide.md`](facilitator-guide.md).
+- The facilitator prepared and reconciled **Unicorn FPD5 Overview** using `workshop_shared.fpd_metrics`.
 - Participants can use serverless notebook compute or approved Unity Catalog-compatible all-purpose compute.
 - A serverless SQL warehouse is available for the dashboard, Genie Agents, and workload inspection.
 - Participants can create and manage an unshared Genie Agent in their user folder.
@@ -82,10 +65,7 @@ The runner ID is derived from the participant's full workspace identity and a sh
 - [`facilitator-guide.md`](facilitator-guide.md) — timed delivery map plus concise talking points organized in participant-notebook order.
 - [`section-01-facilitator-setup.sql`](../../../workshop-setup/section-01-facilitator-setup.sql) — shared analysis view and Metric View.
 - [`generate-section-01-data-analysis-slides-v3-slide-only.md`](generate-section-01-data-analysis-slides-v3-slide-only.md) — final generation prompt limited to the facilitator guide's visible slide windows.
-- [`generate-section-01-data-analysis-slides-v2-content-first.md`](generate-section-01-data-analysis-slides-v2-content-first.md) — broader content inventory for editorial reference.
-- [`generate-section-01-data-analysis-slides.md`](generate-section-01-data-analysis-slides.md) — prescriptive editorial reference.
-
-The obsolete section-local slide outline has been removed. Once the final slides and presenter notes are published, the slide-generation prompt can also be archived or removed.
+- [`drafts/`](drafts/README.md) — archived content-first and prescriptive slide sources.
 
 ## Definition of done
 

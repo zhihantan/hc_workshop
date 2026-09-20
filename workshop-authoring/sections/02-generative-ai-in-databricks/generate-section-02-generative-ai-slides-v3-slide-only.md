@@ -10,7 +10,7 @@ Resolve conflicts in this order:
 
 1. `facilitator-guide.md`
 2. `../../../workshop-content/02-generative-ai-in-databricks/02-lab.py`
-3. `generate-section-02-generative-ai-slides-v2-content-first.md`
+3. `drafts/generate-section-02-generative-ai-slides-v2-content-first.md`
 4. `expected-results.md`
 5. `facilitator-demo.py`
 6. `README.md`
