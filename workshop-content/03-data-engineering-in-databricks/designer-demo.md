@@ -34,7 +34,7 @@ version-controlled transformation logic. Same lakehouse, same governance — dif
   - Raw landing: `hc_workshop.workshop_shared.lending_raw_{installment, credit_contract, loan_application}`
   - Dimensions: `hc_workshop.core_lending.{loan_product, customer, retail_location}`
   - Governed gold (from the code pipeline): `hc_workshop.de_<user_id>.fpd_origination`
-  - Canonical catalog is `hc_workshop`; this reference instance uses `sean_development_catalog`.
+  - Catalog is `hc_workshop`.
 - `USE CATALOG` + `SELECT` on those schemas, and `CREATE` on a target schema the analyst owns.
 
 ## Operator quick-reference (what's on the canvas)

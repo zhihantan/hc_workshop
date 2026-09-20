@@ -77,7 +77,7 @@ This journey is not a required slide sequence. Four handover questions frame it:
 - **Silver** = validated & conformed (Streaming Tables; Expectations live here).
 - **Gold** = the business layer (Materialized Views): `fpd_origination` + `fpd_daily_metrics`, joining silver to `hc_workshop.core_lending` dimensions (`loan_product`, `customer`, `retail_location`).
 - **Streaming Table** = incremental append (bronze ingest, silver cleaning). **Materialized View** = full recompute of a query (gold aggregates and joins). Choose incremental for feeds, recompute for derived tables.
-- Each participant's pipeline writes its own `de_<user_id>` schema. The canonical catalog is `hc_workshop`; a specific delivery may retarget (this reference instance used `sean_development_catalog`).
+- Each participant's pipeline writes its own `de_<user_id>` schema. The workshop catalog is `hc_workshop`.
 
 ### Expectations — the three tiers
 

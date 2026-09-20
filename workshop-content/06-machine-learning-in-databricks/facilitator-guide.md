@@ -23,7 +23,7 @@ Keep the modelling deliberately simple. The goal is an **interpretable, governed
 6. Fill in the runtime, group, and any optional serving values marked `TBD` in the section README.
 7. Rehearse with a non-admin participant identity.
 
-The released lab passed an end-to-end workspace validation run (train → register → batch score) against `sean_development_catalog`. Confirm the same on the final workshop compute before the session.
+The released lab passed an end-to-end workspace validation run (train → register → batch score). Confirm the same on the final workshop compute before the session.
 
 ## Minute-by-minute run of show
 

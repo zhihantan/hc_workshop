@@ -5,7 +5,7 @@
 
 Participants **operationalize the FPD5 data foundation**. Sections 01 and 06 *queried* and *modelled* `core_lending` by hand; here we make that foundation a governed, monitored, scheduled pipeline the business can depend on. Using Lakeflow Declarative Pipelines they build a medallion (bronze → silver → gold) with **data-quality Expectations**, orchestrate it with a **Databricks Job** that includes a quality gate and failure alert, and inspect **observability** — event logs, run monitoring, lineage, and a run summary.
 
-> **Deployment note:** The files target the canonical workshop catalog `hc_workshop`. A specific delivery may retarget to its own catalog — this reference instance used **`sean_development_catalog`**, where the dataset was published — by replacing the catalog references in `facilitator-setup.sql`, `participant-pipeline.sql`, and `job-quality-gate.py`. Every rule (FPD5 definition, schema layout, leakage boundary) is unchanged.
+> **Deployment note:** The files target the workshop catalog `hc_workshop`. Every rule (FPD5 definition, schema layout, leakage boundary) is unchanged.
 
 ## Outcomes
 
@@ -35,7 +35,7 @@ Batch/scheduled pipelines are the required path here. Lakeflow **Connect** (mana
 
 Environment values that must be confirmed before release:
 
-- `WORKSHOP_CATALOG`: **`hc_workshop`** (canonical; a delivery may retarget, e.g. `sean_development_catalog`)
+- `WORKSHOP_CATALOG`: **`hc_workshop`**
 - `WORKSHOP_RUNTIME` / serverless entitlements: **TBD — facilitator confirmation required**
 - `FACILITATOR_GROUP` and participant group: **TBD — facilitator confirmation required**
 - Failure-alert email/destination for the Job: **TBD**

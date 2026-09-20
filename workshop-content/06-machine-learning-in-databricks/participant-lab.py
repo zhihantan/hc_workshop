@@ -30,14 +30,13 @@ import mlflow
 from mlflow.tracking import MlflowClient
 from pyspark.sql import functions as F
 
-dbutils.widgets.text("catalog", "sean_development_catalog", "Workshop catalog")
+dbutils.widgets.text("catalog", "hc_workshop", "Workshop catalog")
 
 CATALOG = dbutils.widgets.get("catalog").strip()
 
-# Canonical design catalog is `hc_workshop`. This deployment is retargeted to
-# `sean_development_catalog`, where the generated dataset was published. A
-# facilitator revalidates and updates this constant to move the lab.
-WORKSHOP_CATALOG = "sean_development_catalog"
+# Workshop catalog. A facilitator can point the lab at a different catalog
+# by updating this constant (and the `catalog` widget above) and revalidating.
+WORKSHOP_CATALOG = "hc_workshop"
 AS_OF_DATE = date.fromisoformat("2026-09-01")
 FPD5_GRACE_DAYS = 5
 

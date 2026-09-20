@@ -2,7 +2,7 @@
 
 **Participant note:** Complete the focused exercise before opening this file.
 
-These values assume the default standard-scale dataset, master seed `20260922`, and as-of date `2026-09-01`, scored by the released interpretable logistic-regression model. They were captured from an end-to-end validation run against `sean_development_catalog`. A different approved generator configuration, model, or split can produce different numbers.
+These values assume the default standard-scale dataset, master seed `20260922`, and as-of date `2026-09-01`, scored by the released interpretable logistic-regression model. They were captured from an end-to-end validation run of the released lab. A different approved generator configuration, model, or split can produce different numbers.
 
 ## Observable results
 

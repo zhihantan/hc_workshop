@@ -11,7 +11,7 @@
 -- MAGIC Land the WARN/DROP batch first (pipeline still completes, rows dropped/flagged); land the
 -- MAGIC FAIL batch to show a broken key halting the update and triggering the Job alert.
 -- MAGIC
--- MAGIC - Catalog: `hc_workshop` (canonical; a delivery may retarget, e.g. `sean_development_catalog`)
+-- MAGIC - Catalog: `hc_workshop`
 -- MAGIC - As-of date: `2026-09-01` · FPD5 grace: 5 days
 -- MAGIC - Landing schema: `workshop_shared` (facilitator-managed), tables prefixed `lending_raw_`
 -- MAGIC

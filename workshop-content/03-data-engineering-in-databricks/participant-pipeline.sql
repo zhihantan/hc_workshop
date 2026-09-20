@@ -5,7 +5,7 @@
 -- MAGIC This notebook is the **source for a Lakeflow pipeline**, not a notebook you run cell by cell.
 -- MAGIC Create a **serverless** pipeline with this file as its source and:
 -- MAGIC
--- MAGIC - **Target catalog:** `hc_workshop` (canonical; a delivery may retarget, e.g. `sean_development_catalog`)
+-- MAGIC - **Target catalog:** `hc_workshop`
 -- MAGIC - **Target schema:** `de_<your_user_id>` (e.g. `de_zhihan_tan`) — each participant targets their own schema
 -- MAGIC
 -- MAGIC It reads the shared **raw landing** (`workshop_shared.lending_raw_*`) and the clean

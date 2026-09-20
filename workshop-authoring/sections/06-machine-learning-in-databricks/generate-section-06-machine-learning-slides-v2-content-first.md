@@ -55,7 +55,7 @@ Section 01 found the FPD5 hotspot; the business now asks whether FPD5 can be **p
 
 - A scikit-learn pipeline (for example a `ColumnTransformer` feeding a gradient-boosted or logistic model), with **MLflow autolog**, `infer_signature`, and `cloudpickle`.
 - Registered to Unity Catalog as `hc_workshop.workshop_labs.unicorn_<user_id>_fpd` with the **`@champion`** alias (note the alias-visibility gotcha — it resolves via the aliases endpoint, not the model-versions list); batch scores to `unicorn_<user_id>_fpd_scores`; features view `unicorn_<user_id>_fpd_features`.
-- The canonical catalog is `hc_workshop`; the reference instance used `sean_development_catalog`.
+- The workshop catalog is `hc_workshop`.
 
 ### Performance and honest framing
 

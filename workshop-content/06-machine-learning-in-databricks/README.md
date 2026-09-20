@@ -5,7 +5,7 @@
 
 Participants turn the first-payment-default (FPD5) investigation from Sections 01–05 into an operable model: they train an interpretable FPD5 classifier, track it with MLflow, register it in Unity Catalog, and batch-score the eligible population — then decide how the internal team operates it after the Atlas Ridge Consulting handover.
 
-> **Deployment note:** The canonical design catalog is `hc_workshop`. This workshop instance is retargeted to **`sean_development_catalog`**, where the dataset was published. Every other rule (FPD5 definition, schema layout, naming, leakage control) is unchanged. A facilitator repoints the lab by updating the `WORKSHOP_CATALOG` constant and revalidating.
+> **Deployment note:** The workshop catalog is `hc_workshop`, set via the `WORKSHOP_CATALOG` constant. Every other rule (FPD5 definition, schema layout, naming, leakage control) is unchanged.
 
 ## Outcomes
 
@@ -35,7 +35,7 @@ This split keeps the section inside 60 minutes. Batch scoring is the required in
 
 Environment values that must be confirmed before release:
 
-- `WORKSHOP_CATALOG`: **`sean_development_catalog`** for this instance (canonical design value is `hc_workshop`)
+- `WORKSHOP_CATALOG`: **`hc_workshop`**
 - `WORKSHOP_RUNTIME`: **TBD — facilitator confirmation required**
 - `FACILITATOR_GROUP`: **TBD — facilitator confirmation required**
 - MLflow experiment location: **TBD — defaults to the participant notebook's own experiment**
