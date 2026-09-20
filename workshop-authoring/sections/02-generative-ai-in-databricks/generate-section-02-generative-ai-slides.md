@@ -44,6 +44,8 @@ The user remains responsible for source selection, permissions, semantic correct
 
 - Unicorn Finance Philippines is a fictional consumer lender.
 - Atlas Ridge Consulting has handed over an inherited Databricks lakehouse.
+- Nova Mobile's campaign lets approved customers finance selected smartphones over 6, 9, or 12 months at 0% monthly interest, with the brand subsidizing Unicorn Finance.
+- Customers still repay principal and may pay a processing fee; “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
 - The section continues the 0% smartphone promotion and FPD5 investigation from Section 01.
 - Participants act as developers supporting Unicorn Finance's risk analytics team.
 - Their deliverable is one validated personal notebook with regional evidence, a repaired validation helper, executable checks, and handover documentation.
@@ -261,27 +263,20 @@ Run the pre-authored governed regional checkpoint and compare every row with the
 
 **Visible content**
 
-Wrong:
+> Can code run successfully and still be semantically wrong?
 
-`Filter to fpd5_flag = 1 → aggregate → every cohort appears to be 100%`
-
-Correct:
-
-`Keep full eligible population → count contracts as denominator → sum fpd5_flag as numerator`
-
-Validation checks:
-
-- exactly two cohorts;
-- FPD5 contracts cannot exceed eligible contracts;
-- rates reconcile within tolerance.
+- Run the inherited helper.
+- Observe both cohorts at 100%.
+- Inspect population, numerator, denominator, and operation order.
+- Ask for a diagnosis and focused diff before editing.
 
 **Recommended visual**
 
-A two-column wrong-versus-right denominator diagram. Do not show the full PySpark function.
+A suspicious-result card showing two 100% outputs and a review checklist. Do not reveal the defect or repair before participants diagnose it.
 
 **Presenter notes**
 
-This code runs successfully but is semantically wrong. Ask participants to notice the suspicious 100% result before using Genie Code. The repair must not recreate the FPD5 date logic; it should use the already governed `fpd5_flag`.
+Ask participants to notice the suspicious 100% result before using Genie Code. After they diagnose it, debrief that the pre-aggregation `fpd5_flag = 1` filter removed non-FPD5 eligible contracts from the denominator. The repair retains the full eligible population and uses the governed flag only as numerator. Validate two cohorts, positive eligible counts, FPD5 counts not exceeding eligible counts, and live Metric View agreement within tolerance.
 
 **Live transition**
 
@@ -331,8 +326,8 @@ Facilitator showcase:
 - reuse `fpd_metrics`;
 - create three KPIs;
 - compare cohorts;
-- rank top promotion stores with a minimum denominator;
-- add a cohort filter;
+- rank top promotion stores with eligible contracts, FPD5 contracts, FPD5 rate, and a 10-contract minimum;
+- add a cohort filter affecting the cohort comparison and store ranking but not all-cohort KPI counters;
 - reconcile and leave unpublished.
 
 **Recommended visual**

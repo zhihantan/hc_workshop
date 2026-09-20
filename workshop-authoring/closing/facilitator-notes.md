@@ -12,7 +12,7 @@ Trusted evidence + repeatable workloads + governed access + operable model
 Named internal ownership
 ```
 
-Do not present a chronological feature recap. Anchor every statement in the 0% promotion, shared FPD5 definition, partner handover, and operating responsibilities.
+Do not present a chronological feature recap. Anchor every statement in Nova Mobile's 0%-interest smartphone financing campaign, the shared FPD5 definition, partner handover, and operating responsibilities. If the shorthand could be misunderstood, restate that customers still repay principal and may pay a processing fee; “0%” refers only to interest.
 
 ## Recommended 8–10 minute run
 

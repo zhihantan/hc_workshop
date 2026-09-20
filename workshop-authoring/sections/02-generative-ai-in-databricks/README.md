@@ -9,6 +9,8 @@ This directory contains maintainer and facilitator material. Participants use on
 
 Participants act as developers supporting Unicorn Finance's risk analytics team after the Atlas Ridge handover. They extend the governed FPD5 investigation to regional grain, repair an inherited PySpark denominator bug, and prepare a validated notebook for its next owner.
 
+The investigation continues Nova Mobile's brand-subsidized offer for selected smartphones: approved customers repay principal over 6, 9, or 12 months at 0% monthly interest. “0%” describes interest only; it does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
+
 The section delivers:
 
 - a governed promotion-region analysis with counts, rates, and a minimum denominator;

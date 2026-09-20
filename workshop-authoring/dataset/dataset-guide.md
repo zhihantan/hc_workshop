@@ -34,7 +34,7 @@ Names, national IDs, phone numbers, applications, stores, contracts, payments, a
 
 ## Business scenario
 
-Unicorn Finance’s POS installment product is its acquisition engine. A brand-subsidised 0% smartphone promotion increases application and contract volume. A minority of originations then show first-payment default concentrated in a small number of retail locations and sales associates. The top 20% of stores also account for roughly 80% of in-store applications.
+Unicorn Finance’s POS installment product is its acquisition engine. Nova Mobile subsidises a campaign in which approved customers finance selected smartphones over 6, 9, or 12 months at 0% monthly interest. Customers still repay principal and may pay a processing fee; “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval. The campaign increases application and contract volume. A minority of originations then show first-payment default concentrated in a small number of retail locations and sales associates. The top 20% of stores also account for roughly 80% of in-store applications.
 
 The dataset is **not limited to that promotion**. It covers the broader core-lending lifecycle and includes POS installment, cash loan, Unicorn Flex revolving credit, and Unicorn Visa records across a two-year window. The promotion is one deliberately detectable cohort for investigation.
 
@@ -169,7 +169,7 @@ WHERE installment_no = 1
 
 1. Which products and provinces generate the most applications?
 2. What is the approval rate by product and channel?
-3. Did the 0% smartphone promotion increase originations?
+3. Did Nova Mobile's 0%-interest smartphone financing campaign increase originations?
 4. Which stores and associates have unusually high first-payment default?
 5. How does cash-loan delinquency compare with POS installment delinquency?
 6. What proportion of installments are paid on time, partially, or late?

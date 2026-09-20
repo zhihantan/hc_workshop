@@ -6,6 +6,8 @@
 # MAGIC
 # MAGIC You are a developer supporting Unicorn Finance's risk analytics team after the Atlas Ridge Consulting handover. The team trusts the governed FPD5 baseline from Section 01, but now needs to identify regional investigation signals and make the inherited validation code safe for another developer to maintain.
 # MAGIC
+# MAGIC The analyzed campaign is Nova Mobile's brand-subsidized financing offer for selected smartphones: approved customers repay principal over 6, 9, or 12 months at 0% monthly interest. “0%” describes interest only; it does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
+# MAGIC
 # MAGIC By the end of this section, deliver one validated personal notebook that:
 # MAGIC
 # MAGIC 1. explains the inherited governed analysis;
@@ -219,7 +221,7 @@ display(cohort_validation)
 # MAGIC 1. whether the dashboard uses only `fpd_metrics`;
 # MAGIC 2. whether its cohort values reconcile with this notebook;
 # MAGIC 3. whether the store ranking retains counts and the 10-contract minimum;
-# MAGIC 4. whether the promotion filter affects the intended widgets; and
+# MAGIC 4. whether the promotion filter affects the cohort comparison and store ranking but leaves the all-cohort KPI counters unchanged; and
 # MAGIC 5. which checks and publication decisions still belong to the dashboard author.
 # MAGIC
 # MAGIC The facilitator leaves this draft unpublished. Dashboard queries run on a SQL warehouse; they do not run on this notebook's Serverless compute.
@@ -271,7 +273,7 @@ display(cohort_validation)
 # MAGIC
 # MAGIC 1. Start a fresh conversation in your Agent and rerun the store-associate question.
 # MAGIC 2. Confirm the SQL and answer now meet the checklist.
-# MAGIC 3. Rerun this previously correct question:
+# MAGIC 3. Start another fresh conversation and rerun this previously correct question:
 # MAGIC
 # MAGIC > How does FPD5 for the 0% smartphone promotion compare with other eligible originations?
 # MAGIC

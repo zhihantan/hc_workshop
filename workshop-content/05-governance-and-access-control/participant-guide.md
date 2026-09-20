@@ -39,14 +39,15 @@ This section does not recalculate that population. A ten-row query is only an ac
 
 ## Terms used in the investigation
 
-- **Principal:** the user, service principal, or group whose permissions are evaluated.
-- **Runtime identity:** the principal that actually executes a request. It may differ from the person who opened an asset.
+- **Principal:** a user, service principal, or group that can hold permissions.
+- **Runtime identity:** the user or service principal for the session or workload that executes the request. Groups can contribute effective access through membership.
 - **Workspace permission:** access to a workspace asset such as a notebook, Job, SQL warehouse, dashboard, or Genie Agent.
 - **Unity Catalog privilege:** permission to perform an action on governed data or AI assets.
-- **Inherited grant:** a privilege received from a parent object or group rather than granted directly.
+- **Inherited grant:** a privilege received from a parent securable rather than granted on the object itself.
+- **Group-derived access:** effective access a user or service principal receives through group membership.
 - **`BROWSE`:** permission to discover an asset and view metadata without reading its data.
 - **Lineage:** evidence showing where data came from and which assets depend on it. Lineage does not grant access.
-- **Domain:** a business-aligned discovery grouping built with governed tags. Domain membership does not grant access to the underlying asset.
+- **Domain:** a business-aligned discovery grouping built with governed tags. Asset placement in a Domain does not grant access to the underlying asset.
 
 ## The request path
 
@@ -95,7 +96,7 @@ After the query runs, record:
 - Exact error: _____________________________________________________
 - Request ID, if shown: ____________________________________________
 - First failed gate: _______________________________________________
-- Direct or inherited evidence: ____________________________________
+- Direct, inherited, or group-derived evidence: ____________________
 
 ### 3. Propose the narrowest repair
 
@@ -148,10 +149,10 @@ Write a concise handover:
 - why opening a notebook does not prove that its data can be read;
 - why the runtime principal must be identified before grants change;
 - why `USE CATALOG`, `USE SCHEMA`, and `SELECT` are separate requirements;
-- how direct and inherited grants affect diagnosis;
+- how direct, inherited, and group-derived access affect diagnosis;
 - why an unchanged rerun is stronger evidence than changing the query;
 - how lineage supports impact analysis;
-- why Domain membership supports discovery but not authorization;
+- why Domain placement supports discovery but not authorization;
 - one owner, risk, and recovery action for this incident.
 
 Your handover is complete when every blank above has evidence and you can explain the diagnostic sequence without proposing a broader permission than the request requires.

@@ -26,7 +26,7 @@ It builds, validates, and publishes these managed Delta tables:
 7. `payment` — one posted or failed payment attempt.
 8. `collection_action` — one action against one delinquent installment.
 
-All records are synthetic. The dataset is general core-lending data; the 0% smartphone promotion is one intentionally visible cohort for analysis, not the scope of the entire dataset.
+All records are synthetic. The dataset is general core-lending data; Nova Mobile's campaign is one intentionally visible cohort for analysis, not the scope of the entire dataset. For that campaign, approved customers finance selected smartphones over 6, 9, or 12 months at 0% monthly interest, Nova Mobile supplies a brand subsidy, and a processing fee may still apply. “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
 
 ## Files
 

@@ -7,7 +7,7 @@ This directory contains maintainer and facilitator material. Participants use on
 
 ## Delivery
 
-Participants investigate whether Unicorn Finance's 0% smartphone promotion has elevated first-payment default, identify where the signal is concentrated, and hand over an operable set of analytical assets.
+Participants investigate whether Nova Mobile's brand-subsidized smartphone financing campaign has elevated first-payment default, identify where the signal is concentrated, and hand over an operable set of analytical assets. Approved customers repay the financed principal over 6, 9, or 12 months at 0% monthly interest; “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
 
 The section delivers:
 
@@ -53,7 +53,7 @@ Participants need:
 
 - `USE CATALOG` on `hc_workshop`;
 - `USE SCHEMA` and `SELECT` on `hc_workshop.core_lending`;
-- `USE SCHEMA`, `CREATE TABLE`, and permission to modify their own table in `hc_workshop.workshop_labs`;
+- `USE SCHEMA` and `CREATE TABLE` on `hc_workshop.workshop_labs`; participants own and modify the tables they create;
 - `USE SCHEMA` and `SELECT` on `hc_workshop.workshop_shared`;
 - permission to run the notebook and use its assigned compute;
 - Databricks SQL workspace entitlement;

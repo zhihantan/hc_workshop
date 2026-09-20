@@ -26,7 +26,9 @@ The closing deck must mirror the opening Unicorn Finance narrative. It is not a 
 
 - Unicorn Finance Philippines is a fictional consumer lender.
 - Atlas Ridge Consulting delivered a Databricks lakehouse and is handing operation to Unicorn Finance's internal team.
-- A smartphone brand funded a limited 0% point-of-sale promotion.
+- Nova Mobile funded a limited financing campaign for selected smartphones.
+- Approved customers repay principal over 6, 9, or 12 months at 0% monthly interest, with Nova Mobile paying Unicorn Finance a brand subsidy.
+- A processing fee may apply. “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
 - Application and approval volumes increased.
 - FPD5 behavior appears concentrated in a small number of stores and sales associates.
 - The pattern is an investigation signal, not proof of fraud, misconduct, or causality.
@@ -124,7 +126,7 @@ Predictions support investigation and prioritization; they do not establish frau
 **Priority:** Essential
 **Strategy:** Create new
 
-Show the partner handover, the 0% promotion signal, the non-causality warning, and the transfer of operating responsibility.
+Show the partner handover, Nova Mobile's 0%-interest financing signal, the non-causality warning, and the transfer of operating responsibility. Preserve the distinction between 0% interest and zero total customer cost.
 
 Key message:
 

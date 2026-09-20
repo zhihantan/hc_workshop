@@ -71,7 +71,7 @@ The physical column definitions, nullability, generated code values, and keys ar
 
 ## Intended analytical story
 
-A brand-subsidised 0% smartphone promotion increases POS originations. The top 20% of stores receive roughly 80% of in-store applications, and a small hotspot group receives additional promotion volume. Within that group, repeated store/associate pairs show elevated first-payment default.
+Nova Mobile subsidises selected smartphone contracts so approved customers pay 0% monthly interest over 6, 9, or 12 months. Customers still repay principal and may pay a processing fee; “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval. The campaign increases POS originations. The top 20% of stores receive roughly 80% of in-store applications, and a small hotspot group receives additional promotion volume. Within that group, repeated store/associate pairs show elevated first-payment default.
 
 This is an investigation signal, not a stored fraud label. Participants should test explanations rather than present the synthetic pattern as proven fraud.
 

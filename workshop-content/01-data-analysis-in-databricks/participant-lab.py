@@ -1,31 +1,51 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC # Section 01 — Investigate first-payment default
+# MAGIC # Section 01 — Check first-payment problems
 # MAGIC
-# MAGIC ## Your assignment
+# MAGIC ## The business story
 # MAGIC
-# MAGIC Atlas Ridge Consulting has handed Unicorn Finance an inherited analytical platform. Risk and operations have noticed that a 0% smartphone promotion produced more originations and may also have a higher rate of early payment problems.
+# MAGIC Unicorn Finance offers loans to customers.
 # MAGIC
-# MAGIC Your job is to produce a defensible answer to three questions:
+# MAGIC Nova Mobile ran a promotion for selected smartphones:
 # MAGIC
-# MAGIC 1. Is first-payment default higher for the promotion than for all other eligible originations?
-# MAGIC 2. Is the signal broad, or concentrated in particular locations or sales channels?
-# MAGIC 3. What evidence, governed assets, and operating information should the next owner receive?
+# MAGIC 1. A customer chose a phone at a participating store.
+# MAGIC 2. The customer applied for a Unicorn Finance loan at the store. This is a **point-of-sale (POS) installment loan**.
+# MAGIC 3. If the loan was approved, the customer was scheduled to repay the amount borrowed over 6, 9, or 12 monthly payments.
+# MAGIC 4. The customer paid 0% monthly interest.
 # MAGIC
-# MAGIC All records are synthetic. An elevated rate identifies contracts that need investigation; it does not prove fraud, misconduct, or causality.
+# MAGIC Nova Mobile made a payment to Unicorn Finance to support the 0% offer. This payment is called a **subsidy**.
+# MAGIC
+# MAGIC The phone was not free. The customer still had to repay the amount borrowed. A processing fee or down payment could still apply. Approval was not guaranteed.
+# MAGIC
+# MAGIC The promotion is named `ZERO_SMARTPHONE_2026` in the data.
+# MAGIC
+# MAGIC After the promotion started, Unicorn Finance saw more loan applications. The company also saw more problems with first payments in some stores.
+# MAGIC
+# MAGIC ## Your task
+# MAGIC
+# MAGIC Answer three questions:
+# MAGIC
+# MAGIC 1. Were promotion loans more likely to have a late first payment?
+# MAGIC 2. Were the problems spread across many locations, or focused in a few places?
+# MAGIC 3. What should the next analyst know?
+# MAGIC
+# MAGIC All workshop data is made up. A high rate is a reason to investigate. It is not proof of fraud or wrongdoing.
 
 # COMMAND ----------
 # MAGIC %md
 # MAGIC ## What FPD5 means
 # MAGIC
-# MAGIC **FPD5** means **First Payment Default at five days past due**.
+# MAGIC **FPD5** stands for **First Payment Default at five days past due**.
 # MAGIC
-# MAGIC In this workshop, a contract is counted as FPD5 when its first scheduled installment:
+# MAGIC An **installment** is one scheduled monthly payment.
 # MAGIC
-# MAGIC - is still unsettled five days after its due date; or
-# MAGIC - was settled on or after that fifth day.
+# MAGIC In this workshop, a loan is counted as FPD5 when its first installment was not fully paid before day five. A payment on day five counts as FPD5.
 # MAGIC
-# MAGIC A contract is **eligible** for the analysis only after the complete five-day observation window has passed. With an observation date of `2026-09-01`, the rule is:
+# MAGIC Here, **default** only describes the first payment at day five. It does not mean that the full loan was never repaid.
+# MAGIC
+# MAGIC We can check a loan on day five after its first payment was due. We call these loans **eligible loans**.
+# MAGIC
+# MAGIC We check the data as it looked on `2026-09-01`. A loan is eligible when:
 # MAGIC
 # MAGIC ```text
 # MAGIC first installment due date + 5 days <= 2026-09-01
@@ -33,14 +53,20 @@
 # MAGIC
 # MAGIC Examples:
 # MAGIC
-# MAGIC | First installment outcome | Eligible? | FPD5? |
+# MAGIC | What happened? | Can we check it yet? | FPD5? |
 # MAGIC |---|---:|---:|
-# MAGIC | Due August 20, settled August 23 | Yes | No |
-# MAGIC | Due August 20, settled August 25 | Yes | Yes |
-# MAGIC | Due August 20, still unsettled | Yes | Yes |
-# MAGIC | Due August 30 | No | Not yet observable |
+# MAGIC | Due August 20, fully paid August 23 | Yes | No |
+# MAGIC | Due August 20, fully paid August 25 | Yes | Yes |
+# MAGIC | Due August 20, still not fully paid | Yes | Yes |
+# MAGIC | Due August 30 | No | Too soon to know |
 # MAGIC
-# MAGIC The denominator is therefore **eligible contracts**, not all applications, all approvals, or all originated contracts.
+# MAGIC To calculate the FPD5 rate, we divide:
+# MAGIC
+# MAGIC ```text
+# MAGIC loans with FPD5 / eligible loans
+# MAGIC ```
+# MAGIC
+# MAGIC The total number of eligible loans is the **denominator**. We do not use all applications or all approved loans.
 
 # COMMAND ----------
 import hashlib
@@ -60,9 +86,11 @@ FPD_VIEW = "fpd_contracts"
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 1. Verify the inherited sources
+# MAGIC ## 1. Check the data we received
 # MAGIC
-# MAGIC Before answering the business question, confirm that the handover contains the expected lending lifecycle and that the source uses the agreed observation date. An analysis built on missing or differently dated data is not comparable with the governed result.
+# MAGIC The notebook needs eight tables. It also expects the data to be current through `2026-09-01`.
+# MAGIC
+# MAGIC Run the next cell. It will stop if a table is missing or the date is wrong.
 
 # COMMAND ----------
 expected_tables = {
@@ -98,11 +126,19 @@ display(inventory.orderBy("tableName"))
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 2. Understand how applications entered the business
+# MAGIC ## 2. Where did customers apply?
 # MAGIC
-# MAGIC Before examining repayment outcomes, establish the origination context. We want to know which channels carried the promotion, how decisions were distributed, and whether the promotion represents a materially different application population.
+# MAGIC Before checking late payments, first look at the loan applications.
 # MAGIC
-# MAGIC PySpark is useful here because an analyst can interactively derive a cohort label and profile several fields in one DataFrame workflow.
+# MAGIC We want to know:
+# MAGIC
+# MAGIC - Where did customers apply: a store, the mobile app, the website, or the call center?
+# MAGIC - How many applications were approved, declined, or cancelled?
+# MAGIC - Which applications used the smartphone promotion?
+# MAGIC
+# MAGIC **PySpark** is Python used to work with Spark data.
+# MAGIC
+# MAGIC The next cell labels the promotion applications, groups the applications, and counts them.
 
 # COMMAND ----------
 applications = spark.table(f"{CORE_SCHEMA}.loan_application")
@@ -118,8 +154,6 @@ application_summary = (
     .groupBy("promotion_cohort", "application_channel_code", "decision_code")
     .agg(
         F.count("*").alias("applications"),
-        F.round(F.sum("requested_amount"), 2).alias("requested_amount_php"),
-        F.round(F.avg("underwriting_score"), 2).alias("average_underwriting_score"),
     )
     .orderBy("promotion_cohort", F.desc("applications"))
 )
@@ -128,15 +162,29 @@ display(application_summary)
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC **Interpret the result:** Which application channels contain the promotion? Do not infer repayment behavior yet—an application profile describes demand and underwriting decisions, not whether an originated contract made its first payment.
+# MAGIC **Look at the result:** Where do you see promotion applications? How many were approved?
+# MAGIC
+# MAGIC This table only describes applications. It does not tell us whether customers made their first payment.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 3. Determine when promotion volume appeared
+# MAGIC ## 3. Did applications increase during the promotion?
 # MAGIC
-# MAGIC Risk reported that promotion volume increased. Test that premise before investigating payment outcomes.
+# MAGIC Unicorn Finance saw more applications during the promotion period. The next query checks the monthly numbers.
 # MAGIC
-# MAGIC SQL makes the monthly aggregation easy to inspect and reuse in a visualization. Plot `application_month` on the x-axis and `applications` on the y-axis, colored by `promotion_cohort`. The result should show when the promotion entered the origination mix.
+# MAGIC It shows **when** applications increased. It does not prove that the promotion caused the increase.
+# MAGIC
+# MAGIC The query uses SQL to count applications for each month.
+# MAGIC
+# MAGIC Create a chart with:
+# MAGIC
+# MAGIC - `application_month` on the horizontal axis;
+# MAGIC - `applications` on the vertical axis; and
+# MAGIC - `promotion_cohort` as the color.
+# MAGIC
+# MAGIC `promotion_cohort` means **promotion group**.
+# MAGIC
+# MAGIC Look for the month when promotion applications appear.
 
 # COMMAND ----------
 # MAGIC %sql
@@ -147,33 +195,34 @@ display(application_summary)
 # MAGIC     THEN '0% smartphone promotion'
 # MAGIC     ELSE 'Other applications'
 # MAGIC   END AS promotion_cohort,
-# MAGIC   p.product_name,
 # MAGIC   COUNT(*) AS applications,
 # MAGIC   SUM(CASE WHEN a.decision_code = 'APPROVED' THEN 1 ELSE 0 END) AS approved_applications
 # MAGIC FROM hc_workshop.core_lending.loan_application AS a
-# MAGIC JOIN hc_workshop.core_lending.loan_product AS p
-# MAGIC   ON a.product_id = p.product_id
 # MAGIC GROUP BY ALL
 # MAGIC ORDER BY application_month, promotion_cohort, applications DESC
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC **Why this matters:** Higher application volume can produce more problem contracts even when the underlying rate is unchanged. The next steps therefore compare both counts and rates using a fair, observable denominator.
+# MAGIC **Why do this first?** More applications can lead to more late payments simply because there are more loans.
+# MAGIC
+# MAGIC We therefore need to compare both:
+# MAGIC
+# MAGIC - the number of loans with a late first payment; and
+# MAGIC - the percentage of eligible loans with a late first payment.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 4. Build the eligible FPD5 population
+# MAGIC ## 4. Which loans can we check for FPD5?
 # MAGIC
-# MAGIC Risk has asked which originated contracts crossed the workshop's first-payment-default threshold and therefore need further attention.
+# MAGIC An application is not yet a loan. Only an approved application can become a loan contract with scheduled payments.
 # MAGIC
-# MAGIC We cannot answer that from applications alone:
+# MAGIC To check FPD5, we need loans that:
 # MAGIC
-# MAGIC - only originated contracts have repayment schedules;
-# MAGIC - the `installment` table contains the fixed-term schedules used by this analysis;
-# MAGIC - only installment number `1` is relevant to **first** payment default;
-# MAGIC - recent first installments must be excluded until all five observation days have passed.
+# MAGIC - have a payment schedule in the `installment` table;
+# MAGIC - have a first installment; and
+# MAGIC - reached day five after the first-payment due date by `2026-09-01`.
 # MAGIC
-# MAGIC First, isolate the observable first installments and assign the FPD5 flag.
+# MAGIC The next cell creates that list. It also marks each loan as FPD5 or not FPD5.
 
 # COMMAND ----------
 eligible_first_installments = spark.sql(
@@ -205,7 +254,9 @@ display(
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC Next, connect each eligible first installment to its contract, application, product, and retail context. The output grain must be exactly one row per eligible contract so that every contract contributes once to the denominator.
+# MAGIC We now have the first-payment result. Next, add details about the loan, product, store, and salesperson.
+# MAGIC
+# MAGIC Each loan must appear exactly once. If a loan appears twice, the counts and rates will be wrong.
 
 # COMMAND ----------
 fpd_contracts = spark.sql(
@@ -254,20 +305,31 @@ duplicate_contracts = (
     .count()
 )
 if duplicate_contracts:
-    raise RuntimeError("FPD5 dataset is not at one-row-per-contract grain")
+    raise RuntimeError("The FPD5 data has more than one row for a loan contract")
 
 print(f"Created session temporary view: {FPD_VIEW}")
-print(f"Eligible contracts: {fpd_contracts.count():,}")
+print(f"Eligible loans: {fpd_contracts.count():,}")
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 5. Test whether the signal is elevated and concentrated
+# MAGIC ## 5. Was FPD5 higher for the promotion?
 # MAGIC
-# MAGIC We now have a fair population. Work through the questions in order rather than jumping directly to a list of high-rate stores.
+# MAGIC We now have the loans that are old enough to check. Start with the main business question.
 # MAGIC
-# MAGIC ### 5.1 Is FPD5 higher for the promotion?
+# MAGIC ### 5.1 Compare promotion loans with other loans
 # MAGIC
-# MAGIC Compare the promotion with all other eligible originations. The denominator in each row is the number of contracts that had reached the five-day observation point.
+# MAGIC The next query creates two groups:
+# MAGIC
+# MAGIC - loans from the 0% smartphone promotion; and
+# MAGIC - all other eligible loans.
+# MAGIC
+# MAGIC For each group, it shows:
+# MAGIC
+# MAGIC - the total number of eligible loans;
+# MAGIC - the number with FPD5; and
+# MAGIC - the FPD5 percentage.
+# MAGIC
+# MAGIC The result calls the second group **Other eligible originations**. Here, an origination means a loan that was created.
 
 # COMMAND ----------
 # MAGIC %sql
@@ -275,23 +337,26 @@ print(f"Eligible contracts: {fpd_contracts.count():,}")
 # MAGIC   promotion_cohort,
 # MAGIC   COUNT(*) AS eligible_contracts,
 # MAGIC   SUM(fpd5_flag) AS fpd5_contracts,
-# MAGIC   ROUND(AVG(fpd5_flag) * 100, 2) AS fpd5_rate_pct,
-# MAGIC   ROUND(SUM(principal_amount), 2) AS originated_principal_php
+# MAGIC   ROUND(AVG(fpd5_flag) * 100, 2) AS fpd5_rate_pct
 # MAGIC FROM fpd_contracts
 # MAGIC GROUP BY promotion_cohort
 # MAGIC ORDER BY fpd5_rate_pct DESC
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC Record both the count and the rate. A higher rate supports further investigation, but this comparison alone does not explain why the difference exists.
+# MAGIC Look at both the number and the percentage.
+# MAGIC
+# MAGIC A higher percentage tells us that the promotion needs more investigation. It does not tell us why the percentage is higher.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 5.2 Could raw store volume create a misleading hotspot?
+# MAGIC ### 5.2 Are a few stores handling most applications?
 # MAGIC
-# MAGIC High-volume stores naturally produce more applications and potentially more FPD5 contracts. Measure how concentrated application volume is before interpreting a hotspot.
+# MAGIC A busy store may have more late payments simply because it handles more applications.
 # MAGIC
-# MAGIC This result is **origination-volume context**. It is not an FPD5 concentration measure and must not be presented as one.
+# MAGIC The next query uses all applications linked to a store. It checks how many come from the busiest 20% of stores.
+# MAGIC
+# MAGIC This is background information only. It does **not** identify promotion or FPD5 problem areas.
 
 # COMMAND ----------
 # MAGIC %sql
@@ -321,9 +386,11 @@ print(f"Eligible contracts: {fpd_contracts.count():,}")
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 5.3 Which store and associate combinations need review?
+# MAGIC ### 5.3 Which stores and salespeople need a closer look?
 # MAGIC
-# MAGIC Rank promotion cohorts by **rate**, while retaining the eligible and FPD5 counts. The minimum of 10 eligible contracts avoids prioritizing a segment based on a tiny denominator.
+# MAGIC Among promotion loans, compare the FPD5 rate for each store and salesperson combination.
+# MAGIC
+# MAGIC The query only shows groups with at least 10 eligible loans. This reduces the chance that a very small group looks important by accident.
 
 # COMMAND ----------
 # MAGIC %sql
@@ -343,11 +410,21 @@ print(f"Eligible contracts: {fpd_contracts.count():,}")
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 5.4 Your investigation: change the analytical grain
+# MAGIC ### 5.4 Try it: group the loans in a different way
 # MAGIC
 # MAGIC **Timebox: 12 minutes**
 # MAGIC
-# MAGIC A hotspot can appear broad at one grain and localized at another. Change `ANALYSIS_DIMENSION` to `store_province` or `merchant_name`, rerun the cell, and compare the result with the store-associate ranking.
+# MAGIC `ANALYSIS_DIMENSION` controls how the promotion loans are grouped.
+# MAGIC
+# MAGIC 1. Change it from `region_code` to `store_province` or `merchant_name`.
+# MAGIC 2. Run the cell again.
+# MAGIC 3. Compare the result with the store-and-salesperson result above.
+# MAGIC
+# MAGIC If you choose `region_code` or `store_province`, ask whether the problem covers a large area.
+# MAGIC
+# MAGIC If you choose `merchant_name`, ask whether the problem is focused on one retail partner.
+# MAGIC
+# MAGIC Always check the number of eligible loans as well as the percentage.
 
 # COMMAND ----------
 ANALYSIS_DIMENSION = "region_code"
@@ -373,6 +450,7 @@ participant_breakdown = spark.sql(
     FROM {FPD_VIEW}
     WHERE promotion_code = 'ZERO_SMARTPHONE_2026'
     GROUP BY {ANALYSIS_DIMENSION}
+    HAVING COUNT(*) >= 10
     ORDER BY fpd5_rate_pct DESC, eligible_contracts DESC, segment
     """
 )
@@ -381,36 +459,53 @@ display(participant_breakdown)
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC Record:
+# MAGIC Write down:
 # MAGIC
-# MAGIC 1. the dimension you selected;
-# MAGIC 2. its highest-rate segment;
-# MAGIC 3. the segment's eligible-contract count, FPD5 count, and FPD5 rate;
-# MAGIC 4. whether this looks broader or more localized than the store-associate result; and
-# MAGIC 5. one operational question that would reduce uncertainty—for example, who owns the FPD5 definition or which control validates settlement dates.
+# MAGIC 1. how you grouped the loans;
+# MAGIC 2. the group with the highest FPD5 percentage;
+# MAGIC 3. its number of eligible loans, number of FPD5 loans, and FPD5 percentage;
+# MAGIC 4. whether the problem looks broad or focused; and
+# MAGIC 5. one question you would ask next.
 # MAGIC
-# MAGIC Use this handover structure:
+# MAGIC Example follow-up questions:
 # MAGIC
-# MAGIC > Among contracts whose first installment had reached the five-day observation point by 2026-09-01, the 0% smartphone promotion had an FPD5 rate of ___% versus ___% for other eligible originations. At the `<dimension>` grain, `<segment>` had ___ FPD5 contracts from ___ eligible contracts (___%); this is a synthetic investigation signal that requires customer-mix, campaign, control, and operational evidence before any conclusion.
+# MAGIC - Who is responsible for the FPD5 definition?
+# MAGIC - How do we check that first-payment dates are correct?
+# MAGIC - Did the promotion rules or store sales process change?
+# MAGIC
+# MAGIC Use this structure for your summary:
+# MAGIC
+# MAGIC > **Promotion:** ___ of ___ eligible loans were FPD5 (___%).
+# MAGIC >
+# MAGIC > **Other eligible loans:** The FPD5 rate was ___%.
+# MAGIC >
+# MAGIC > **My grouping:** When I grouped promotion loans by `<grouping>`, `<group>` had ___ FPD5 loans out of ___ eligible loans (___%).
+# MAGIC >
+# MAGIC > This result needs more investigation. It is not proof of fraud.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 6. Preserve the investigation for handover
+# MAGIC ## 6. Save your work for the next analyst
 # MAGIC
-# MAGIC The temporary view disappears with the notebook session. Unicorn Finance needs a durable result that another owner can find, inspect, and recover.
+# MAGIC The temporary view will disappear when the notebook session ends.
+# MAGIC
+# MAGIC Save your result as a Delta table so another analyst can open it later.
 # MAGIC
 # MAGIC We will:
 # MAGIC
-# MAGIC 1. create a participant-specific Delta table from your selected breakdown;
-# MAGIC 2. inspect its baseline version;
-# MAGIC 3. add an operational review note; and
-# MAGIC 4. compare the two retained versions.
+# MAGIC
+# MAGIC 1. create a table with a name that is unique to you;
+# MAGIC 2. save your grouped result;
+# MAGIC 3. add a follow-up note; and
+# MAGIC 4. compare the table before and after the note was added.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 6.1 Choose a collision-resistant table name
+# MAGIC ### 6.1 Create your table name
 # MAGIC
-# MAGIC Derive the table name from your full workspace identity so that participants do not overwrite one another's investigation.
+# MAGIC Every participant needs a different table name.
+# MAGIC
+# MAGIC The next cell uses your workspace login and adds a short code. This prevents participants from overwriting each other's tables.
 
 # COMMAND ----------
 current_user = spark.sql("SELECT current_user()").first()[0]
@@ -429,13 +524,15 @@ RUNNER_ID = (
 INVESTIGATION_TABLE = f"unicorn_{RUNNER_ID}_fpd_investigation"
 INVESTIGATION_FQ = f"{LABS_SCHEMA}.{INVESTIGATION_TABLE}"
 
-print(f"Participant investigation table: {INVESTIGATION_FQ}")
+print(f"Your saved table: {INVESTIGATION_FQ}")
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 6.2 Persist your selected breakdown
+# MAGIC ### 6.2 Save your grouped result
 # MAGIC
-# MAGIC Write the result as a Delta table. `overwriteSchema` makes a complete notebook rerun reproducible for your participant-specific table.
+# MAGIC Save the result as a Delta table.
+# MAGIC
+# MAGIC If you run the full notebook again, this step replaces only your own table.
 
 # COMMAND ----------
 (
@@ -449,9 +546,11 @@ display(spark.table(INVESTIGATION_FQ))
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 6.3 Capture and inspect the baseline
+# MAGIC ### 6.3 View the first saved version
 # MAGIC
-# MAGIC Each committed Delta change receives a transaction-log version. Capture the current version before changing the table.
+# MAGIC Delta keeps a history of changes to a table. Each saved change gets a version number.
+# MAGIC
+# MAGIC Record the current version before changing the table.
 
 # COMMAND ----------
 baseline_version = int(
@@ -460,7 +559,7 @@ baseline_version = int(
     .first()[0]
 )
 
-print(f"Baseline Delta version: {baseline_version}")
+print(f"First saved Delta version: {baseline_version}")
 display(
     spark.sql(f"DESCRIBE HISTORY {INVESTIGATION_FQ}")
     .select("version", "timestamp", "operation", "operationParameters")
@@ -469,23 +568,23 @@ display(
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 6.4 Add the operational follow-up
+# MAGIC ### 6.4 Add a note for the next analyst
 # MAGIC
-# MAGIC The analytical result tells the next owner where to look. Add a review column that records what should be validated before anyone treats the signal as a conclusion.
+# MAGIC Add a column that tells the next analyst what to check before drawing a conclusion.
 
 # COMMAND ----------
 if "review_note" not in spark.table(INVESTIGATION_FQ).columns:
     spark.sql(
         f"""
         ALTER TABLE {INVESTIGATION_FQ}
-        ADD COLUMNS (review_note STRING COMMENT 'Operational follow-up for this segment')
+        ADD COLUMNS (review_note STRING COMMENT 'Follow-up action for this group')
         """
     )
 
 spark.sql(
     f"""
     UPDATE {INVESTIGATION_FQ}
-    SET review_note = 'Validate customer mix, campaign design, and origination controls'
+    SET review_note = 'Check customer mix, promotion rules, and the store sales process'
     """
 )
 
@@ -493,9 +592,13 @@ display(spark.table(INVESTIGATION_FQ))
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ### 6.5 Compare the retained versions
+# MAGIC ### 6.5 Compare the table before and after
 # MAGIC
-# MAGIC Read the baseline and current versions to verify what changed. Time travel works only while the transaction log and referenced data files are retained; it is not a substitute for a backup or recovery strategy.
+# MAGIC Read the old version and the current version. Check that the only new field is `review_note`.
+# MAGIC
+# MAGIC Delta can read an old version only while the required files still exist.
+# MAGIC
+# MAGIC Old versions help us check changes. They are not a backup.
 
 # COMMAND ----------
 current_version = int(
@@ -511,13 +614,13 @@ display(
     spark.createDataFrame(
         [
             (
-                "before operational note",
+                "before review note",
                 baseline_version,
                 before.count(),
                 ", ".join(before.columns),
             ),
             (
-                "after operational note",
+                "after review note",
                 current_version,
                 after.count(),
                 ", ".join(after.columns),
@@ -536,11 +639,15 @@ display(
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 7. Reconcile the governed Metric View
+# MAGIC ## 7. Check the shared FPD5 calculation
 # MAGIC
-# MAGIC The notebook made the FPD5 logic visible so that you could inspect it. Dashboards and Genie Agents should not each recreate that formula independently.
+# MAGIC We calculated FPD5 in the notebook so you could see how it works.
 # MAGIC
-# MAGIC `hc_workshop.workshop_shared.fpd_metrics` centralizes the fields, measures, display formats, and FPD5 definition. Query it and confirm that its promotion comparison reconciles with the notebook result.
+# MAGIC Unicorn Finance also stores the approved FPD5 calculation in a **Metric View**. A Metric View keeps a shared business calculation in one place.
+# MAGIC
+# MAGIC The dashboard and Genie Agent use this Metric View. They should not create their own versions of the FPD5 formula.
+# MAGIC
+# MAGIC Run the next cell. Check that the Metric View gives the same promotion rates as the notebook.
 
 # COMMAND ----------
 metric_view_sql = f"{SHARED_SCHEMA}.fpd_metrics"
@@ -560,9 +667,9 @@ metric_view_exists = (
 
 if not metric_view_exists:
     raise RuntimeError(
-        "The required Metric View hc_workshop.workshop_shared.fpd_metrics "
-        "is unavailable. Stop here and ask workshop support; do not recreate "
-        "the governed FPD5 definition in a personal table or Agent."
+        "The shared Metric View hc_workshop.workshop_shared.fpd_metrics "
+        "is not available. Stop here and ask for help. Do not create a "
+        "different FPD5 formula in your own table or Agent."
     )
 
 metric_result = spark.sql(
@@ -585,23 +692,30 @@ display(metric_result)
 # MAGIC The standard workshop dataset should show approximately:
 # MAGIC
 # MAGIC - **42.26%** for the 0% smartphone promotion;
-# MAGIC - **21.03%** for other eligible originations.
+# MAGIC - **21.03%** for the other eligible loans.
 # MAGIC
-# MAGIC If your earlier result differs materially, recheck the observation date, installment number, inclusive day-five boundary, and eligible-contract denominator before continuing.
+# MAGIC If your result is very different, check:
+# MAGIC
+# MAGIC - the date is `2026-09-01`;
+# MAGIC - you used only the first installment;
+# MAGIC - a payment on day five counts as FPD5; and
+# MAGIC - you divided by eligible loans, not all applications.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 8. Trace the same metric into the dashboard
+# MAGIC ## 8. Check the dashboard
 # MAGIC
-# MAGIC The **Unicorn FPD5 Overview** dashboard is another consumer of `fpd_metrics`. As you open it, verify:
+# MAGIC Open the **Unicorn FPD5 Overview** dashboard. It uses the same `fpd_metrics` Metric View.
 # MAGIC
-# MAGIC 1. the KPIs reconcile with the Metric View query;
-# MAGIC 2. the promotion filter updates the intended visualizations;
-# MAGIC 3. rates retain visible denominators;
-# MAGIC 4. the published dashboard is a snapshot distinct from its editable draft; and
-# MAGIC 5. the selected data-permission mode matches the intended audience.
+# MAGIC Check these items:
 # MAGIC
-# MAGIC The purpose is not merely to display charts. It is to confirm that the governed definition survives when the analysis moves from a notebook into a reusable business asset.
+# MAGIC 1. The summary numbers match the notebook.
+# MAGIC 2. The promotion filter changes the charts.
+# MAGIC 3. Each rate is shown with the number of eligible loans.
+# MAGIC 4. The published dashboard is the version that viewers see. It may differ from an unpublished draft.
+# MAGIC 5. The workshop participant group can view it, but **All account users** cannot.
+# MAGIC
+# MAGIC The goal is simple: the notebook and dashboard must give the same business answer.
 
 # COMMAND ----------
 # MAGIC %md
@@ -609,29 +723,37 @@ display(metric_result)
 # MAGIC
 # MAGIC **Timebox: 10 minutes**
 # MAGIC
-# MAGIC Create a focused natural-language interface to the same governed metric:
+# MAGIC A Genie Agent lets you ask questions about data in everyday language.
+# MAGIC
+# MAGIC Create an Agent that uses the shared FPD5 Metric View:
 # MAGIC
 # MAGIC 1. Open **Genie Agents** from the sidebar and select **New**.
-# MAGIC 2. Add only `hc_workshop.workshop_shared.fpd_metrics` as the data source. Do not add raw `core_lending` tables or recreate the FPD5 formula.
-# MAGIC 3. Name the Agent **Unicorn FPD5 Investigator — `<your_workspace_username>`**.
-# MAGIC 4. Select the workshop SQL warehouse.
+# MAGIC 2. Add only `hc_workshop.workshop_shared.fpd_metrics` as the data source. Do not add the raw lending tables.
+# MAGIC 3. Name the Agent **Unicorn FPD5 Investigator — `<your_workspace_username>`**. Replace the placeholder with the login name shown in your workspace.
+# MAGIC 4. Select the SQL warehouse shown for this workshop. If you are unsure which one to use, stop and ask for help.
 # MAGIC 5. Set the description to:
 # MAGIC
-# MAGIC    > Answers governed questions about eligible fixed-term contracts and FPD5 for the synthetic Unicorn Finance workshop. It compares promotion, product, channel, store, region, and sales-associate cohorts through the `fpd_metrics` Metric View and must describe hotspots as investigation signals rather than confirmed fraud.
+# MAGIC    > Answers questions about first-payment problems in the synthetic Unicorn Finance data.
+# MAGIC    > Uses only the `fpd_metrics` Metric View.
+# MAGIC    > Shows the number of eligible loans and the FPD5 rate.
+# MAGIC    > Describes high rates as reasons to investigate, not proof of fraud.
 # MAGIC
 # MAGIC 6. Add these common questions:
-# MAGIC    - How does FPD5 for the 0% smartphone promotion compare with other eligible originations?
-# MAGIC    - Which promotion stores have the highest FPD5 rate, with at least 10 eligible contracts?
-# MAGIC    - Which promotion store-associate pairs have the highest FPD5 rate, with at least 10 eligible contracts?
-# MAGIC 7. Do not tune the Agent context yet. Section 02 will improve this same baseline Agent.
+# MAGIC    - How does the promotion's FPD5 rate compare with the other eligible loans?
+# MAGIC    - Which promotion stores have the highest FPD5 rate and at least 10 eligible loans?
+# MAGIC    - Which store and salesperson combinations have the highest FPD5 rate and at least 10 eligible loans?
+# MAGIC 7. Do not add more instructions yet. You will improve this same Agent in Section 02.
 # MAGIC 8. In the Workspace browser, confirm that the Agent is in your user folder.
-# MAGIC 9. Open **Share** and confirm that it is not shared with **All account users**, the workshop participant group, or another participant. Inherited workspace-administrator access is expected.
+# MAGIC 9. Open **Share**.
+# MAGIC    - Confirm that the Agent is not shared with **All account users**.
+# MAGIC    - Confirm that it is not shared with the workshop group or another participant.
+# MAGIC    - Workspace administrators may still have access.
 # MAGIC 10. Ask:
 # MAGIC
-# MAGIC     > As of 2026-09-01, how does FPD5 for the 0% smartphone promotion compare with other eligible originations?
+# MAGIC     > As of 2026-09-01, how does the promotion's FPD5 rate compare with the other eligible loans?
 # MAGIC
-# MAGIC 11. Inspect the generated SQL before accepting the prose answer.
-# MAGIC 12. Save the baseline response and generated SQL for Section 02.
+# MAGIC 11. Open the SQL created by the Agent. Check that it uses `fpd_metrics`.
+# MAGIC 12. Keep this Agent conversation. Do not delete it. You will return to the same answer and SQL in Section 02.
 
 # COMMAND ----------
 # MAGIC %md
@@ -639,50 +761,54 @@ display(metric_result)
 # MAGIC
 # MAGIC - `fpd_metrics` is its only data source;
 # MAGIC - it uses the workshop SQL warehouse;
-# MAGIC - it remains unshared with other participants;
-# MAGIC - the generated SQL invokes governed measures with `MEASURE(...)`;
-# MAGIC - the result reconciles to approximately 42.26% and 21.03%; and
-# MAGIC - the response names the observation date and does not claim confirmed fraud.
+# MAGIC - no other participant can open it;
+# MAGIC - its SQL uses `MEASURE(...)`;
+# MAGIC - its answer is close to 42.26% and 21.03%; and
+# MAGIC - its answer includes the date and does not claim fraud.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 10. Inspect the SQL workload you created
+# MAGIC ## 10. Check the SQL query
 # MAGIC
-# MAGIC The notebook's Python and SQL cells ran on its attached notebook compute. The dashboard and Genie Agent use the workshop SQL warehouse, even though all three surfaces can consume the same governed Metric View.
+# MAGIC The notebook ran its code on notebook compute. The dashboard and Genie Agent ran their SQL on the workshop SQL warehouse.
 # MAGIC
-# MAGIC Operating the solution means inspecting the warehouse workload rather than assuming a successful dashboard or Agent answer was efficient.
+# MAGIC **Query History** shows the SQL that ran on the warehouse. **Query Profile** shows where a query spent its time.
 # MAGIC
 # MAGIC 1. Open **Query History** and filter to the workshop SQL warehouse.
-# MAGIC 2. Locate one dashboard- or Genie-generated statement from this session that queries the Metric View.
+# MAGIC 2. Find one query created by the dashboard or Genie Agent.
 # MAGIC 3. Open its **Query Profile**.
-# MAGIC 4. Compare time spent waiting, executing, and fetching results.
-# MAGIC 5. Check the longest operators, rows and bytes processed, pruning, and any spill insight.
+# MAGIC 4. Check how long the query waited, ran, and returned its result.
+# MAGIC 5. Check which step took the longest and how much data it read.
 # MAGIC
-# MAGIC Interpret symptoms carefully:
+# MAGIC Words you may see:
 # MAGIC
-# MAGIC - sustained queueing usually indicates concurrency or capacity pressure;
-# MAGIC - disk spill means an individual query exceeded available memory;
-# MAGIC - long result fetching can indicate a slow or abandoned client;
-# MAGIC - adding clusters helps concurrency, while increasing warehouse size primarily gives an individual query more resources.
+# MAGIC - **Queued:** The query waited because the warehouse was already busy.
+# MAGIC - **Spill:** The query needed more memory and temporarily used disk.
+# MAGIC - **Fetching:** The query finished, but the client was still receiving the result.
 # MAGIC
-# MAGIC If your query has no queueing or spill, that is a healthy observation—not a missing result.
+# MAGIC More warehouse clusters help run more queries at the same time. A larger warehouse gives one query more resources.
+# MAGIC
+# MAGIC Your query may have no queueing or spill. That is a good result.
 
 # COMMAND ----------
 # MAGIC %md
-# MAGIC ## 11. Investigation checkpoint
+# MAGIC ## 11. What should you understand?
 # MAGIC
-# MAGIC Before finishing, make sure you can explain:
+# MAGIC Before finishing, check that you can answer these questions:
 # MAGIC
-# MAGIC - what FPD5 stands for and why recent first installments are excluded;
-# MAGIC - which denominator you used and why;
-# MAGIC - whether the promotion signal is broad or concentrated in your selected dimension;
-# MAGIC - why the result requires investigation rather than a fraud conclusion;
-# MAGIC - what the Delta transaction history lets the next owner inspect;
-# MAGIC - why the dashboard and Genie Agent use the governed Metric View and a SQL warehouse; and
-# MAGIC - how you would distinguish a queued query from one that spilled to disk.
+# MAGIC - What does FPD5 mean?
+# MAGIC - Why can we not check very recent first payments?
+# MAGIC - What total did we use to calculate the FPD5 rate?
+# MAGIC - Was the high rate spread across many places or focused in a smaller group?
+# MAGIC - Why is a high rate not proof of fraud?
+# MAGIC - What can the Delta table history show?
+# MAGIC - Why do the dashboard and Genie Agent use the shared Metric View?
+# MAGIC - What is the difference between a queued query and a query that spilled to disk?
 # MAGIC
-# MAGIC Choose one asset—the notebook, Delta table, Metric View, dashboard, SQL warehouse, or Genie Agent—and write down:
+# MAGIC Choose one item: the notebook, Delta table, Metric View, dashboard, SQL warehouse, or Genie Agent.
 # MAGIC
-# MAGIC 1. its owner;
-# MAGIC 2. one operational risk; and
-# MAGIC 3. one recovery or validation action.
+# MAGIC Write down:
+# MAGIC
+# MAGIC 1. who should own it;
+# MAGIC 2. one thing that could go wrong; and
+# MAGIC 3. how you would check or fix it.

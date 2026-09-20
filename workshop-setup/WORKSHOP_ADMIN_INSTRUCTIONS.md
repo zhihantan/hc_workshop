@@ -67,14 +67,34 @@ This creates:
 Replace `<participant-group>` with the account group assigned to participants:
 
 ```sql
-GRANT ALL PRIVILEGES
+GRANT USE CATALOG
 ON CATALOG hc_workshop
+TO `<participant-group>`;
+
+GRANT USE SCHEMA, SELECT
+ON SCHEMA hc_workshop.core_lending
+TO `<participant-group>`;
+
+GRANT USE SCHEMA
+ON SCHEMA hc_workshop.workshop_shared
+TO `<participant-group>`;
+
+GRANT SELECT
+ON VIEW hc_workshop.workshop_shared.fpd_analysis
+TO `<participant-group>`;
+
+GRANT SELECT
+ON VIEW hc_workshop.workshop_shared.fpd_metrics
+TO `<participant-group>`;
+
+GRANT USE SCHEMA, CREATE TABLE
+ON SCHEMA hc_workshop.workshop_labs
 TO `<participant-group>`;
 ```
 
-Do not grant `MANAGE`.
+These are the minimum Unity Catalog grants for Sections 01 and 02. Add only the section-specific privileges documented for other sections. Do not grant catalog-wide `ALL PRIVILEGES` or `MANAGE`.
 
-`ALL PRIVILEGES` allows participants to access existing and future schemas, create schemas and models, and modify objects throughout this dedicated synthetic workshop catalog.
+Participants can read protected workshop sources and shared FPD5 assets, then create participant-owned lab tables. They cannot modify `core_lending` or facilitator-managed objects in `workshop_shared`.
 
 ## 8. Configure participant workspace access
 
@@ -87,4 +107,4 @@ Participants already have workspace access. Also confirm:
 - Each participant can create a Genie Agent in their own `/Workspace/Users/<workspace-username>` folder.
 - Participant user folders retain their default private permissions. Do not grant the participant group access to `/Workspace/Users` or place participant Agents in `/Workspace/Shared`.
 
-Serverless notebooks normally require no separate compute ACL. If a classic cluster is used as a fallback, grant participants `CAN ATTACH TO` on that cluster.
+Serverless notebooks normally require no separate compute ACL. Section 02 uses the assigned Serverless notebook compute. If an approved classic cluster is used only as the documented Section 01 fallback, grant participants `CAN ATTACH TO` on that cluster.

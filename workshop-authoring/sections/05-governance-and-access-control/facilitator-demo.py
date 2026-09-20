@@ -62,7 +62,7 @@
 # MAGIC %md
 # MAGIC **Interpretation**
 # MAGIC
-# MAGIC Stop at the error. Record the exact message, request ID if present, fully qualified object, requested action, and first failed gate. Use direct and inherited permission evidence before proposing a repair.
+# MAGIC Stop at the error. Record the exact message, request ID if present, fully qualified object, requested action, and first failed gate. Distinguish direct grants, parent-securable inheritance, and access obtained through group membership before proposing a repair.
 
 # COMMAND ----------
 # MAGIC %md

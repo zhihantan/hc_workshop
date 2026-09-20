@@ -10,6 +10,11 @@ For every slide:
 
 - provide a concise title;
 - keep visible text to one message, three to five short bullets, or one simple comparison;
+- assume some participants are new to lending and do not use English as their first language;
+- use short sentences and one idea per sentence;
+- use direct business questions instead of abstract analytical titles;
+- explain every necessary technical term in everyday language;
+- avoid unexplained words such as `origination`, `cohort`, `grain`, `denominator`, `reconcile`, `governed`, and `operational`;
 - recommend a visual, diagram, or verified product screenshot;
 - write detailed presenter notes;
 - include the live-demo or participant-activity transition when applicable;
@@ -24,11 +29,16 @@ Treat the implemented section assets and timed facilitator guide as more authori
 
 - Unicorn Finance Philippines is a fictional consumer lender.
 - Atlas Ridge Consulting has handed over an inherited Databricks lakehouse.
-- The business launched a brand-funded 0% smartphone point-of-sale promotion.
-- Promotion volume increased, and first-payment-default behavior appears concentrated by store and sales associate.
+- A customer chooses a selected Nova Mobile phone at a participating store.
+- The customer applies for a Unicorn Finance point-of-sale installment loan.
+- If approved, the customer repays the amount borrowed over 6, 9, or 12 months.
+- The customer pays 0% monthly interest because Nova Mobile pays Unicorn Finance a subsidy.
+- The phone is not free. A processing fee or down payment may still apply.
+- The campaign uses promotion code `ZERO_SMARTPHONE_2026` and analytical label `0% smartphone promotion`.
+- Loan applications increased, and some stores and salespeople had more first-payment problems.
 - Participants act as the new owners of the inherited analytical assets.
 - All workshop data is synthetic.
-- Elevated FPD5 is an investigation signal, not proof of fraud or causality.
+- A high FPD5 rate is a reason to investigate, not proof of fraud.
 
 Canonical FPD5 definition:
 
@@ -49,28 +59,28 @@ Do not reveal these exact rates before participants complete the initial investi
 
 ### Audience and purpose
 
-The audience has basic SQL and Python familiarity. Participants are taking over an inherited analytical workflow rather than attending a generic feature tour.
+The audience has basic SQL and Python familiarity. Some participants may be new to lending and may not use English as their first language. Slides must explain the business story before the technical workflow.
 
 By the end of the section, they should be able to:
 
-1. explain First Payment Default at five days past due, its observation window, and its eligible-contract denominator;
+1. explain FPD5 and which loans are old enough to check;
 2. choose notebook, Jobs, or SQL warehouse compute based on workload;
 3. explain the serverless-versus-classic operating model and the role of Serverless, Pro, and Classic SQL warehouses;
-4. use PySpark and SQL to answer distinct questions in one connected investigation;
-5. change the analytical grain of the FPD5 investigation;
-6. persist the result as a participant-specific Delta table and inspect its history;
-7. trace one governed FPD5 definition through a Metric View, AI/BI dashboard, and private Genie Agent;
+4. use PySpark and SQL to answer clear business questions;
+5. group the loans in a different way and explain the result;
+6. save the result as a participant-specific Delta table and inspect its history;
+7. check that the notebook, Metric View, dashboard, and private Genie Agent give the same answer;
 8. inspect SQL workload evidence and distinguish queueing from spill.
 
 ### Timing and instructional arc
 
 - 9:45–9:50 — assignment, FPD5 definition, eligibility, and caveat
 - 9:50–9:57 — compute decision framing
-- 9:57–10:15 — source verification, application profile, and promotion timing
-- 10:15–10:27 — eligible FPD5 population and concentration analysis
-- 10:27–10:39 — participant changes analytical grain and writes a handover note
-- 10:39–10:49 — Delta persistence and history
-- 10:49–10:56 — Metric View and dashboard reconciliation
+- 9:57–10:15 — check where customers applied and when applications increased
+- 10:15–10:27 — find loans old enough to check and compare FPD5 rates
+- 10:27–10:39 — participant groups the loans in a different way and writes a summary
+- 10:39–10:49 — save the result and view Delta history
+- 10:49–10:56 — check that the Metric View and dashboard match
 - 10:56–11:06 — private Genie Agent creation and verification
 - 11:06–11:11 — Query History and Query Profile
 - 11:11–11:15 — investigation checkpoint
@@ -86,8 +96,8 @@ Use eight core slides. An optional title slide and optional ownership close may 
 
 **Visible content**
 
-- Unicorn Finance operational handover
-- Compute → notebook → Delta → governed BI and Genie → operations
+- Check first-payment problems at Unicorn Finance
+- Understand → compare → save → share → check
 - 9:45 AM–11:15 AM
 
 **Recommended visual**
@@ -96,7 +106,7 @@ A single left-to-right workflow with five stages. Do not use product-logo wallpa
 
 **Presenter notes**
 
-Explain that this is one connected workflow, not a tour of unrelated Databricks features. Participants create evidence, persist it, consume the same governed metric through multiple assets, and inspect the workload it generates.
+Explain that the section follows one question from the source data to a saved result, dashboard, Genie Agent, and SQL query.
 
 **Transition**
 
@@ -104,39 +114,38 @@ Move immediately to the inherited business question.
 
 ---
 
-### Slide 1 — Did the 0% promotion create an FPD5 hotspot?
+### Slide 1 — Did promotion loans have more late first payments?
 
 **Priority:** Essential  
 **Strategy:** Create new
 
 **Purpose**
 
-Establish the business question, analytical denominator, and fiction boundary.
+Explain the phone loan, the first-payment question, and the safety warning.
 
 **Visible content**
 
-- Atlas Ridge handed over the platform.
-- Promotion volume increased.
-- FPD5 appears concentrated by store and sales associate.
-- FPD5 means First Payment Default at five days past due.
-- Count only first installments observed through day five as of 2026-09-01.
-- Elevated FPD5 is an investigation signal, not confirmed fraud.
+- Customers financed selected phones over 6, 9, or 12 months.
+- Customers paid 0% monthly interest but still repaid the amount borrowed.
+- FPD5 means the first payment was not fully paid before day five.
+- Compare promotion loans with other loans old enough to check.
+- A high rate is a reason to investigate, not proof of fraud.
 
 **Recommended visual**
 
 A simple funnel:
 
-`Originations → eligible first installments → FPD5 numerator → cohort/store/associate comparison`
+`Application → approved phone loan → first payment due → wait five days → FPD5 yes or no`
 
 Add a small “investigate, do not infer fraud” callout.
 
 **Presenter notes**
 
-Define FPD5 carefully. Emphasize that the denominator is eligible contracts. Settlement exactly on day five counts as FPD5. Do not reveal the expected cohort rates yet. Separate high origination-volume concentration from FPD5 hotspot analysis.
+Explain that a loan cannot be checked until five days after its first payment was due. A payment on day five counts as FPD5. Do not reveal the expected rates yet. Explain that a busy store can have more late payments simply because it handles more loans.
 
 **Transition**
 
-“Before we query the data, we need to choose compute from the workload.”
+“Before we check the data, let’s choose where the notebook and SQL should run.”
 
 ---
 
@@ -211,40 +220,40 @@ Open the participant notebook, show the eight inherited tables, and select the a
 
 ---
 
-### Slide 4 — From promotion volume to a fair FPD5 comparison
+### Slide 4 — How will we answer the question?
 
 **Priority:** Essential  
 **Strategy:** Create new
 
 **Visible content**
 
-`Unity Catalog tables → PySpark application profile → SQL monthly trend → eligible first installments → one row per eligible contract → cohort and hotspot comparison`
+`Check tables → see where customers applied → see when applications increased → find loans old enough to check → compare FPD5 counts and percentages`
 
 Key messages:
 
-- Profile how applications entered before claiming anything about repayment.
-- Test when promotion volume appeared before analyzing its outcomes.
-- Exclude contracts that have not completed the five-day observation window.
-- Declare grain and denominator before calculating a rate.
-- Use counts and rates together when prioritizing segments for review.
+- First see where customers applied.
+- Then see when promotion applications increased.
+- Check a loan when its first payment reaches day five after the due date.
+- Show the number of FPD5 loans and the percentage together.
+- Group the loans in different ways to find places that need a closer look.
 
 **Recommended visual**
 
-A vertical investigation flow in which every transformation is labeled with the business question it answers.
+A simple vertical flow. Label every step with the question it answers.
 
 **Presenter notes**
 
-Use this slide briefly while transitioning from source discovery into the notebook. Do not organize the explanation around language features. In the workspace, pause at source inventory, application context, promotion timing, eligibility, cohort comparison, volume concentration, and hotspot prioritization. The participant exercise changes `ANALYSIS_DIMENSION` and requires a written interpretation with evidence, denominator, caveat, and owner question.
+Use this slide briefly before the notebook. Do not organize the explanation around Python or SQL features. Pause at each simple question shown in the flow. The participant exercise changes `ANALYSIS_DIMENSION` and asks for a plain-language summary.
 
-Approximately 81% concentration in the source material refers to origination volume at top stores, not automatically to FPD5 concentration.
+Approximately 81% of store applications come from the busiest 20% of stores. This does not mean those stores have the highest FPD5 percentage.
 
 **Live transition**
 
-Run the notebook through the hotspot analysis, then give participants 12 uninterrupted minutes for the grain-change exercise.
+Run the notebook through the store-and-salesperson comparison. Then give participants 12 uninterrupted minutes to group the loans in a different way.
 
 ---
 
-### Slide 5 — Make the investigation operable with Delta
+### Slide 5 — Save the result for the next analyst
 
 **Priority:** Essential  
 **Strategy:** Hybrid
@@ -255,14 +264,14 @@ Use an existing Delta Lake transaction-log or time-travel visual if it is accura
 
 **Visible content**
 
-`Participant breakdown → participant-specific Delta table → add review_note → inspect history → read earlier version`
+`Grouped result → your Delta table → add review_note → view history → read the earlier version`
 
 Key messages:
 
-- Persist a result when another person or process must use or operate it.
-- Schema evolution should be explicit and reviewed.
-- Every committed change creates table history.
-- Time travel depends on retained logs and files; it is not a backup guarantee.
+- Save a result when another person will need it later.
+- Add table fields deliberately.
+- Every saved change adds to the table history.
+- Old versions depend on retained files. They are not a backup.
 
 **Recommended visual**
 
@@ -270,7 +279,7 @@ A before-and-after schema graphic plus a small transaction-history timeline.
 
 **Presenter notes**
 
-The table is the participant’s real investigation output, not a disconnected sample. The lab adds `review_note` deliberately. The earlier and later versions must retain the same analytical row count. Version numbers may differ after reruns.
+The table contains the participant’s real result. The notebook adds `review_note` for the next analyst. The number of rows should stay the same. Only the extra note field should be added.
 
 The generated participant identifier supports ownership and cleanup. It is not a permission boundary.
 
@@ -280,7 +289,7 @@ Write the table, alter the schema, update the note, inspect `DESCRIBE HISTORY`, 
 
 ---
 
-### Slide 6 — A governed dashboard is more than charts
+### Slide 6 — Does the dashboard show the same answer?
 
 **Priority:** Essential  
 **Strategy:** Hybrid
@@ -291,20 +300,19 @@ Look for current AI/BI Dashboard slides explaining governed datasets, draft/publ
 
 **Visible content**
 
-`Metric View → dashboard dataset → draft → publish → viewers`
+`Shared FPD5 calculation → dashboard draft → published dashboard → viewers`
 
 Compare:
 
 - Individual data permissions: the viewer’s Unity Catalog permissions and policies apply.
 - Share data permissions: the publisher’s data permissions apply; the publishing identity becomes a control point.
 
-Operator checklist:
+Check:
 
-- metric and dataset owner;
-- SQL warehouse;
-- data-permission mode;
-- dashboard ACL and published snapshot;
-- reconciliation query.
+- Who owns the FPD5 calculation?
+- Which SQL warehouse runs the queries?
+- Who can see the dashboard and data?
+- Do the numbers match the notebook?
 
 **Recommended visual**
 
@@ -312,7 +320,7 @@ A branching flow from the Metric View through a draft and published dashboard, w
 
 **Presenter notes**
 
-The workshop uses Individual data permissions because participants already have `SELECT` on the Metric View. Do not build the dashboard live. Open the prepared draft, reconcile it to the notebook, demonstrate a filter, discuss publishing, and show that the published view is a snapshot separate from the draft.
+The workshop uses Individual data permissions because participants can already read the Metric View. Do not build the dashboard live. Open the prepared dashboard, check that its numbers match the notebook, use one filter, and explain that viewers see the published version.
 
 **Live transition**
 
@@ -320,65 +328,64 @@ Open `hc_workshop.workshop_shared.fpd_metrics`, then **Unicorn FPD5 Overview**.
 
 ---
 
-### Slide 7 — Semantics first, then Genie
+### Slide 7 — Ask the same question with Genie
 
 **Priority:** Essential  
 **Strategy:** Hybrid
 
 **Visible content**
 
-`FPD5 source view → Metric View → dashboard and focused Genie Agent → question → generated SQL → result → verified answer`
+`Shared FPD5 calculation → Genie question → generated SQL → result → checked answer`
 
 Quality loop:
 
-1. Start with one focused governed source.
+1. Use only the shared `fpd_metrics` source.
 2. Create the Agent in the owner’s private folder.
-3. Ask a real business question.
-4. Inspect generated SQL and results.
-5. Save the baseline for the Section 02 improvement loop.
+3. Ask the promotion question.
+4. Check the SQL and result.
+5. Save the answer for Section 02.
 
 **Recommended visual**
 
-A semantics pipeline. Under the Metric View, show small labels for fields, measures, comments, synonyms, and formats.
+A simple question-to-answer flow. Keep product metadata off the visible slide.
 
 **Presenter notes**
 
-Every participant creates **Unicorn FPD5 Investigator — `<workspace_username>`** in their private folder and attaches only `hc_workshop.workshop_shared.fpd_metrics`. The Agent remains unshared. The baseline question compares the promotion with other eligible originations as of 2026-09-01.
+Every participant creates **Unicorn FPD5 Investigator — `<workspace_username>`** in their private folder and attaches only `hc_workshop.workshop_shared.fpd_metrics`. The Agent remains unshared. Participants ask whether promotion loans had a higher FPD5 rate than the other eligible loans.
 
 Do not place a long Agent instruction prompt, generated SQL, or the expected answer on the slide.
 
 **Live transition**
 
-Create the Agent with participants, ask the baseline question, inspect the generated SQL, and reconcile the result to the Metric View.
+Create the Agent with participants, ask the question, check the generated SQL, and confirm that the answer matches the Metric View.
 
 ---
 
-### Slide 8 — Inspect what the SQL workload did
+### Slide 8 — What happened when the SQL ran?
 
 **Priority:** Essential  
 **Strategy:** Curate existing collateral
 
 **Visible comparison**
 
-- Sustained queueing → concurrency or capacity issue
-- Disk spill or `DATA_SPILL` → one query exceeds available memory
-- Long result fetching → client or session issue
-- Long idle periods → auto-stop does not match usage
-- Poor pruning or high reads → query or table-layout issue
+- Queued → the warehouse was busy
+- Spill → the query needed more memory and used disk
+- Fetching → the query finished, but the client was still receiving results
+- Long idle time → review the auto-stop setting
+- Too much data read → check filters and table layout
 
-Add three short callouts:
+Add two short callouts:
 
-- Describe this as workload utilization, not host CPU utilization.
-- Warehouse size mainly affects individual-query resources.
-- Maximum clusters mainly affects concurrency.
+- A larger warehouse gives one query more resources.
+- More clusters allow more queries to run at the same time.
 
 **Recommended visual**
 
-An evidence → likely issue → first action matrix.
+A simple word → meaning → first check layout.
 
 **Presenter notes**
 
-Use real SQL activity generated by the Metric View, dashboard, or Genie Agent. If the session has no spill or queue, say so and use a saved read-only Query Profile. Do not create a pathological query on the shared warehouse.
+Use real SQL activity generated by the dashboard or Genie Agent. If the query has no spill or queue, say that this is a good result. Use a saved Query Profile only when you need an example.
 
 Intelligent Workload Management wording applies only to Serverless SQL warehouses. Do not claim the same behavior when using a Pro fallback.
 
@@ -395,17 +402,17 @@ Open warehouse Monitoring, locate a section-generated statement in Query History
 
 **Visible content**
 
-For one asset, state:
+For one item, state:
 
-- owner;
-- operational risk;
-- recovery action.
+- who owns it;
+- one thing that could go wrong;
+- how to check or fix it.
 
 Assets: notebook, Delta table, Metric View, dashboard, Genie Agent, SQL warehouse.
 
 **Recommended visual**
 
-Six simple asset tiles around the owner/risk/recovery question.
+Six simple asset tiles around the owner/problem/check question.
 
 **Presenter notes**
 

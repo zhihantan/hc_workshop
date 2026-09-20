@@ -2,7 +2,7 @@
 
 **Updated at:** 2026-09-16
 
-*Synthetic lending data for the 22 September 2026 Home Credit enablement workshop. The fictional Unicorn Finance story follows a 0% smartphone promotion that lifts volume, followed by concentrated first-payment default and collections.*
+*Synthetic lending data for the 22 September 2026 Home Credit enablement workshop. The fictional Unicorn Finance story follows a brand-subsidised, 0%-interest smartphone financing campaign that lifts volume, followed by concentrated first-payment default and collections.*
 
 Unicorn Finance and all records are fictional. This is **not** Home Credit production HOSEL/DWH data and does not reproduce Home Credit product names or a physical source schema. The complete narrative is in `../story/unicorn-finance-story.md`.
 
@@ -12,7 +12,9 @@ Keep one shared dataset across analysis, Genie, engineering, governance, and ML.
 
 ## Story
 
-A smartphone-brand-subsidised **0% POS promotion** runs for several weeks across large partner chains and independent retailers. Origination volume spikes. First-payment defaults then concentrate in a small number of stores and field associates, creating a plausible origination-control or fraud-investigation signal. The dataset does not assert the root cause; participants must investigate the pattern.
+Nova Mobile runs a brand-subsidised financing campaign for selected smartphones across large partner chains and independent retailers. Approved customers repay principal over 6, 9, or 12 months at 0% monthly interest, while Nova Mobile pays Unicorn Finance a subsidy. Customers may still pay a processing fee. “0%” does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
+
+Origination volume spikes. First-payment defaults then concentrate in a small number of stores and field associates, creating a plausible origination-control or fraud-investigation signal. The dataset does not assert the root cause; participants must investigate the pattern.
 
 Databricks value in the workshop: vintage/DPD analysis, Genie Q&A over the same metrics, bronze→silver quality rules on origination, mask sensitive customer and associate identifiers, and predict first-payment default.
 

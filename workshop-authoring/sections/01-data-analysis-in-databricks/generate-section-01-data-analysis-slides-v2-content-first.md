@@ -20,54 +20,77 @@ Implemented workshop behavior is more authoritative than broad agenda language.
 ## Audience and role
 
 - The real audience is Home Credit Philippines, with basic SQL and Python familiarity.
+- Many participants may be new to lending terms or may not use English as their first language.
 - Participants act as Unicorn Finance's internal data team after Atlas Ridge Consulting hands over an inherited Databricks platform.
 - They need to understand, validate, operate, and improve inherited assets—not merely run prepared code.
 - Unicorn Finance, Atlas Ridge, the records, and all workshop results are fictional or synthetic.
 
+## Language requirement
+
+Simplicity is more important than sounding technical.
+
+- Use short sentences and one idea per sentence.
+- Use a direct question as the title whenever possible.
+- Explain the business situation before introducing a product or data term.
+- Say **loan application**, not **origination context**.
+- Say **group of loans**, not **cohort**, unless the code field is being shown.
+- Say **what one row represents**, not **grain**.
+- Explain **denominator** as **the total number of eligible loans used to calculate the rate**.
+- Say **check that the answers match**, not **reconcile**.
+- Do not place unexplained lending, analytics, or Databricks jargon on a slide.
+- Prefer repeated clear words over varied technical synonyms.
+
 ## Business narrative
 
-A brand-funded 0% smartphone point-of-sale promotion increased application and origination volume. FPD5 appears elevated for the promotion cohort and concentrated in some stores or sales associates.
+Nova Mobile ran a promotion for selected smartphones:
 
-This is an investigation signal, not proof of fraud, misconduct, operational failure, or causality.
+1. A customer chose a phone at a participating store.
+2. The customer applied for a Unicorn Finance point-of-sale installment loan.
+3. If approved, the customer repaid the amount borrowed over 6, 9, or 12 months.
+4. The customer paid 0% monthly interest because Nova Mobile paid Unicorn Finance a subsidy.
+
+The phone was not free. A processing fee or down payment could still apply. Approval was not guaranteed. The campaign uses promotion code `ZERO_SMARTPHONE_2026`.
+
+Loan applications increased during the campaign period. Some stores and salespeople also had more first-payment problems.
+
+A high rate is a reason to investigate. It is not proof of fraud, wrongdoing, or cause.
 
 The business needs to know:
 
-- whether the promotion cohort shows elevated FPD5 compared with other eligible contracts;
-- whether the signal is broad or concentrated;
-- which evidence and definitions can be trusted;
-- which analytical assets must be operated after the partner handover;
-- who owns validation, permissions, monitoring, and recovery.
+- whether promotion loans had more late first payments than other loans;
+- whether the problem was spread across many places or focused in a few;
+- whether the notebook, dashboard, and Genie Agent give the same answer; and
+- who should own and check each item after the workshop.
 
 The conceptual journey is:
 
 ```text
-Verify inherited sources
-→ understand application and promotion context
-→ define a fair observable population
-→ compare counts and rates at explicit grains
-→ investigate concentration
-→ persist participant evidence
-→ reconcile governed metrics
-→ consume the same semantics in dashboard and Genie
-→ inspect the resulting SQL workload
-→ name ownership and recovery responsibilities
+Check the source tables
+→ see where customers applied
+→ see when promotion applications increased
+→ find loans old enough to check
+→ compare FPD5 counts and percentages
+→ find places that need a closer look
+→ save the result
+→ check that the shared Metric View and dashboard match
+→ ask the same question with Genie
+→ inspect one SQL query
+→ name an owner and a way to check or fix problems
 ```
 
 This journey is not a required slide sequence.
 
 ## Messages that must land
 
-- Start with the business question and denominator, not with SQL or PySpark syntax.
-- Application volume provides demand and underwriting context; it is not repayment evidence.
+- Start with the simple business question, not with SQL or PySpark syntax.
+- An application tells us that someone asked for a loan. It does not tell us whether they paid.
 - More volume can produce more problem contracts without changing the underlying rate.
-- A rate is interpretable only when grain, numerator, denominator, and observation window are explicit.
-- Counts and rates belong together.
-- Small denominators can create misleading rankings.
-- The promotion pattern identifies where to investigate; it does not establish why the pattern occurred.
-- A notebook result is not sufficient for handover. The result must also be durable, governed, reconcilable, observable, and owned.
-- One governed definition should serve notebooks, dashboards, and Genie Agents.
-- Serverless reduces infrastructure-management effort; it does not remove responsibility for code, permissions, quality, cost, dependencies, validation, monitoring, or recovery.
-- A dashboard or Genie answer is not trustworthy merely because it executes.
+- Show the number of FPD5 loans and the percentage together.
+- A percentage based on only one or two loans can be misleading.
+- A high rate shows where to investigate. It does not explain the cause.
+- The notebook, dashboard, and Genie Agent should use the same FPD5 calculation.
+- A result is not trustworthy only because the code ran. Check the data and SQL.
+- Serverless manages more of the compute platform. People must still own the code, access, cost, quality, and monitoring.
 
 ## Content inventory
 
@@ -82,9 +105,9 @@ This journey is not a required slide sequence.
 
 - An eligible first installment is FPD5 when it is unsettled or settled on or after day five.
 - Settlement exactly on day five counts as FPD5.
-- A recent installment that has not completed the five-day window is not yet observable.
-- The denominator is eligible fixed-term contracts—not applications, approvals, all originations, or only defaults.
-- The analytical population has one row per eligible contract.
+- A first payment can be checked when it reaches day five after the due date.
+- The total used to calculate the rate is eligible loans—not all applications, all approvals, or only FPD5 loans.
+- Each eligible loan appears once.
 
 ### Inherited lending data
 
@@ -103,7 +126,7 @@ The analysis must distinguish:
 
 - application mix and promotion timing;
 - eligible contracts with observable first installments;
-- origination-volume concentration;
+- application-volume concentration;
 - FPD5 count and rate concentration.
 
 Application concentration must never be relabeled as FPD5 concentration.
@@ -126,7 +149,7 @@ For the standard seeded dataset:
 
 These are validation checkpoints. Do not reveal them before participants complete the initial investigation.
 
-The approximately 81% concentration referenced by the source material concerns origination volume at top stores. It is not automatically an FPD5 concentration statistic.
+The approximately 81% concentration referenced by the source material concerns application volume at the busiest 20% of stores. It is not automatically an origination or FPD5 concentration statistic.
 
 ### Compute choices
 
@@ -271,7 +294,7 @@ Participants:
 - profile application context and promotion timing;
 - build and validate the eligible population;
 - compare promotion and comparison cohorts using counts and rates;
-- distinguish origination volume from repayment behavior;
+- distinguish application volume from repayment behavior;
 - change analytical grain and write a non-causal handover note;
 - persist and inspect their Delta output;
 - reconcile the governed Metric View;
@@ -330,6 +353,7 @@ Optional material must not become required product coverage.
 
 Do not:
 
+- describe “0%” as a free phone, zero total cost, zero down payment, zero fees, or guaranteed approval;
 - say the promotion caused or created FPD5;
 - describe a store, region, merchant, or associate as fraudulent or causally responsible;
 - use applications, approvals, or all originations as the denominator;

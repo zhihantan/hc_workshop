@@ -16,7 +16,7 @@ Use the visible content as slide copy. Presenter notes are not intended to appea
 ### Visible content
 
 - Atlas Ridge had delivered the Databricks platform.
-- A 0% smartphone promotion increased volume.
+- Nova Mobile's 0%-interest smartphone financing campaign increased volume.
 - FPD5 appeared concentrated by store and sales associate.
 - The signal was not proof of fraud or causality.
 - Operating responsibility was moving to Unicorn Finance.
@@ -25,11 +25,13 @@ Use the visible content as slide copy. Presenter notes are not intended to appea
 
 ### Recommended visual
 
-A handover line with Atlas Ridge Consulting on the left and the Unicorn Finance internal team on the right. Place the inherited data, notebook, dashboard, pipeline, and model assets between them. Add one unresolved-question marker above the 0% promotion.
+A handover line with Atlas Ridge Consulting on the left and the Unicorn Finance internal team on the right. Place the inherited data, notebook, dashboard, pipeline, and model assets between them. Add one unresolved-question marker above Nova Mobile's financing campaign.
 
 ### Presenter notes
 
 Return to the opening story. Participants began as the internal team receiving an inherited platform. The problem was not a lack of technology; it was the need to understand the business definition, validate the evidence, operate the workloads, diagnose access, and own future changes.
+
+If needed, restate that “0%” meant 0% monthly interest on selected smartphone financing—not a free phone, zero down payment, zero fees, or guaranteed approval.
 
 Do not imply that the concentrated pattern proved fraud or that the workshop established causality.
 

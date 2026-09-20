@@ -8,10 +8,10 @@ This is not a slide outline. Decide the smallest effective slide count, titles, 
 
 Resolve conflicts in this order:
 
-1. `facilitator-guide.md`
-2. `../../../workshop-content/05-governance-and-access-control/participant-guide.md`
-3. `facilitator-demo.py`
-4. `../../../workshop-setup/section-05-governance-demo-setup.sql`
+1. `../../../workshop-content/05-governance-and-access-control/participant-guide.md`
+2. `facilitator-demo.py`
+3. `../../../workshop-setup/section-05-governance-demo-setup.sql`
+4. `facilitator-guide.md`
 5. `../../../participant-materials/unicorn-finance-workshop-scenario.md`
 6. `../../agenda/workshop-agenda.md`
 
@@ -63,8 +63,8 @@ A ten-row result is an access smoke test. It does not prove data completeness, u
 ## Mandatory messages
 
 - “Can access” is a chain of gates, not one permission.
-- The principal is the user or service principal whose permissions are evaluated.
-- Groups contribute effective access but do not execute notebook or Job requests.
+- Users, service principals, and groups can hold permissions.
+- The runtime identity executes the request; group membership can contribute effective access.
 - Notebook `CAN RUN`, SQL warehouse `CAN USE`, runtime identity, and Unity Catalog privileges are separate gates.
 - For this view read: `USE CATALOG → USE SCHEMA → SELECT`.
 - `BROWSE` supports discovery without granting row access.
@@ -100,7 +100,7 @@ The facilitator:
 2. asks participants to predict the outcome;
 3. runs the `fpd_analysis` query;
 4. stops at the insufficient-privilege error;
-5. inspects direct and inherited grants;
+5. distinguishes direct grants, parent-securable inheritance, and group-derived access;
 6. grants only `USE SCHEMA`;
 7. reruns the unchanged query;
 8. confirms ten synthetic rows appear.
@@ -133,11 +133,12 @@ Do not switch to an unrelated table for lineage or discovery.
 
 ## Definitions to introduce before use
 
-- **Principal:** user or service principal whose permissions are evaluated.
-- **Runtime identity:** principal that executes the request.
+- **Principal:** user, service principal, or group that can hold permissions.
+- **Runtime identity:** user or service principal for the session or workload that executes the request.
+- **Group-derived access:** effective access supplied through group membership.
 - **Workspace permission:** access to a notebook, Job, warehouse, dashboard, or Genie Agent.
 - **Unity Catalog privilege:** permission to act on governed data or AI assets.
-- **Inherited grant:** privilege received from a parent object or group.
+- **Inherited grant:** privilege received from a parent securable.
 - **`BROWSE`:** metadata discovery without data access.
 - **Lineage:** dependency evidence.
 - **Domain:** business-aligned discovery grouping implemented with governed tags.
@@ -187,7 +188,7 @@ Do not:
 
 - imply notebook access proves data access;
 - imply `SELECT` alone is sufficient;
-- imply `BROWSE`, Domain membership, or lineage grants query access;
+- imply `BROWSE`, Domain placement, or lineage grants query access;
 - claim a group executes a request;
 - recommend `ALL PRIVILEGES` as a diagnostic shortcut;
 - claim ten returned rows validate the FPD5 population;

@@ -108,8 +108,10 @@ Authorized result
 
 Definitions:
 
-- principal = identity whose permissions are evaluated;
-- inherited grant = permission received from a parent object or group;
+- principal = user, service principal, or group that can hold permissions;
+- runtime identity = user or service principal for the session or workload;
+- inherited grant = permission received from a parent securable;
+- group-derived access = effective access supplied through group membership;
 - `BROWSE` = discover metadata, not read rows.
 
 ### Recommended visual
@@ -136,10 +138,10 @@ Ask which gates are proven when a user can open the notebook and find the view i
 Capture:
 
 - runtime principal;
-- asset, action, and compute;
+- workspace asset, data object, action, and compute;
 - exact error and request ID;
-- direct and inherited grants;
-- timestamp.
+- direct grants, parent-securable inheritance, and group-derived access;
+- timestamp and time zone.
 
 Rule:
 

@@ -22,7 +22,11 @@ Your job is not simply to run prepared code. By the end of the workshop, your te
 
 ## The business event
 
-A smartphone brand has funded a limited **0% point-of-sale promotion**. Application and approval volumes increased, but first-payment-default behavior appears concentrated in a small number of stores and sales associates.
+**Nova Mobile**, a fictional smartphone brand, has funded a limited retail financing campaign. Approved customers buying selected Nova smartphones at participating stores can repay the financed principal over 6, 9, or 12 monthly installments at **0% monthly interest**. Nova Mobile pays Unicorn Finance a brand subsidy for contracts originated through the campaign.
+
+“0%” refers only to the contractual interest rate. The phone is not free: customers still repay the financed principal and may pay an applicable processing fee. The offer does not imply zero down payment, zero fees, or guaranteed approval. In the workshop data, the campaign is identified by promotion code `ZERO_SMARTPHONE_2026` and labeled **0% smartphone promotion**.
+
+Application and approval volumes increased during the campaign, but first-payment-default behavior appears concentrated in a small number of stores and sales associates.
 
 This pattern is an **investigation signal**. It is not proof of fraud, misconduct, or causality. The pattern could reflect campaign design, customer mix, origination controls, operational behavior, or another explanation.
 
@@ -68,7 +72,7 @@ Every section must preserve this definition rather than creating a competing ver
 
 ### Data Analysis in Databricks — deliver a trusted investigation
 
-**Business need:** Risk and operations teams need evidence about the 0% promotion without overstating what the pattern proves.
+**Business need:** Risk and operations teams need evidence about Nova Mobile's 0%-interest financing campaign without overstating what the pattern proves.
 
 **Delivery:**
 

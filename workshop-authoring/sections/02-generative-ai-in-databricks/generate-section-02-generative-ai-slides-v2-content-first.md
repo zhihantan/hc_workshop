@@ -31,6 +31,8 @@ Implemented workshop behavior is more authoritative than unsupported agenda topi
 
 Unicorn Finance trusts the governed FPD5 baseline from Section 01. Risk now needs to know where the promotion signal is concentrated.
 
+The promotion is Nova Mobile's brand-subsidized financing campaign for selected smartphones. Approved customers repay principal over 6, 9, or 12 months at 0% monthly interest. A processing fee may apply. “0%” refers only to contractual interest; it does not mean a free phone, zero down payment, zero fees, or guaranteed approval.
+
 A developer must:
 
 - use Genie Code to understand inherited work;
@@ -201,7 +203,7 @@ The draft must:
 - rank five promotion stores using at least 10 eligible contracts;
 - retain counts beside rates;
 - include a promotion-cohort filter;
-- apply the filter to the intended widgets;
+- apply the filter to the cohort comparison and store ranking but not the all-cohort KPI counters;
 - use correct percentage formatting;
 - reconcile with the notebook;
 - remain unpublished.
@@ -211,7 +213,7 @@ Participants observe and record:
 1. whether only `fpd_metrics` is used;
 2. whether cohort values reconcile;
 3. whether counts and the 10-contract rule remain visible;
-4. whether the filter affects the intended widgets;
+4. whether the filter affects the cohort comparison and store ranking but leaves the all-cohort KPI counters unchanged;
 5. which checks and publication decisions still belong to the dashboard author.
 
 The facilitator owns source validation, reconciliation, filter behavior, permissions, formatting, publication, and deletion after the session.
@@ -337,6 +339,7 @@ Do not add them to the core presentation merely because they appear in the high-
 
 Do not:
 
+- describe “0%” as a free phone, zero total cost, zero down payment, zero fees, or guaranteed approval;
 - claim elevated FPD5 proves fraud, misconduct, causality, or statistical significance;
 - imply `REGION_VI` caused the result;
 - confuse the 20-contract and 10-contract rules;

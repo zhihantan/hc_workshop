@@ -51,6 +51,44 @@
 
 # COMMAND ----------
 # MAGIC %md
+# MAGIC ## Reconcile the regional evidence
+# MAGIC
+# MAGIC Run this independent governed checkpoint after Genie Code finishes. Compare all six rows and stop if any generated count or rate differs.
+
+# COMMAND ----------
+# MAGIC %sql
+# MAGIC WITH promotion_baseline AS (
+# MAGIC   SELECT MEASURE(fpd5_rate) * 100 AS promotion_rate_pct
+# MAGIC   FROM hc_workshop.workshop_shared.fpd_metrics
+# MAGIC   WHERE promotion_cohort = '0% smartphone promotion'
+# MAGIC ),
+# MAGIC qualifying_regions AS (
+# MAGIC   SELECT
+# MAGIC     region_code,
+# MAGIC     MEASURE(eligible_contracts) AS eligible_contracts,
+# MAGIC     MEASURE(fpd5_contracts) AS fpd5_contracts,
+# MAGIC     MEASURE(fpd5_rate) * 100 AS fpd5_rate_pct
+# MAGIC   FROM hc_workshop.workshop_shared.fpd_metrics
+# MAGIC   WHERE promotion_cohort = '0% smartphone promotion'
+# MAGIC   GROUP BY ALL
+# MAGIC   HAVING MEASURE(eligible_contracts) >= 20
+# MAGIC )
+# MAGIC SELECT
+# MAGIC   region_code,
+# MAGIC   eligible_contracts,
+# MAGIC   fpd5_contracts,
+# MAGIC   ROUND(fpd5_rate_pct, 2) AS fpd5_rate_pct,
+# MAGIC   ROUND(fpd5_rate_pct - promotion_rate_pct, 2) AS percentage_points_vs_promotion
+# MAGIC FROM qualifying_regions
+# MAGIC CROSS JOIN promotion_baseline
+# MAGIC ORDER BY fpd5_rate_pct DESC
+
+# COMMAND ----------
+# MAGIC %md
+# MAGIC Confirm six qualifying regions. `REGION_VI` should be highest at approximately **53.95%**, **11.69 percentage points** above the **42.26%** promotion baseline. Do not continue until the generated result reconciles.
+
+# COMMAND ----------
+# MAGIC %md
 # MAGIC ## Repair the inherited validation utility
 
 # COMMAND ----------
@@ -106,7 +144,7 @@ display(cohort_validation)
 # MAGIC
 # MAGIC Open a facilitator-owned dashboard named **Genie Code Demo — FPD5 Overview** and ask Genie Code:
 # MAGIC
-# MAGIC > Build a one-page FPD5 overview using only `@hc_workshop.workshop_shared.fpd_metrics`. Add three KPI counters for eligible contracts, FPD5 contracts, and FPD5 rate; a bar chart comparing promotion cohorts; a ranked bar chart of the five promotion stores with the highest FPD5 rate among stores with at least 10 eligible contracts; and a promotion-cohort filter. Reuse the Metric View measures, use clear titles and percentage formatting, and show me the plan before editing the dashboard. Do not publish it.
+# MAGIC > Build a one-page FPD5 overview using only `@hc_workshop.workshop_shared.fpd_metrics`. Add three KPI counters for eligible contracts, FPD5 contracts, and FPD5 rate; a bar chart comparing promotion cohorts; and a ranked table or chart of the five promotion stores with the highest FPD5 rate among stores with at least 10 eligible contracts. The store ranking must show eligible contracts, FPD5 contracts, and FPD5 rate together. Add a promotion-cohort filter that affects the cohort comparison and store ranking but not the all-cohort KPI counters. Reuse the Metric View measures, use clear titles and percentage formatting, and show me the plan before editing the dashboard. Do not publish it.
 # MAGIC
 # MAGIC Reconcile KPI values, threshold behavior, filter scope, and percentage formatting. Explain that the dashboard uses its SQL warehouse rather than notebook compute. Leave the draft unpublished and delete it after delivery.
 
@@ -114,4 +152,4 @@ display(cohort_validation)
 # MAGIC %md
 # MAGIC ## Optional private-Agent maintenance
 # MAGIC
-# MAGIC In your own private **Unicorn FPD5 Investigator — `<workspace_username>`**, run the store-associate ranking question, ask Genie Code for the smallest context change that adds counts, observation date, investigation language, and the 10-contract threshold, then retest in a fresh conversation. Finish by rerunning the original cohort-comparison question.
+# MAGIC In your own private **Unicorn FPD5 Investigator — `<workspace_username>`**, run the store-associate ranking question in a fresh conversation, ask Genie Code for the smallest context change that adds counts, observation date, investigation language, and the 10-contract threshold, then retest the ranking in another fresh conversation. Finish by rerunning the original cohort-comparison question in a third fresh conversation.

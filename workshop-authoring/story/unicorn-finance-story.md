@@ -21,7 +21,11 @@ Atlas Ridge Consulting has delivered Unicorn Finance’s Databricks lakehouse an
 
 ## The business event
 
-A smartphone brand funds a limited 0% POS promotion. Applications and approved contracts increase, but first-payment default becomes concentrated in a small number of stores and sales associates.
+**Nova Mobile**, a fictional smartphone brand, funds a limited point-of-sale financing campaign. Approved customers buying selected Nova smartphones at participating stores can repay the financed principal over 6, 9, or 12 monthly installments at **0% monthly interest**. Nova Mobile pays Unicorn Finance a brand subsidy for contracts originated through the campaign.
+
+“0%” refers only to the contractual interest rate. The customer still repays the financed principal and may pay an applicable processing fee. It does not mean a free phone, zero down payment, zero fees, or guaranteed approval. The synthetic data identifies the campaign with promotion code `ZERO_SMARTPHONE_2026` and the analytical label **0% smartphone promotion**.
+
+Applications and approved contracts increase during the campaign, but first-payment default becomes concentrated in a small number of stores and sales associates.
 
 The pattern is an investigation signal, not proof of fraud. Participants must determine whether it could reflect campaign design, customer mix, weak origination controls, operational behavior, or another explanation.
 
@@ -71,7 +75,7 @@ Across the day, participants:
 
 1. Locate the inherited data and workspace assets.
 2. Explore product mix, approval conversion, and store concentration.
-3. Calculate first-payment default consistently and investigate the 0% promotion.
+3. Calculate first-payment default consistently and investigate Nova Mobile's 0%-interest financing campaign.
 4. Ask governed natural-language questions and verify the answers against trusted SQL.
 5. Productionise selected logic as a monitored data pipeline and job.
 6. Apply access controls and inspect lineage.

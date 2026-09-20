@@ -67,8 +67,8 @@ The disposable **Genie Code Demo — FPD5 Overview** draft should contain:
 
 - eligible-contract, FPD5-contract, and FPD5-rate KPIs;
 - a promotion-cohort comparison;
-- a five-store promotion ranking with at least 10 eligible contracts;
-- a promotion-cohort filter; and
+- a five-store promotion ranking showing eligible contracts, FPD5 contracts, and FPD5 rate, with at least 10 eligible contracts;
+- a promotion-cohort filter affecting the cohort comparison and store ranking but not the all-cohort KPI counters; and
 - clear titles and percentage formatting.
 
 It must use `fpd_metrics`, reconcile with the notebook, remain unpublished, and be deleted after the workshop. It is distinct from the prepared Section 01 **Unicorn FPD5 Overview** dashboard.
