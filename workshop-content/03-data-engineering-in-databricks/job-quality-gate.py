@@ -10,7 +10,7 @@
 # MAGIC Parameterized by the pipeline target schema and the as-of date (set by the Job).
 
 # COMMAND ----------
-dbutils.widgets.text("schema", "de_zhihan_tan", "Pipeline target schema")
+dbutils.widgets.text("schema", "de_<user_id>", "Pipeline target schema (e.g. de_jsmith; the Job overrides this)")
 dbutils.widgets.text("as_of_date", "2026-09-01", "As-of date")
 dbutils.widgets.text("max_drop_pct", "5.0", "Max allowed installment drop %")
 

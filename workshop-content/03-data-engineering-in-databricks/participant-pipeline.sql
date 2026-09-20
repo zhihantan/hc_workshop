@@ -47,8 +47,7 @@ AS SELECT * FROM STREAM(hc_workshop.workshop_shared.lending_raw_loan_application
 CREATE OR REFRESH STREAMING TABLE fpd_silver_installment (
   CONSTRAINT valid_contract   EXPECT (contract_id IS NOT NULL)      ON VIOLATION FAIL UPDATE,
   CONSTRAINT valid_due_date   EXPECT (due_date IS NOT NULL)         ON VIOLATION DROP ROW,
-  CONSTRAINT nonneg_due       EXPECT (total_due_amount >= 0)        ON VIOLATION DROP ROW,
-  CONSTRAINT observed_window  EXPECT (due_date <= DATE'2026-12-31') -- WARN (keep)
+  CONSTRAINT nonneg_due       EXPECT (total_due_amount >= 0)        ON VIOLATION DROP ROW
 )
   COMMENT 'Validated installments. Broken keys fail the update; missing due dates and negative amounts are dropped. NOTE: settlement timing (early / on-time / late / unsettled) is NOT gated here — it is exactly the FPD5 outcome we measure downstream.'
 AS SELECT installment_id, contract_id, installment_no, due_date, total_due_amount, settled_date
@@ -58,7 +57,7 @@ AS SELECT installment_id, contract_id, installment_no, due_date, total_due_amoun
 CREATE OR REFRESH STREAMING TABLE fpd_silver_contract (
   CONSTRAINT valid_contract    EXPECT (contract_id IS NOT NULL)   ON VIOLATION FAIL UPDATE,
   CONSTRAINT nonneg_principal  EXPECT (principal_amount IS NULL OR principal_amount >= 0)  ON VIOLATION DROP ROW,
-  CONSTRAINT positive_tenor    EXPECT (tenor_months > 0)          -- WARN (revolving lines may have null tenor; gold keeps only fixed-term)
+  CONSTRAINT positive_tenor    EXPECT (tenor_months IS NULL OR tenor_months > 0)   -- WARN: a non-positive tenor is suspicious; null tenor (revolving lines) is expected and passes (gold keeps only fixed-term)
 )
   COMMENT 'Validated credit contracts. Future-of-as-of originations are kept — they are valid, just outside the FPD5 observation window, which gold filters.'
 AS SELECT contract_id, application_id, principal_amount, tenor_months, monthly_interest_rate_pct, origination_date

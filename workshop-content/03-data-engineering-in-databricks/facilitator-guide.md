@@ -51,7 +51,7 @@ The released assets passed an end-to-end validation run (pipeline → Job → qu
 2. Source: the `participant-pipeline` notebook. **Target:** catalog `hc_workshop` (or your delivery's catalog), schema `de_<user_id>`.
 3. **Start**. Watch the graph: three bronze → three silver → `fpd_origination` + `fpd_daily_metrics`.
 
-Pause at: the DAG graph (lineage is automatic), the silver Expectations panel (0 violations on clean data), and the gold row count (25,440). Reconcile the cohort rates aloud with Section 01 (promotion ≈42%, other ≈21%).
+Pause at: the DAG graph (lineage is automatic), the silver Expectations panel (**nothing dropped or failed** on clean data — the `sane_lti` WARN flags ~17 rare high loan-to-income applications, which are kept), and the gold row count (25,440). Reconcile the cohort rates aloud with Section 01 (promotion ≈42%, other ≈21%).
 
 ## 2:05–2:25 — The data-quality demo (the heart of the section)
 
@@ -59,7 +59,7 @@ Run the setup's DIRTY BATCH cells, then refresh the pipeline:
 
 1. **WARN/DROP batch** (`## 3.` in `facilitator-setup.sql`): refresh the pipeline (a normal update ingests the new batch). It **completes**. Open the silver Expectations: `nonneg_due` dropped 40, `positive_income` dropped 40, `sane_lti` warned 40. Bronze grew; silver did not; gold stays 25,440 — **bad data was quarantined, not propagated.**
 2. **FAIL batch** (`## 4.`): refresh again. The update **fails** on `valid_contract (FAIL UPDATE)` — a broken key stops everything. This is the moment to make: quality is not a report you read later; it can *halt the line*.
-3. **Reset** (`## Reset helpers`): delete the `> 2026-09-01` batches and run a **full refresh**; gold returns to 25,440.
+3. **Reset** (`## Reset helpers`): delete the `> 2026-09-01` batches and run a **full refresh** — *not* an incremental one. The FAIL batch's rows are already committed to the bronze streaming table and stay pending for silver, so an incremental update re-reads them and fails again; only a full refresh (truncate + reprocess the clean landing) clears them. Gold returns to 25,440.
 
 ## 2:25–2:50 — Orchestrate with a Job
 

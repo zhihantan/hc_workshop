@@ -16,7 +16,7 @@ These values assume the default standard-scale dataset (master seed `20260922`, 
 
 ## Pipeline — clean batch (the baseline)
 
-On the clean batch **every row passes**; nothing is dropped:
+On the clean batch, nothing is **dropped or failed** — the DROP and FAIL tiers are 0, so silver equals bronze and gold is complete. (The `sane_lti` WARN flags ~17 naturally high loan-to-income applications; WARN records the flag but **keeps** the row, so it does not change the counts below.)
 
 | Layer | `installment` | `contract` | `application` |
 |---|--:|--:|--:|
@@ -56,7 +56,7 @@ If the drop rate exceeds the threshold (default 5%), the `quality_gate` task rai
 ## Shortest recovery paths
 
 ### The pipeline update fails immediately with an expectation error
-A `FAIL UPDATE` expectation (e.g. `valid_contract`) was violated — usually the seeded FAIL batch. Delete `batch_date > 2026-09-01` from the landing and run a **full refresh**. Do not weaken a `FAIL UPDATE` expectation to force a pass.
+A `FAIL UPDATE` expectation (e.g. `valid_contract`) was violated — usually the seeded FAIL batch. Delete `batch_date > 2026-09-01` from the landing and run a **full refresh**. An **incremental** refresh will keep failing: the offending rows are already committed to the bronze streaming table and remain pending for silver, so removing them from the landing alone does not clear them — only a full refresh (truncate + reprocess the clean landing) does. Do not weaken a `FAIL UPDATE` expectation to force a pass.
 
 ### Gold has far fewer than 25,440 rows / FPD5 rate looks too high
 A silver Expectation is dropping legitimate rows. The classic mistake is gating on settlement timing — early/on-time settlement is the FPD5 *outcome*, not a defect. Confirm the silver expectations match the released file (broken key → FAIL; missing due date / negative amount → DROP; timing is never gated).
