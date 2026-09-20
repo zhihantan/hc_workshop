@@ -12,8 +12,9 @@ Use this package for the final 8–10 minutes of the workshop. It closes the Uni
 
 The opening and closing should feel like one story:
 
-1. Open with [`../../participant-materials/unicorn-finance-workshop-scenario.md`](../../participant-materials/unicorn-finance-workshop-scenario.md).
-2. Deliver each section as an outcome for Unicorn Finance.
-3. Close with the same business event, shared FPD5 definition, inherited-platform handover, and ownership standard.
+1. Show the three opening slides in [`../opening/workshop-opening-slides.md`](../opening/workshop-opening-slides.md).
+2. Use [`../../participant-materials/unicorn-finance-workshop-scenario.md`](../../participant-materials/unicorn-finance-workshop-scenario.md) to establish the full participant scenario.
+3. Deliver each section as an outcome for Unicorn Finance.
+4. Close with the same business event, shared FPD5 definition, inherited-platform handover, and ownership standard.
 
 The close must not become a product-feature recap. Its purpose is to show the progression from **inherited assets and an unresolved investigation signal** to **evidence, repeatable workloads, governed access, an operable model, and clear internal ownership**.

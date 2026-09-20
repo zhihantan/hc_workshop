@@ -8,7 +8,7 @@ This is intentionally **not** a slide outline. Do not preserve the headings belo
 
 When resolving conflicts, use this priority:
 
-1. `workshop-content/01-data-analysis-in-databricks/participant-lab.py`
+1. `workshop-content/01-data-analysis-in-databricks/01-lab.py`
 2. `workshop-authoring/sections/01-data-analysis-in-databricks/facilitator-guide.md`
 3. `workshop-authoring/sections/01-data-analysis-in-databricks/README.md`
 4. `workshop-setup/section-01-facilitator-setup.sql`

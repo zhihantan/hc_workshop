@@ -8,7 +8,7 @@ This is intentionally **not** a slide outline. Do not preserve the headings belo
 
 When resolving conflicts, use this priority:
 
-1. `workshop-content/02-generative-ai-in-databricks/participant-lab.py`
+1. `workshop-content/02-generative-ai-in-databricks/02-lab.py`
 2. `workshop-authoring/sections/02-generative-ai-in-databricks/facilitator-guide.md`
 3. `workshop-authoring/sections/02-generative-ai-in-databricks/expected-results.md`
 4. `workshop-authoring/sections/02-generative-ai-in-databricks/facilitator-demo.py`
@@ -224,14 +224,14 @@ The facilitator owns source validation, reconciliation, filter behavior, permiss
 - Dashboard datasets and Genie Agent questions run on a Pro or Serverless SQL warehouse.
 - Notebook `%sql` should not be described as SQL warehouse activity.
 - Genie Code may author a draft, but the user remains responsible for validation and publication.
-- Participants work only in personal clones of `participant-lab.py`.
+- Participants work only in personal clones of `02-lab.py`.
 - `facilitator-demo.py`, expected results, fallback assets, and detailed recovery instructions remain facilitator-only.
 
 ## Facilitator responsibilities
 
 The facilitator must:
 
-- import or distribute only `participant-lab.py`;
+- import or distribute only `02-lab.py`;
 - keep the facilitator notebook and answers private;
 - ensure participants clone the participant lab into personal folders before editing;
 - refresh FPD5 eligibility, denominator, observation date, and investigation caveat;
@@ -250,7 +250,7 @@ The facilitator must:
 
 Participants:
 
-- clone `participant-lab.py` into a personal user folder;
+- clone `02-lab.py` into a personal user folder;
 - attach Serverless notebook compute;
 - use a Genie Code approval mode that asks before tool actions;
 - attach `fpd_metrics`, inherited query, and output as context;

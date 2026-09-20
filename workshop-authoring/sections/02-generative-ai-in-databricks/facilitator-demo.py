@@ -2,7 +2,7 @@
 # MAGIC %md
 # MAGIC # Facilitator demo — Genie Code for governed FPD5 analysis
 # MAGIC
-# MAGIC **Facilitator-only.** Use a personal clone for rehearsal and delivery. Participants work only from their own clone of `workshop-content/02-generative-ai-in-databricks/participant-lab.py`.
+# MAGIC **Facilitator-only.** Use a personal clone for rehearsal and delivery. Participants work only from their own clone of `workshop-content/02-generative-ai-in-databricks/02-lab.py`.
 # MAGIC
 # MAGIC The demonstration follows one business handover: understand the inherited baseline, extend the risk investigation by region, repair its validation utility, and turn validated evidence into an unpublished dashboard draft.
 

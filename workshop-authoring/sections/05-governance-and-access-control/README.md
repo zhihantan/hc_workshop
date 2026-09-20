@@ -12,7 +12,7 @@ Participants act as the new owners of Unicorn Finance's inherited Databricks pla
 
 The section follows that same asset from discovery through diagnosis, repair, verification, lineage, and handover. Participants record evidence in:
 
-`../../../workshop-content/05-governance-and-access-control/participant-guide.md`
+`../../../workshop-content/05-governance-and-access-control/05-participant-guide.md`
 
 They do not run or clone the demonstration notebook, change permissions, or build governance objects.
 
@@ -42,13 +42,14 @@ By the end of the section, participants can:
 
 Participant-facing:
 
-- `../../../workshop-content/05-governance-and-access-control/participant-guide.md` — the only participant entry point.
+- `../../../workshop-content/05-governance-and-access-control/05-participant-guide.md` — the only participant entry point.
 
 Facilitator-only:
 
-- `facilitator-guide.md` — preparation, timed run of show, answer key, fallbacks, and cleanup.
+- `facilitator-guide.md` — timed delivery map plus concise participant-facing talking points for the live incident.
 - `facilitator-demo.py` — screen-shared read-only notebook run by the restricted identity.
-- `generate-section-05-governance-slides-v2-content-first.md` — recommended content-first slide-generation source.
+- `generate-section-05-governance-slides-v3-slide-only.md` — final generation prompt limited to the facilitator guide's visible slide windows.
+- `generate-section-05-governance-slides-v2-content-first.md` — broader content inventory for editorial reference.
 - `generate-section-05-governance-slides.md` — prescriptive four-slide editorial reference.
 
 Administrator-only:
@@ -78,7 +79,7 @@ Environment values still requiring confirmation:
 ## Definition of done
 
 - Final slides preserve the assignment and incident flow in the content-first brief and use titles rather than section numbers.
-- The participant-facing folder contains only `participant-guide.md`.
+- The participant-facing folder contains only `05-participant-guide.md`.
 - The restricted identity fails on `fpd_analysis` because `USE SCHEMA` is missing.
 - After the single grant, the unchanged query returns ten synthetic rows.
 - Catalog Explorer distinguishes direct grants to the group, any parent-securable inheritance, and the user's group-derived effective access.

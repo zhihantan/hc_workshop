@@ -10,7 +10,7 @@ The numeric folder prefixes are internal content identifiers, not a promise that
 
 Use workshop titles and scheduled times in participant communication. The Governance and Access Control content remains under `05-governance-and-access-control/` for repository-path stability.
 
-Most authored topics use a participant notebook. Governance and Access Control is different: participants use only [`05-governance-and-access-control/participant-guide.md`](05-governance-and-access-control/participant-guide.md) while the facilitator runs a restricted-identity demonstration from a private facilitator folder. Participants do not run code or change permissions in that section.
+Most authored topics use a participant notebook. Governance and Access Control is different: participants use only [`05-governance-and-access-control/05-participant-guide.md`](05-governance-and-access-control/05-participant-guide.md) while the facilitator runs a restricted-identity demonstration from a private facilitator folder. Participants do not run code or change permissions in that section.
 
 ## Status
 
@@ -18,10 +18,10 @@ The section content is being prepared and is **not yet ready for participant use
 
 ### Section readiness
 
-- **01 — Data Analysis in Databricks:** Draft. The complete participant journey is in `01-data-analysis-in-databricks/participant-lab.py`; workspace validation, shared data asset creation, access grants, dashboard setup, participant private-Agent creation, and facilitator rehearsal remain.
-- **02 — Generative AI in Databricks:** Draft. The complete participant journey is in `02-generative-ai-in-databricks/participant-lab.py`; dashboard showcase setup, optional private participant-Agent editing, workspace validation, and facilitator rehearsal remain.
+- **01 — Data Analysis in Databricks:** Draft. The complete participant journey is in `01-data-analysis-in-databricks/01-lab.py`; workspace validation, shared data asset creation, access grants, dashboard setup, participant private-Agent creation, and facilitator rehearsal remain.
+- **02 — Generative AI in Databricks:** Draft. The complete participant journey is in `02-generative-ai-in-databricks/02-lab.py`; dashboard showcase setup, optional private participant-Agent editing, workspace validation, and facilitator rehearsal remain.
 - **03 — Data Engineering in Databricks:** Draft. The Lakeflow medallion pipeline (bronze → silver + Expectations → gold), the orchestrating Job with a data-quality gate and failure alert, and the WARN/DROP/FAIL demo passed an end-to-end serverless validation run (gold = 25,440, matching Sections 01 and 06); facilitator rehearsal, access grants, and TBD confirmations remain.
-- **05 — Governance and Access Control in Databricks:** Draft. The participant journey is consolidated in `05-governance-and-access-control/participant-guide.md`; final slides, restricted-identity validation, optional Discover preview setup, lineage verification, and facilitator rehearsal remain.
+- **05 — Governance and Access Control in Databricks:** Draft. The participant journey is consolidated in `05-governance-and-access-control/05-participant-guide.md`; final slides, restricted-identity validation, optional Discover preview setup, lineage verification, and facilitator rehearsal remain.
 - **06 — Introduction to Machine Learning in Databricks:** Draft. The runnable lab passed an end-to-end workspace validation run (train → register → batch-score); facilitator rehearsal, access grants, and TBD confirmations remain.
 - **04, 07:** No content directories have been authored. This status does not define the number of Data Engineering sessions in the agenda.
 

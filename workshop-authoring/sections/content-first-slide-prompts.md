@@ -1,8 +1,24 @@
-# Content-first slide-generation prompts
+# Slide-generation prompts
 
-These are second-generation prompts for producing workshop presentations from the authored content.
+Use the final slide-only prompts for Sections 01, 02, and 05 when generating the decks used during delivery. They contain only the visible slide portions from each facilitator guide.
 
-## Why they exist
+The broader content-first prompts remain available as editorial inventories. The original prompts remain detailed prescriptive references.
+
+## Final slide-only prompts
+
+- [Data Analysis in Databricks](01-data-analysis-in-databricks/generate-section-01-data-analysis-slides-v3-slide-only.md)
+- [Generative AI in Databricks](02-generative-ai-in-databricks/generate-section-02-generative-ai-slides-v3-slide-only.md)
+- [Governance and Access Control in Databricks](05-governance-and-access-control/generate-section-05-governance-slides-v3-slide-only.md)
+
+These prompts encode:
+
+- exact slide windows from the facilitator guide;
+- visible slide topics;
+- presenter-note boundaries;
+- transitions into notebooks and demonstrations;
+- explicit exclusions for live-workspace content.
+
+## Why the content-first versions remain
 
 The original prompts describe a specific slide-by-slide solution. They remain useful as detailed editorial references, but they can over-constrain a presentation-generating LLM.
 
@@ -25,7 +41,7 @@ They deliberately leave these decisions to the downstream LLM:
 - which ideas should be combined;
 - which detail belongs on-screen or in presenter notes.
 
-## Content-first prompts
+## Broader content-first prompts
 
 - [Data Analysis in Databricks](01-data-analysis-in-databricks/generate-section-01-data-analysis-slides-v2-content-first.md)
 - [Generative AI in Databricks](02-generative-ai-in-databricks/generate-section-02-generative-ai-slides-v2-content-first.md)
@@ -45,9 +61,10 @@ These are preserved for comparison and detailed editorial reference:
 
 ## Recommended workflow
 
-1. Give the content-first prompt to the presentation-generating LLM.
+1. For Sections 01, 02, and 05, give the final slide-only prompt to the presentation-generating LLM.
 2. Ask it to explain its proposed narrative and information architecture before finalizing slide copy.
-3. Review its coverage map against the mandatory content inventory.
-4. Use the original prompt only to check details that may have been lost—not to force the old slide structure.
-5. Supply verified screenshots or existing collateral only after the narrative is approved.
-6. Complete the prompt's fact, claim, environment, and rehearsal checklist before export.
+3. Check the generated deck against the facilitator guide's slide windows and exclusions.
+4. Use the broader content-first prompt to check factual coverage and presenter notes.
+5. Use the original prompt only to check details that may have been lost—not to force the old slide structure.
+6. Supply verified screenshots or existing collateral only after the narrative is approved.
+7. Complete the prompt's fact, claim, environment, and rehearsal checklist before export.

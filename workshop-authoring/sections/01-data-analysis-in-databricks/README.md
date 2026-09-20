@@ -3,7 +3,7 @@
 **Status:** Draft — workspace validation and facilitator rehearsal required
 **Time:** 9:45 AM–11:15 AM (90 minutes)
 
-This directory contains maintainer and facilitator material. Participants use only [`participant-lab.py`](../../../workshop-content/01-data-analysis-in-databricks/participant-lab.py), which contains the complete investigation, exercises, UI instructions, validation guidance, and final reflection.
+This directory contains maintainer and facilitator material. Participants use only [`01-lab.py`](../../../workshop-content/01-data-analysis-in-databricks/01-lab.py), which contains the complete investigation, exercises, UI instructions, validation guidance, and final reflection.
 
 ## Delivery
 
@@ -67,7 +67,7 @@ The facilitator additionally needs permission to create or replace shared views,
 
 Only this file should be distributed or imported into the participant-facing workshop folder:
 
-- [`participant-lab.py`](../../../workshop-content/01-data-analysis-in-databricks/participant-lab.py)
+- [`01-lab.py`](../../../workshop-content/01-data-analysis-in-databricks/01-lab.py)
 
 It creates:
 
@@ -79,9 +79,10 @@ The runner ID is derived from the participant's full workspace identity and a sh
 
 ## Facilitator assets
 
-- [`facilitator-guide.md`](facilitator-guide.md) — preparation, timed delivery, talking points, and fallbacks.
+- [`facilitator-guide.md`](facilitator-guide.md) — timed delivery map plus concise talking points organized in participant-notebook order.
 - [`section-01-facilitator-setup.sql`](../../../workshop-setup/section-01-facilitator-setup.sql) — shared analysis view and Metric View.
-- [`generate-section-01-data-analysis-slides-v2-content-first.md`](generate-section-01-data-analysis-slides-v2-content-first.md) — recommended content-first slide-generation source.
+- [`generate-section-01-data-analysis-slides-v3-slide-only.md`](generate-section-01-data-analysis-slides-v3-slide-only.md) — final generation prompt limited to the facilitator guide's visible slide windows.
+- [`generate-section-01-data-analysis-slides-v2-content-first.md`](generate-section-01-data-analysis-slides-v2-content-first.md) — broader content inventory for editorial reference.
 - [`generate-section-01-data-analysis-slides.md`](generate-section-01-data-analysis-slides.md) — prescriptive editorial reference.
 
 The obsolete section-local slide outline has been removed. Once the final slides and presenter notes are published, the slide-generation prompt can also be archived or removed.

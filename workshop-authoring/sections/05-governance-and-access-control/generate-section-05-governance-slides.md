@@ -10,7 +10,7 @@ This is one access-incident story, not a security-feature tour.
 
 Participants act as the new platform owners. They diagnose the request, record evidence, identify the narrowest repair, verify the unchanged query, assess downstream impact, and complete an incident handover.
 
-The facilitator runs `facilitator-demo.py` as a dedicated restricted identity. Participants use only `../../../workshop-content/05-governance-and-access-control/participant-guide.md`; they do not run code or change permissions.
+The facilitator runs `facilitator-demo.py` as a dedicated restricted identity. Participants use only `../../../workshop-content/05-governance-and-access-control/05-participant-guide.md`; they do not run code or change permissions.
 
 All data and identities are fictional or synthetic.
 

@@ -1,67 +1,89 @@
-# Facilitator cue card — Governance and Access Control
+# Facilitator talking points — Governance and Access Control
 
-**30 minutes · Participant source of truth:** [`participant-guide.md`](../../../workshop-content/05-governance-and-access-control/participant-guide.md)
+**Participant guide:** [`05-participant-guide.md`](../../../workshop-content/05-governance-and-access-control/05-participant-guide.md)
 **Facilitator demo:** [`facilitator-demo.py`](facilitator-demo.py)
+**Scheduled:** 3:20 PM–3:50 PM · 30 minutes
 
-## Goal
+## Delivery map
 
-Diagnose one controlled incident without broadening access:
+| Time | Minutes | Mode | Surface and focus |
+|---|---:|---|---|
+| 0:00–0:03 | 3 | Slides | Access incident, assignment, and smoke-test boundary |
+| 0:03–0:07 | 4 | Slides | Authorization chain and evidence to collect |
+| 0:07–0:16 | 9 | Facilitator demo | Restricted-user failure, administrator repair, and unchanged rerun |
+| 0:16–0:20 | 4 | Slides and discussion | What the successful repair proves and does not prove |
+| 0:20–0:24 | 4 | Facilitator demo | Table and column lineage in Catalog Explorer |
+| 0:24–0:27 | 3 | Facilitator demo | Consumer Lending Domain in Discover |
+| 0:27–0:30 | 3 | Participant guide and discussion | Complete the incident handover |
 
-> A risk analyst can discover `hc_workshop.workshop_shared.fpd_analysis` under Consumer Lending > Origination Risk, but cannot query it.
+## 1. Access is a chain of independent gates
 
-Participants record the executing identity, failed gate, evidence, narrow repair, unchanged verification, downstream impact, Domain boundary, owner, risk, and recovery action.
+Use the incident:
 
-## Before participants enter
+> A risk analyst can discover `hc_workshop.workshop_shared.fpd_analysis`, but cannot query it.
 
-- Use a dedicated non-admin user in a dedicated restricted group; exclude participant and administrative memberships.
-- Run only the preparation statements in [`section-05-governance-demo-setup.sql`](../../../workshop-setup/section-05-governance-demo-setup.sql).
-- Confirm notebook `CAN RUN`, warehouse `CAN USE`, catalog `BROWSE` and `USE CATALOG`, view `SELECT`, and no effective `USE SCHEMA`.
-- Prepare separate restricted-user and administrator browser sessions.
-- In the administrator SQL editor, copy the commented live `GRANT` and reset `REVOKE` statements without the leading `--`; do not use **Run all**.
-- Rehearse the failure, repair, unchanged rerun, and reset.
-- Verify lineage `fpd_analysis → fpd_metrics → verified consumer`.
-- If Discover is available, assign only the verified `fpd_analysis` asset to **Consumer Lending > Origination Risk**.
-- Save a failure capture, successful result, permissions/effective-access capture, and lineage capture. If Discover will be shown, save a Domain capture too.
+The request must pass:
 
-## Run of show
+```text
+Open notebook → use SQL warehouse → identify runtime identity
+→ USE CATALOG → USE SCHEMA → SELECT → return authorized result
+```
 
-| Time | Cue | Participant evidence |
-|---|---|---|
-| 0:00–0:03 | State the incident and smoke-test boundary | Seven handover questions understood |
-| 0:03–0:07 | Explain notebook → warehouse → identity → UC path | Known and unknown gates identified |
-| 0:07–0:16 | Restricted failure; administrator grants `USE SCHEMA`; unchanged rerun | Error, failed gate, repair, and verification recorded |
-| 0:16–0:20 | Explain what success proves and does not prove | Workspace and data permissions separated |
-| 0:20–0:24 | Inspect lineage | Downstream assets to retest recorded |
-| 0:24–0:27 | Open Consumer Lending > Origination Risk | Discovery is separated from authorization |
-| 0:27–0:30 | Complete handover | Owner, risk, and recovery action named |
+Passing one gate does not prove the next gate will pass.
 
-## Live demonstration
+## 2. Identify the executing identity
 
-1. As the restricted user, run the identity cell and read the session user aloud.
-2. Explain that groups contribute effective access; the group is not the interactive user shown by the query.
-3. Ask for a prediction, then run the `fpd_analysis` query.
-4. Stop at the error and capture its exact text and request ID.
-5. As administrator, distinguish direct grants to the group, access obtained through group membership, and any parent-securable inheritance.
-6. Grant only `USE SCHEMA` on `hc_workshop.workshop_shared`.
-7. Return to the restricted session and rerun the identical query.
-8. Confirm ten synthetic rows; do not treat this as FPD5 result validation.
-9. Show lineage before Discover.
-10. State: Domain placement supports discovery; it does not grant `USE CATALOG`, `USE SCHEMA`, or `SELECT`.
+- A user, service principal, or group can hold permissions.
+- The runtime identity is the user or service principal executing the request.
+- Groups contribute effective access through membership; the group is not the interactive user returned by `current_user()`.
+- A scheduled Job may use a different **Run as** identity from the person who configured it.
+- Confirm the runtime identity before changing grants.
 
-## Answer key
+## 3. Separate workspace access from data access
 
-- **Executing identity:** dedicated restricted demo user.
-- **Failed gate:** `USE SCHEMA` on `hc_workshop.workshop_shared`.
-- **Existing access:** notebook and warehouse access; catalog discovery/traversal; view `SELECT` through the dedicated group.
-- **Repair:** grant only the missing schema privilege to the dedicated group.
-- **Verification:** same user, warehouse, object, and SQL now return ten rows.
-- **Impact:** retest `fpd_metrics` and the verified downstream consumer after definition, schema, access, or availability changes.
-- **Avoid:** `ALL PRIVILEGES`, ownership changes, or grants to the human reporter before confirming the executing identity.
+- Notebook `CAN RUN` controls whether the identity can execute the workspace asset.
+- SQL warehouse `CAN USE` controls whether it can submit work to that warehouse.
+- Unity Catalog privileges control access to the governed data object.
+- Opening the notebook and using its warehouse do not prove the view can be queried.
 
-## Fallbacks and reset
+## 4. Explain the Unity Catalog read path
 
-- **Query succeeds early:** stop and inspect ownership, admin roles, nested groups, and broader grants.
-- **Grant propagation delay:** refresh once and rerun the unchanged query.
-- **Lineage or Discover unavailable:** use the saved capture; do not substitute an unrelated asset.
-- **Restricted identity unavailable:** use captured evidence; never manufacture a failure against a participant.
-- **After every rehearsal or delivery:** run the prepared `REVOKE USE SCHEMA`, then confirm the restricted query fails again.
+- `USE CATALOG` allows traversal into `hc_workshop`.
+- `USE SCHEMA` allows traversal into `workshop_shared`.
+- `SELECT` allows rows to be read from `fpd_analysis`.
+- `BROWSE` supports discovery and metadata visibility; it does not grant row access.
+- Privileges may be direct, inherited from a parent securable, or received through group membership.
+
+## 5. Diagnose and repair the incident
+
+- The restricted user can run the notebook, use the warehouse, discover the asset, pass `USE CATALOG`, and has `SELECT`.
+- The unchanged query fails because `USE SCHEMA` is missing.
+- Record the exact error, request ID, runtime identity, object, action, compute, and permission evidence.
+- Grant only `USE SCHEMA` to the dedicated restricted group.
+- Rerun the same SQL with the same user, warehouse, and object.
+- Ten returned rows verify this access repair; they do not validate the FPD5 business definition or prove unrestricted row visibility.
+
+## 6. Apply the narrowest repair
+
+- Preserve the failing request and change one authorization variable at a time.
+- Do not use `ALL PRIVILEGES` as a troubleshooting shortcut.
+- Do not grant access to the person reporting the error until the executing identity is known.
+- A successful unchanged rerun provides stronger diagnostic evidence than changing the query and the permission together.
+
+## 7. Use lineage for impact analysis
+
+- Lineage shows upstream sources and downstream dependencies.
+- Follow `fpd_analysis → fpd_metrics → verified dashboard or analysis`.
+- Use it to decide which assets require retesting after a definition, schema, access, or availability change.
+- Lineage does not grant access, prove correctness, or replace audit evidence.
+
+## 8. Separate discovery from authorization
+
+- **Discover Domains** organize trusted assets by business purpose.
+- **Consumer Lending > Origination Risk** helps consumers find `fpd_analysis`.
+- Domain placement proves curation for discovery; it does not grant `USE CATALOG`, `USE SCHEMA`, or `SELECT`.
+- Use Discover for business navigation and Catalog Explorer for detailed metadata, permissions, and lineage.
+
+## Closing handover
+
+Participants should be able to state the runtime identity, failed gate, evidence, narrow repair, unchanged verification, downstream assets to retest, Domain boundary, owner, risk, and recovery action.

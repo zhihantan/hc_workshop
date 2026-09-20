@@ -28,8 +28,8 @@ No participant-specific or model-only schema is required for this workshop.
 8. Follow `dataset-generator/README.md` to generate and validate the tables.
 9. Open `section-01-facilitator-setup.sql` on the workshop SQL warehouse.
 10. Run all cells to create `workshop_shared.fpd_analysis` and the `workshop_shared.fpd_metrics` Metric View.
-11. Follow `../workshop-authoring/sections/01-data-analysis-in-databricks/facilitator-guide.md` to prepare and share the dashboard.
-12. With a non-admin participant identity, rehearse `../workshop-content/01-data-analysis-in-databricks/participant-lab.py` and create one private Genie Agent in that user's folder using only `workshop_shared.fpd_metrics`.
+11. Prepare and share the **Unicorn FPD5 Overview** dashboard before delivery; use `workshop_shared.fpd_metrics` as its governed dataset.
+12. With a non-admin participant identity, rehearse `../workshop-content/01-data-analysis-in-databricks/01-lab.py` and create one private Genie Agent in that user's folder using only `workshop_shared.fpd_metrics`.
 13. Create the dedicated restricted group and non-admin user described in `../workshop-authoring/sections/05-governance-and-access-control/facilitator-guide.md`.
 14. Configure `section-05-governance-demo-setup.sql` with that group and run only its preparation statements; do not select **Run all**.
 15. Import `../workshop-authoring/sections/05-governance-and-access-control/facilitator-demo.py` into a private facilitator workspace folder and rehearse it from the restricted identity. Participants do not run or clone it.

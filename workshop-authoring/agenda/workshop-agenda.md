@@ -43,12 +43,14 @@ Hands-on exercises use **Unicorn Finance Philippines**, a fictional consumer len
 
 ### 9:45 AM – 11:15 AM: Data Analysis in Databricks (1.5h)
 
-- Choosing compute by workload: notebook compute, jobs compute, and SQL warehouses
-- Understanding serverless versus classic operating models and Serverless, Pro, and Classic SQL warehouse types
-- Exploring governed data with Python and SQL, then extending an inherited FPD5 investigation
+- Framing the Nova Mobile promotion and the governed FPD5 definition
+- Distinguishing notebook compute, Jobs compute, and SQL warehouses by workload
+- Exploring application context with Python and SQL, then building the eligible FPD5 population
+- Comparing cohorts and investigating store, associate, or regional concentration without making causal claims
 - Persisting the investigation with Delta Lake and inspecting schema and transaction history
-- Reusing a governed Metric View in an AI/BI Dashboard and private Genie Agent
-- Inspecting the resulting SQL workload with Warehouse Monitoring, Query History, and Query Profile
+- Reconciling the notebook with a governed Metric View and prepared AI/BI Dashboard
+- Creating and validating a private Genie Agent grounded only in the Metric View
+- Inspecting dashboard- and Agent-generated SQL with Query History and Query Profile
 
 **Recommended pre-reading**: [Get Started with SQL Analytics and BI on Databricks](https://customer-academy.databricks.com/learn/courses/3347/get-started-with-sql-analytics-and-bi-on-databricks)
 
@@ -58,14 +60,14 @@ Hands-on exercises use **Unicorn Finance Philippines**, a fictional consumer len
 
 ### 11:15 AM – 12:15 PM: Generative AI in Databricks (1h)
 
-- Accelerating development and analytics for technical users with Genie Code
-- Understanding, extending, and repairing inherited SQL and PySpark with review and executable checks
-- Supercharging coding assistants with AI Gateway and AI Toolkit
-- Introduction to Genie and Genie One
-- Demo: Ask natural-language questions about the analysis with Genie
-- Optional if time: improving the participant-created Genie Agent with Genie Code and regression checks
+- Using Genie Code to explain inherited governed SQL before changing it
+- Extending the FPD5 investigation to regional grain and reconciling generated results
+- Diagnosing and repairing an inherited PySpark denominator bug with executable checks
+- Reviewing `/optimize` and `/doc` suggestions without accepting unsupported claims
+- Demo: generating and validating an unpublished AI/BI Dashboard draft with Genie Code
+- Optional if time: improving the participant's private Section 01 Genie Agent and regression-testing it
 
-**Recommended pre-reading**: [Genie overview](https://learn.microsoft.com/en-us/azure/databricks/genie/) · [AI Gateway overview](https://learn.microsoft.com/en-us/azure/databricks/ai-gateway/)
+**Recommended pre-reading**: [Genie overview](https://learn.microsoft.com/en-us/azure/databricks/genie/)
 
 ---
 
@@ -98,11 +100,13 @@ Hands-on exercises use **Unicorn Finance Philippines**, a fictional consumer len
 
 ### 3:20 PM – 3:50 PM: Governance and Access Control in Databricks (30 min)
 
-- Understanding the authorization layers: identities, workspace-resource permissions, runtime identity, and Unity Catalog
-- Governing data and AI assets with Unity Catalog's three-level namespace, securables, inherited grants, and fine-grained policies
-- Diagnosing access failures by tracing workspace access, compute access, and `USE CATALOG` → `USE SCHEMA` → object privileges
-- Inspecting permissions and table- and column-level lineage in Catalog Explorer
-- Organizing trusted data and workspace assets for business discovery with Domains and subdomains
+- Tracing the authorization path across notebook access, SQL warehouse access, runtime identity, and Unity Catalog
+- Diagnosing a controlled missing-`USE SCHEMA` failure through `USE CATALOG` → `USE SCHEMA` → `SELECT`
+- Applying the narrowest repair from a separate administrator session and verifying the unchanged request
+- Inspecting direct, inherited, and group-derived access evidence in Catalog Explorer
+- Using table- and column-level lineage to identify downstream assets that require retesting
+- Comparing technical governance in Catalog Explorer with business discovery in a prepared Discover Domain, when available
+- Completing an incident handover with the failed gate, evidence, repair, owner, risk, and recovery action
 
 **Recommended pre-reading**: [Get Started with Data Governance on Databricks](https://customer-academy.databricks.com/learn/courses/4677/get-started-with-data-governance-on-databricks)
 

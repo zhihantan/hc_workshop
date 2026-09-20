@@ -8,7 +8,7 @@ This is not a slide outline. Decide the smallest effective slide count, titles, 
 
 Resolve conflicts in this order:
 
-1. `../../../workshop-content/05-governance-and-access-control/participant-guide.md`
+1. `../../../workshop-content/05-governance-and-access-control/05-participant-guide.md`
 2. `facilitator-demo.py`
 3. `../../../workshop-setup/section-05-governance-demo-setup.sql`
 4. `facilitator-guide.md`

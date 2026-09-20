@@ -3,7 +3,7 @@
 **Status:** Draft — workspace validation and facilitator rehearsal required
 **Time:** 11:15 AM–12:15 PM (60 minutes)
 
-This directory contains maintainer and facilitator material. Participants use only [`participant-lab.py`](../../../workshop-content/02-generative-ai-in-databricks/participant-lab.py), which contains the complete assignment, exercises, UI activities, validation criteria, dashboard observation checklist, optional Agent extension, and final reflection.
+This directory contains maintainer and facilitator material. Participants use only [`02-lab.py`](../../../workshop-content/02-generative-ai-in-databricks/02-lab.py), which contains the complete assignment, exercises, UI activities, validation criteria, dashboard observation checklist, optional Agent extension, and final reflection.
 
 ## Delivery
 
@@ -67,16 +67,17 @@ The facilitator additionally needs permission to create and edit draft AI/BI das
 
 Only this file should be distributed or imported into the participant-facing workshop folder:
 
-- [`participant-lab.py`](../../../workshop-content/02-generative-ai-in-databricks/participant-lab.py)
+- [`02-lab.py`](../../../workshop-content/02-generative-ai-in-databricks/02-lab.py)
 
 Participants do not need a separate exercise sheet or expected-results file.
 
 ## Facilitator and authoring assets
 
-- [`facilitator-guide.md`](facilitator-guide.md) — preparation, timed delivery, answers, recovery, and dashboard flow.
+- [`facilitator-guide.md`](facilitator-guide.md) — timed delivery map plus concise talking points organized in participant-notebook order.
 - [`facilitator-demo.py`](facilitator-demo.py) — resettable demonstration notebook and dashboard prompt.
 - [`expected-results.md`](expected-results.md) — governed reference outputs and troubleshooting.
-- [`generate-section-02-generative-ai-slides-v2-content-first.md`](generate-section-02-generative-ai-slides-v2-content-first.md) — recommended content-first slide-generation source.
+- [`generate-section-02-generative-ai-slides-v3-slide-only.md`](generate-section-02-generative-ai-slides-v3-slide-only.md) — final generation prompt limited to the facilitator guide's visible slide window.
+- [`generate-section-02-generative-ai-slides-v2-content-first.md`](generate-section-02-generative-ai-slides-v2-content-first.md) — broader content inventory for editorial reference.
 - [`generate-section-02-generative-ai-slides.md`](generate-section-02-generative-ai-slides.md) — prescriptive editorial reference.
 
 ## Definition of done
