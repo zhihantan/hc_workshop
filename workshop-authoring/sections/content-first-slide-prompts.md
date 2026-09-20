@@ -1,6 +1,6 @@
 # Slide-generation prompts
 
-Use the final slide-only prompts for Sections 01, 02, and 05 when generating the decks used during delivery. They contain only the visible slide portions from each facilitator guide.
+Use the final slide-only prompts for Sections 01, 02, 03, 05, and 06 when generating the decks used during delivery. They contain only the visible slide portions from each facilitator guide.
 
 The broader content-first prompts remain available as editorial inventories. The original prompts remain detailed prescriptive references.
 
@@ -8,7 +8,9 @@ The broader content-first prompts remain available as editorial inventories. The
 
 - [Data Analysis in Databricks](01-data-analysis-in-databricks/generate-section-01-data-analysis-slides-v3-slide-only.md)
 - [Generative AI in Databricks](02-generative-ai-in-databricks/generate-section-02-generative-ai-slides-v3-slide-only.md)
+- [Data Engineering in Databricks](03-data-engineering-in-databricks/generate-section-03-data-engineering-slides-v3-slide-only.md)
 - [Governance and Access Control in Databricks](05-governance-and-access-control/generate-section-05-governance-slides-v3-slide-only.md)
+- [Introduction to Machine Learning in Databricks](06-machine-learning-in-databricks/generate-section-06-machine-learning-slides-v3-slide-only.md)
 
 These prompts encode:
 
@@ -45,9 +47,9 @@ They deliberately leave these decisions to the downstream LLM:
 
 - [Data Analysis in Databricks](01-data-analysis-in-databricks/drafts/generate-section-01-data-analysis-slides-v2-content-first.md)
 - [Generative AI in Databricks](02-generative-ai-in-databricks/drafts/generate-section-02-generative-ai-slides-v2-content-first.md)
-- [Data Engineering in Databricks](03-data-engineering-in-databricks/generate-section-03-data-engineering-slides-v2-content-first.md)
+- [Data Engineering in Databricks](03-data-engineering-in-databricks/drafts/generate-section-03-data-engineering-slides-v2-content-first.md)
 - [Governance and Access Control in Databricks](05-governance-and-access-control/drafts/generate-section-05-governance-slides-v2-content-first.md)
-- [Introduction to Machine Learning in Databricks](06-machine-learning-in-databricks/generate-section-06-machine-learning-slides-v2-content-first.md)
+- [Introduction to Machine Learning in Databricks](06-machine-learning-in-databricks/drafts/generate-section-06-machine-learning-slides-v2-content-first.md)
 
 ## Original prescriptive prompts
 
@@ -61,7 +63,7 @@ These are preserved for comparison and detailed editorial reference:
 
 ## Recommended workflow
 
-1. For Sections 01, 02, and 05, give the final slide-only prompt to the presentation-generating LLM.
+1. For Sections 01, 02, 03, 05, and 06, give the final slide-only prompt to the presentation-generating LLM.
 2. Ask it to explain its proposed narrative and information architecture before finalizing slide copy.
 3. Check the generated deck against the facilitator guide's slide windows and exclusions.
 4. Use the broader content-first prompt to check factual coverage and presenter notes.
