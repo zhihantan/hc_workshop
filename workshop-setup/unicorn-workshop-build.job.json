@@ -1,0 +1,20 @@
+{
+  "name": "unicorn-workshop-build (hc_workshop)",
+  "max_concurrent_runs": 1,
+  "email_notifications": {
+    "on_failure": ["zhihan.tan@databricks.com"]
+  },
+  "parameters": [
+    { "name": "pipeline_id", "default": "" }
+  ],
+  "tasks": [
+    {
+      "task_key": "run_build",
+      "notebook_task": {
+        "notebook_path": "/Shared/hc_workshop/workshop-setup/unicorn-workshop-build",
+        "source": "WORKSPACE",
+        "base_parameters": { "pipeline_id": "{{job.parameters.pipeline_id}}" }
+      }
+    }
+  ]
+}

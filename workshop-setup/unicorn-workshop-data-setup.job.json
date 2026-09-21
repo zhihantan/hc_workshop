@@ -1,0 +1,16 @@
+{
+  "name": "unicorn-workshop-data-setup (hc_workshop)",
+  "max_concurrent_runs": 1,
+  "email_notifications": {
+    "on_failure": ["zhihan.tan@databricks.com"]
+  },
+  "tasks": [
+    {
+      "task_key": "run_data_setup",
+      "notebook_task": {
+        "notebook_path": "/Shared/hc_workshop/workshop-setup/unicorn-workshop-data-setup",
+        "source": "WORKSPACE"
+      }
+    }
+  ]
+}
