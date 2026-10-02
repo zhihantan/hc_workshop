@@ -1,8 +1,10 @@
 # Workshop content-review prompt
 
-**Updated at:** 2026-09-20
+**Updated at:** 2026-10-01
 
 *Master prompt for reviewing completed workshop assets without editing them.*
+
+This is the Home Credit instance. For a new workshop, use the generic version in [`../../workshop-playbook/prompts/06-review-section.md`](../../workshop-playbook/prompts/06-review-section.md).
 
 ## Use
 
@@ -524,18 +526,16 @@ Confirm that:
 
 ## Review standard 8: Facilitator readiness
 
-Confirm that the facilitator guide contains:
+Confirm that the facilitator guide is a one-page quick reference containing:
 
-- participant-equivalent setup and rehearsal checks;
-- a minute-by-minute run of show;
-- timings that fit `SECTION_DURATION_MINUTES`;
-- expected results;
-- likely errors;
-- the shortest safe recovery path;
-- fallbacks for optional features;
-- checks that must not be skipped when time runs short;
-- exact UI paths where useful; and
-- clear separation between participant, facilitator, and administrator actions.
+- the participant entry point and scheduled time;
+- a delivery map with `Time | Minutes | Mode | Surface and focus` whose rows add up to `SECTION_DURATION_MINUTES`;
+- modes that distinguish slides, notebook work, participant exercises, facilitator demonstrations, guided activities, and discussion;
+- numbered talking-point blocks in participant-notebook order with three to six short bullets each;
+- reference results that match the canonical values and are marked for reveal after discovery; and
+- a closing question.
+
+Flag generic presentation advice, setup steps, troubleshooting trees, and rehearsal checklists in the facilitator guide. Confirm that prerequisites, permissions, and the definition of done are in the section `README.md` instead.
 
 Check that facilitator language does not reintroduce jargon removed from participant material.
 

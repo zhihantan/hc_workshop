@@ -25,6 +25,7 @@ participant-materials/   PDFs distributed to workshop participants
 workshop-content/        Participant labs and facilitator-led section materials
 workshop-setup/          Administrator and facilitator environment setup
 workshop-authoring/      Facilitator design sources, diagrams, and prompts
+workshop-playbook/       Reusable prompts and standards for building the next workshop
 ```
 
 Participants do not need `workshop-setup/` or `workshop-authoring/`.

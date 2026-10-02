@@ -1,8 +1,10 @@
 # Workshop content-generation prompt
 
-**Updated at:** 2026-09-20
+**Updated at:** 2026-10-01
 
 *Master prompt for creating, reviewing, or improving one workshop section at a time.*
+
+This is the Home Credit instance. For a new workshop, use the generic version in [`../../workshop-playbook/prompts/05-build-section-notebook.md`](../../workshop-playbook/prompts/05-build-section-notebook.md), after planning the section with [`04-plan-section.md`](../../workshop-playbook/prompts/04-plan-section.md).
 
 ## Use
 
@@ -533,14 +535,14 @@ For a notebook-led section:
 
 ```text
 workshop-content/<section-number>-<section-name>/
-└── participant-lab.py  # or .sql
+└── <section-number>-lab.py  # or .sql
 ```
 
 For a facilitator-led section:
 
 ```text
 workshop-content/<section-number>-<section-name>/
-└── participant-guide.md
+└── <section-number>-participant-guide.md
 ```
 
 Add another participant file only when independent use is necessary.
@@ -553,16 +555,16 @@ workshop-authoring/sections/<section-number>-<section-name>/
 └── facilitator-guide.md
 ```
 
-The facilitator guide must include:
+The facilitator guide is a one-page quick reference used beside the slides. It must include only:
 
-- a minute-by-minute run of show;
-- setup and rehearsal checks;
-- expected results;
-- likely errors;
-- the shortest safe recovery path;
-- fallbacks for optional features;
-- checks that must not be skipped when time runs short; and
-- participant-equivalent permission requirements.
+- the participant entry point and scheduled time;
+- a delivery map table with `Time | Minutes | Mode | Surface and focus`, where Mode is `Slides`, `Notebook`, `Notebook exercise`, `Facilitator demo`, `Guided participant activity`, or `Discussion`, and the rows add up to the section duration;
+- numbered talking-point blocks in participant-notebook order, each with three to six short bullets covering the definitions, distinctions, reference results, and caveats the facilitator must say; and
+- a closing question.
+
+Do not put generic presentation advice, setup steps, troubleshooting, or rehearsal checklists in the facilitator guide.
+
+The section `README.md` holds status, prerequisites, unresolved environment values, participant-equivalent permission requirements, participant-visible and facilitator assets, and the definition of done.
 
 Create these only when they add value outside the notebook or facilitator guide:
 

@@ -6,7 +6,7 @@ Facilitator-only source material for designing and maintaining the workshop.
 - `story/` — canonical Unicorn Finance company and workshop narrative.
 - `dataset/` — dataset design, schema references, participant-document sources, and ER assets.
 - `sections/` — section-specific maintainer notes, facilitator guides, and delivery controls that should not appear in participant workspace folders.
-- `prompts/` — reusable prompts for creating, reviewing, and improving section content.
+- `prompts/` — the Home Credit prompts for creating, reviewing, and improving section content. The reusable, customer-neutral versions are in `../workshop-playbook/`.
 - `opening/` — the workshop-level agenda, scenario, and dataset slides that begin the Unicorn Finance handover story.
 - `closing/` — closing-slide copy and facilitator notes that complete the Unicorn Finance handover story.
 
